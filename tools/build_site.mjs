@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
-const siteUrl = "https://jiggyj744-ctrl.github.io";
+const siteUrl = "https://jauction-share-acquisition.pages.dev";
 const brand = "Jauction 지분매입 상담센터";
 const phone = "010-6899-1601";
 const tel = "01068991601";

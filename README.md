@@ -1,6 +1,8 @@
 # Jauction 지분매입 공개 사이트
 
-공개 기본 주소는 `https://jiggyj744-ctrl.github.io/`입니다. Cloudflare Pages 보조 주소는 `https://jauction-share-acquisition.pages.dev/`입니다. 공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
+대표 주소는 `https://jauction-share-acquisition.pages.dev/`입니다. GitHub 주소 `https://jiggyj744-ctrl.github.io/`는 백업 공개 주소로 유지합니다.
+
+공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
 
 ## 운영 범위
 
@@ -9,7 +11,6 @@
 - 상담 접수: Cloudflare Worker와 D1에 저장
 - 관리자 화면: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - 검색 등록 자료: `robots.txt`, `sitemap.xml`
-- Cloudflare Pages: `https://jauction-share-acquisition.pages.dev/`
 
 ## 주요 파일
 
@@ -34,20 +35,9 @@ node workers/lead-api/scripts/leads.mjs update 1 contacted "전화 상담 완료
 node workers/lead-api/scripts/leads.mjs export --limit 100
 ```
 
-## 상담 알림
-
-새 상담이 저장되면 이메일 또는 외부 알림 주소로 보낼 수 있도록 준비되어 있습니다. 실제 발송은 Cloudflare에 아래 값이 설정된 뒤 작동합니다.
-
-- 이메일: `RESEND_API_KEY`, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
-- 외부 알림 주소: `NOTIFY_WEBHOOK_URL`, 필요 시 `NOTIFY_WEBHOOK_TOKEN`
-
-알림 설정이 없으면 상담은 정상 저장되고, 관리자 화면에는 `not_configured`로 표시됩니다.
-
 ## 검색 등록
 
-현재 공개 주소는 GitHub 무료 주소인 `jiggyj744-ctrl.github.io`입니다. 이 주소는 Cloudflare DNS 소유 확인 방식으로 등록할 수 없고, Google Search Console의 URL 확인 방식으로 등록해야 합니다.
-
-Cloudflare Pages 주소도 열려 있지만, 현재 대표 주소와 sitemap은 GitHub 주소 기준입니다. Cloudflare Pages를 대표 주소로 바꾸려면 canonical, sitemap, robots를 Cloudflare 주소 기준으로 다시 만들어야 합니다.
+Google Search Console과 Naver Search Advisor에는 대표 주소 `https://jauction-share-acquisition.pages.dev/`를 등록합니다.
 
 확인 태그나 확인 파일을 받으면 아래 도구로 반영합니다.
 
@@ -56,7 +46,11 @@ node tools/apply_search_verification.mjs --google-meta "구글에서 받은 cont
 node tools/apply_search_verification.mjs --naver-meta "네이버에서 받은 content 값"
 ```
 
-나중에 별도 도메인을 Cloudflare에 연결하면, 그때는 Cloudflare DNS에 Google 확인값을 넣는 방식으로 진행합니다.
+잘못 넣었으면 아래처럼 비웁니다.
+
+```powershell
+node tools/apply_search_verification.mjs --clear
+```
 
 ## 점검
 
