@@ -1,36 +1,30 @@
-# Jauction 지분매입 GitHub Pages 랜딩
+# Jauction 지분매입 공개 사이트
 
-이 저장소는 `https://jiggyj744-ctrl.github.io/`에서 공개할 정적 랜딩 사이트입니다.
+공개 주소는 `https://jiggyj744-ctrl.github.io/`입니다. 공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
 
-## 운영 방향
+## 운영 범위
 
-- 메인 목적: 공유물 지분, 상속 지분, 토지 지분, 지분경매 사건을 보유한 매도 희망자를 유입
-- 처리 흐름: 상담 접수 → 등기·사건자료 검토 → 권리·점유·공유자 구조 확인 → 매입 가능성 또는 보류 사유 안내
-- 배포 방식: GitHub Pages 루트 정적 파일
-- 커스텀 도메인: 사이트 완성 및 검수 후 마지막 단계에서 연결
+- 메인 화면: 지분 매도 상담 유도
+- 세부 화면: 공유물 지분 매입, 지분경매, 상속 지분, 토지 지분, 공유자 갈등, 상가·건물 지분
+- 상담 접수: Cloudflare Worker와 D1에 저장
+- 관리자 화면: `https://jauction-lead-api.jiggyj.workers.dev/admin`
+- 검색 등록 자료: `robots.txt`, `sitemap.xml`
 
-## 파일 구조
+## 주요 파일
 
-- `index.html`: 메인 랜딩
-- `services/*/index.html`: 유형별 세부 랜딩
-- `faq/index.html`: FAQ 및 FAQ schema
-- `privacy/index.html`: 개인정보 처리방침
-- `assets/styles.css`: 공통 스타일
-- `assets/main.js`: 문의 폼 검증, honeypot, 1분 rate limit, SMS fallback
-- `robots.txt`, `sitemap.xml`: 색인 재등록용 파일
-- `tools/build_site.mjs`: 정적 사이트 재생성 빌더
-- `workers/lead-api/`: Cloudflare Workers + D1 리드 저장 API와 운영 CLI
+- `index.html`: 메인 화면
+- `services/*/index.html`: 세부 상담 화면
+- `faq/index.html`: 자주 묻는 질문
+- `privacy/index.html`: 개인정보 안내
+- `assets/styles.css`: 화면 스타일
+- `assets/main.js`: 상담 접수 화면 동작
+- `workers/lead-api/`: 상담 저장과 관리자 화면
+- `tools/verify_site.mjs`: 로컬 파일 점검
+- `tools/verify_live.mjs`: 공개 주소 점검
 
-## 문의 폼 상태
+## 상담 관리
 
-상담 폼은 Cloudflare Workers + D1 API로 저장됩니다. API 장애 시에는 문자 전달 또는 내용 복사 fallback이 표시됩니다.
-
-- API: `https://jauction-lead-api.jiggyj.workers.dev/lead`
-- Health: `https://jauction-lead-api.jiggyj.workers.dev/health`
-
-## 리드 운영
-
-관리자 API는 Cloudflare Secret `ADMIN_TOKEN`으로 보호합니다. 로컬 운영 토큰은 `workers/lead-api/.admin-token.local`에만 두고 커밋하지 않습니다.
+관리자 화면과 관리자 명령은 별도 열쇠로 보호합니다. 열쇠 파일은 `workers/lead-api/.admin-token.local`에만 두고 GitHub에는 올리지 않습니다.
 
 ```powershell
 node workers/lead-api/scripts/leads.mjs list
@@ -39,8 +33,18 @@ node workers/lead-api/scripts/leads.mjs update 1 contacted "전화 상담 완료
 node workers/lead-api/scripts/leads.mjs export --limit 100
 ```
 
-## 재생성
+## 상담 알림
+
+새 상담이 저장되면 이메일 또는 외부 알림 주소로 보낼 수 있도록 준비되어 있습니다. 실제 발송은 Cloudflare에 아래 값이 설정된 뒤 작동합니다.
+
+- 이메일: `RESEND_API_KEY`, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
+- 외부 알림 주소: `NOTIFY_WEBHOOK_URL`, 필요 시 `NOTIFY_WEBHOOK_TOKEN`
+
+알림 설정이 없으면 상담은 정상 저장되고, 관리자 화면에는 `not_configured`로 표시됩니다.
+
+## 점검
 
 ```powershell
-node tools/build_site.mjs
+node tools/verify_site.mjs
+node tools/verify_live.mjs
 ```
