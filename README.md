@@ -1,6 +1,6 @@
 # Jauction 지분매입 공개 사이트
 
-공개 주소는 `https://jiggyj744-ctrl.github.io/`입니다. 공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
+공개 기본 주소는 `https://jiggyj744-ctrl.github.io/`입니다. Cloudflare Pages 보조 주소는 `https://jauction-share-acquisition.pages.dev/`입니다. 공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
 
 ## 운영 범위
 
@@ -9,6 +9,7 @@
 - 상담 접수: Cloudflare Worker와 D1에 저장
 - 관리자 화면: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - 검색 등록 자료: `robots.txt`, `sitemap.xml`
+- Cloudflare Pages: `https://jauction-share-acquisition.pages.dev/`
 
 ## 주요 파일
 
@@ -45,6 +46,8 @@ node workers/lead-api/scripts/leads.mjs export --limit 100
 ## 검색 등록
 
 현재 공개 주소는 GitHub 무료 주소인 `jiggyj744-ctrl.github.io`입니다. 이 주소는 Cloudflare DNS 소유 확인 방식으로 등록할 수 없고, Google Search Console의 URL 확인 방식으로 등록해야 합니다.
+
+Cloudflare Pages 주소도 열려 있지만, 현재 대표 주소와 sitemap은 GitHub 주소 기준입니다. Cloudflare Pages를 대표 주소로 바꾸려면 canonical, sitemap, robots를 Cloudflare 주소 기준으로 다시 만들어야 합니다.
 
 확인 태그나 확인 파일을 받으면 아래 도구로 반영합니다.
 
