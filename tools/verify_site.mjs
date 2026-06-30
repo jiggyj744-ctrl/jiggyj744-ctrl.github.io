@@ -46,6 +46,7 @@ const requiredText = {
     "검토 요청 정리하기",
     "privacy_agree",
     "company_website",
+    "https://jauction-lead-api.jiggyj.workers.dev/lead",
     "FAQPage",
     "ProfessionalService",
   ],

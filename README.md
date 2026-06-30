@@ -22,9 +22,10 @@
 
 ## 문의 폼 상태
 
-GitHub Pages는 정적 호스팅이라 서버 저장 기능이 없습니다. 현재 폼은 개인정보 동의, honeypot, 1분 rate limit을 적용하고, 접수 내용을 문자 전달 또는 복사할 수 있게 구성했습니다.
+상담 폼은 Cloudflare Workers + D1 API로 저장됩니다. API 장애 시에는 문자 전달 또는 내용 복사 fallback이 표시됩니다.
 
-나중에 Cloudflare Worker, Google Apps Script, Formspree 등 접수 API를 연결할 때는 `assets/main.js`의 `JAUCTION_LEAD_ENDPOINT` 또는 폼의 `data-endpoint` 값을 설정하면 됩니다.
+- API: `https://jauction-lead-api.jiggyj.workers.dev/lead`
+- Health: `https://jauction-lead-api.jiggyj.workers.dev/health`
 
 ## 재생성
 

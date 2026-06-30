@@ -9,6 +9,7 @@ const brand = "Jauction 지분매입 상담센터";
 const phone = "010-6899-1601";
 const tel = "01068991601";
 const buildDate = "2026-06-30";
+const leadEndpoint = "https://jauction-lead-api.jiggyj.workers.dev/lead";
 
 const sourceHero = path.resolve(
   root,
@@ -344,7 +345,7 @@ function iconFor(slug) {
 }
 
 function leadForm() {
-  return `<form class="lead-form" data-lead-form data-endpoint="">
+  return `<form class="lead-form" data-lead-form data-endpoint="${leadEndpoint}">
           <input type="text" name="company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="submitted_at" value="">
           <label>이름<input name="name" autocomplete="name" required></label>
@@ -379,7 +380,7 @@ function leadForm() {
           <label class="privacy-check"><input type="checkbox" name="privacy_agree" required><span>상담 접수와 회신을 위한 개인정보 수집·이용에 동의합니다.</span></label>
           <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>검토 요청 정리하기</span></button>
           <div class="form-result" hidden></div>
-          <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 사용합니다.</p>
+          <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
         </form>`;
 }
 
@@ -1198,9 +1199,10 @@ function docs() {
 
 ## 문의 폼 상태
 
-GitHub Pages는 정적 호스팅이라 서버 저장 기능이 없습니다. 현재 폼은 개인정보 동의, honeypot, 1분 rate limit을 적용하고, 접수 내용을 문자 전달 또는 복사할 수 있게 구성했습니다.
+상담 폼은 Cloudflare Workers + D1 API로 저장됩니다. API 장애 시에는 문자 전달 또는 내용 복사 fallback이 표시됩니다.
 
-나중에 Cloudflare Worker, Google Apps Script, Formspree 등 접수 API를 연결할 때는 \`assets/main.js\`의 \`JAUCTION_LEAD_ENDPOINT\` 또는 폼의 \`data-endpoint\` 값을 설정하면 됩니다.
+- API: \`${leadEndpoint}\`
+- Health: \`https://jauction-lead-api.jiggyj.workers.dev/health\`
 
 ## 재생성
 

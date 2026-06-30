@@ -2,6 +2,7 @@
 Thumbs.db
 node_modules/
 .cache/
+.wrangler/
 .env
 .env.*
 !.env.example
