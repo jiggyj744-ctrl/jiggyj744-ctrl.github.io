@@ -42,6 +42,19 @@ node workers/lead-api/scripts/leads.mjs export --limit 100
 
 알림 설정이 없으면 상담은 정상 저장되고, 관리자 화면에는 `not_configured`로 표시됩니다.
 
+## 검색 등록
+
+현재 공개 주소는 GitHub 무료 주소인 `jiggyj744-ctrl.github.io`입니다. 이 주소는 Cloudflare DNS 소유 확인 방식으로 등록할 수 없고, Google Search Console의 URL 확인 방식으로 등록해야 합니다.
+
+확인 태그나 확인 파일을 받으면 아래 도구로 반영합니다.
+
+```powershell
+node tools/apply_search_verification.mjs --google-meta "구글에서 받은 content 값"
+node tools/apply_search_verification.mjs --naver-meta "네이버에서 받은 content 값"
+```
+
+나중에 별도 도메인을 Cloudflare에 연결하면, 그때는 Cloudflare DNS에 Google 확인값을 넣는 방식으로 진행합니다.
+
 ## 점검
 
 ```powershell

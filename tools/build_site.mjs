@@ -10,6 +10,7 @@ const phone = "010-6899-1601";
 const tel = "01068991601";
 const buildDate = "2026-06-30";
 const leadEndpoint = "https://jauction-lead-api.jiggyj.workers.dev/lead";
+const verificationConfigPath = path.join(root, "tools", "search-verification.json");
 
 const sourceHero = path.resolve(
   root,
@@ -1229,9 +1230,14 @@ node tools/verify_live.mjs
 }
 
 function cleanLegacyVerificationFiles() {
+  const keep = new Set(
+    [readSearchVerification().googleFile?.name, readSearchVerification().naverFile?.name]
+      .filter(Boolean),
+  );
   for (const entry of fs.readdirSync(root, { withFileTypes: true })) {
     if (!entry.isFile()) continue;
     const lower = entry.name.toLowerCase();
+    if (keep.has(entry.name)) continue;
     if (
       lower.startsWith("google") && lower.endsWith(".html") ||
       lower.startsWith("naver") && lower.endsWith(".html")
@@ -1239,6 +1245,69 @@ function cleanLegacyVerificationFiles() {
       fs.unlinkSync(path.join(root, entry.name));
     }
   }
+}
+
+function readSearchVerification() {
+  if (!fs.existsSync(verificationConfigPath)) {
+    return {};
+  }
+  try {
+    return JSON.parse(fs.readFileSync(verificationConfigPath, "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+function applySearchVerification() {
+  const config = readSearchVerification();
+  const block = searchVerificationBlock(config);
+  for (const file of findHtmlFiles(root)) {
+    let content = fs.readFileSync(file, "utf8");
+    content = content.replace(/\n?\s*<!-- search-verification:start -->[\s\S]*?<!-- search-verification:end -->\n?/g, "\n");
+    if (block && content.includes("</head>")) {
+      content = content.replace("</head>", `${block}\n</head>`);
+    }
+    fs.writeFileSync(file, content, "utf8");
+  }
+  writeVerificationFile(config.googleFile);
+  writeVerificationFile(config.naverFile);
+}
+
+function searchVerificationBlock(config) {
+  const lines = [];
+  if (config.googleMeta) {
+    lines.push(`<meta name="google-site-verification" content="${escapeHtml(config.googleMeta)}">`);
+  }
+  if (config.naverMeta) {
+    lines.push(`<meta name="naver-site-verification" content="${escapeHtml(config.naverMeta)}">`);
+  }
+  if (!lines.length) return "";
+  return [
+    "  <!-- search-verification:start -->",
+    ...lines.map((line) => `  ${line}`),
+    "  <!-- search-verification:end -->",
+  ].join("\n");
+}
+
+function writeVerificationFile(record) {
+  if (!record?.name) return;
+  const safeName = path.basename(record.name);
+  if (safeName !== record.name || !/^[a-z0-9._-]+\.html$/i.test(safeName)) return;
+  fs.writeFileSync(path.join(root, safeName), `${record.content || ""}\n`, "utf8");
+}
+
+function findHtmlFiles(dir) {
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === ".git" || entry.name === ".wrangler" || entry.name === "workers") continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...findHtmlFiles(full));
+    } else if (entry.name.endsWith(".html")) {
+      files.push(full);
+    }
+  }
+  return files;
 }
 
 cleanLegacyVerificationFiles();
@@ -1250,5 +1319,6 @@ privacyPage();
 notFoundPage();
 seoFiles();
 docs();
+applySearchVerification();
 
 console.log(`Built ${brand} static site at ${root}`);
