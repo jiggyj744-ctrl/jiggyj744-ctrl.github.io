@@ -19,6 +19,7 @@
 - `assets/main.js`: 문의 폼 검증, honeypot, 1분 rate limit, SMS fallback
 - `robots.txt`, `sitemap.xml`: 색인 재등록용 파일
 - `tools/build_site.mjs`: 정적 사이트 재생성 빌더
+- `workers/lead-api/`: Cloudflare Workers + D1 리드 저장 API와 운영 CLI
 
 ## 문의 폼 상태
 
@@ -26,6 +27,17 @@
 
 - API: `https://jauction-lead-api.jiggyj.workers.dev/lead`
 - Health: `https://jauction-lead-api.jiggyj.workers.dev/health`
+
+## 리드 운영
+
+관리자 API는 Cloudflare Secret `ADMIN_TOKEN`으로 보호합니다. 로컬 운영 토큰은 `workers/lead-api/.admin-token.local`에만 두고 커밋하지 않습니다.
+
+```powershell
+node workers/lead-api/scripts/leads.mjs list
+node workers/lead-api/scripts/leads.mjs show 1
+node workers/lead-api/scripts/leads.mjs update 1 contacted "전화 상담 완료"
+node workers/lead-api/scripts/leads.mjs export --limit 100
+```
 
 ## 재생성
 
