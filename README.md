@@ -33,7 +33,19 @@ node workers/lead-api/scripts/leads.mjs list
 node workers/lead-api/scripts/leads.mjs show 1
 node workers/lead-api/scripts/leads.mjs update 1 contacted "전화 상담 완료"
 node workers/lead-api/scripts/leads.mjs export --limit 100
+node workers/lead-api/scripts/leads.mjs notify-config
+node workers/lead-api/scripts/leads.mjs notify-test
 ```
+
+## 상담 알림
+
+상담 저장과 메일 발송은 별도입니다. 상담은 D1에 먼저 저장되고, 메일 발송 설정이 준비된 경우에만 알림 상태가 `sent`로 바뀝니다.
+
+- Cloudflare 메일: `send_email` 바인딩, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
+- Resend 메일: `RESEND_API_KEY`, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
+- 외부 알림 주소: `NOTIFY_WEBHOOK_URL`, 필요 시 `NOTIFY_WEBHOOK_TOKEN`
+
+Cloudflare 메일 발송은 Cloudflare Email Service에 등록된 발신 도메인 주소에서만 성공합니다. 무료 `github.io` 또는 `pages.dev` 주소만으로는 발신자 도메인 인증을 완료할 수 없습니다.
 
 ## 검색 등록
 
