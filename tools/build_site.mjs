@@ -119,6 +119,7 @@ function layout({ title, description, pathName = "/", body, extraSchema = "" }) 
   <meta property="og:image" content="${siteUrl}/assets/hero-consultation.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#173b35">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="/assets/hero-consultation.png">
   <link rel="stylesheet" href="/assets/styles.css?v=20260630">
   <script type="application/ld+json">${JSON.stringify(localBusinessSchema())}</script>
@@ -513,7 +514,16 @@ function assets() {
   }
   write("assets/styles.css", css());
   write("assets/main.js", js());
+  write("favicon.svg", faviconSvg());
   write(".nojekyll", "");
+}
+
+function faviconSvg() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#173b35"/>
+  <path d="M34 14v23c0 8-5 13-13 13-3 0-6-1-8-2l3-8c1 1 3 1 5 1 3 0 5-2 5-6V14h8z" fill="#ffffff"/>
+  <path d="M40 42h12v8H40z" fill="#b88746"/>
+</svg>`;
 }
 
 function css() {

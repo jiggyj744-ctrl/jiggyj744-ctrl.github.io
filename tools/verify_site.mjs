@@ -19,6 +19,7 @@ const requiredFiles = [
   "assets/styles.css",
   "assets/main.js",
   "assets/hero-consultation.png",
+  "favicon.svg",
   "robots.txt",
   "sitemap.xml",
   ".nojekyll",
@@ -111,6 +112,7 @@ for (const file of htmlFiles) {
   if (!content.includes('<html lang="ko">')) errors.push(`${rel} missing lang=ko`);
   if (!content.includes("<meta name=\"description\"")) errors.push(`${rel} missing description`);
   if (!content.includes("<link rel=\"canonical\"")) errors.push(`${rel} missing canonical`);
+  if (!content.includes("<link rel=\"icon\"")) errors.push(`${rel} missing favicon`);
   if (!content.includes("/assets/styles.css?v=20260630")) errors.push(`${rel} missing stylesheet`);
   if (!content.includes("/assets/main.js?v=20260630")) errors.push(`${rel} missing script`);
 }
