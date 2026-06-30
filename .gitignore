@@ -1,4 +1,7 @@
 .DS_Store
 Thumbs.db
-*.html
-!index.html
+node_modules/
+.cache/
+.env
+.env.*
+!.env.example
