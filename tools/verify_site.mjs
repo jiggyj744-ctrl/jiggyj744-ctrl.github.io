@@ -14,6 +14,7 @@ const requiredFiles = [
   "404.html",
   "faq/index.html",
   "privacy/index.html",
+  "blog/index.html",
   "services/share-purchase/index.html",
   "services/share-auction/index.html",
   "services/inherited-share/index.html",
@@ -26,6 +27,7 @@ const requiredFiles = [
   "favicon.svg",
   "robots.txt",
   "sitemap.xml",
+  "feed.xml",
   ".nojekyll",
 ];
 
@@ -52,8 +54,11 @@ const requiredText = {
     "https://jiggyj744-ctrl.github.io/",
     "https://jiggyj744-ctrl.github.io/services/share-purchase/",
     "https://jiggyj744-ctrl.github.io/services/share-auction/",
+    "https://jiggyj744-ctrl.github.io/blog/",
     "2026-07-01",
   ],
+  "blog/index.html": ["지분매입 블로그", "CollectionPage", "feed.xml", "1688-0976"],
+  "feed.xml": ["<rss", "<channel>", "Jauction 지분매입 블로그"],
 };
 
 const errors = [];

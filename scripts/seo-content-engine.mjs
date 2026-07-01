@@ -18,6 +18,8 @@ const banned = [legacyFactory, legacyFactory.toLowerCase(), legacyAuction, legac
 const facts = readJson("content/business-facts.json");
 const backlog = readJson("content/keyword-backlog.json");
 const prompt = fs.existsSync("prompts/share-index-page.md") ? fs.readFileSync("prompts/share-index-page.md", "utf8") : "";
+const blogBacklog = fs.existsSync("content/blog-backlog.json") ? readJson("content/blog-backlog.json") : { version: 1, updated: today, posts: [] };
+const blogPrompt = fs.existsSync("prompts/share-blog-post.md") ? fs.readFileSync("prompts/share-blog-post.md", "utf8") : "";
 const selected = backlog.keywords.filter((item) => ["queued", "improve"].includes(item.status)).slice(0, limit);
 const published = [];
 
@@ -45,6 +47,25 @@ for (const item of selected) {
 
 if (published.length) { updateSitemap(published); updateIndexLinks(backlog.keywords.filter((item) => item.status === "published")); writeJson("content/keyword-backlog.json", backlog); updateOps(published); }
 console.log("continuous indexing published " + published.length + " page(s)");
+
+const selectedBlogs = blogBacklog.posts.filter((item) => ["queued", "improve"].includes(item.status)).sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99) || String(a.slug).localeCompare(String(b.slug))).slice(0, limit);
+const publishedBlogs = [];
+for (const item of selectedBlogs) {
+  const post = await publishBlogPost(item);
+  publishedBlogs.push(post);
+}
+const allPublishedBlogs = blogBacklog.posts.filter((item) => item.status === "published");
+updateBlogIndex(allPublishedBlogs);
+updateFeed(allPublishedBlogs);
+if (publishedBlogs.length) {
+  updateSitemap(publishedBlogs);
+  updateBlogLinks(allPublishedBlogs);
+  blogBacklog.updated = today;
+  writeJson("content/blog-backlog.json", blogBacklog);
+  updateOps(publishedBlogs);
+}
+console.log("continuous blog indexing published " + publishedBlogs.length + " post(s)");
+
 
 async function generateContent(item) {
   if (generationMode === "template") return fallbackContent(item, "template-cost-safe");
@@ -105,3 +126,216 @@ function updateOps(published) { fs.mkdirSync("ops", { recursive: true }); const 
 function readJson(file) { return JSON.parse(fs.readFileSync(file, "utf8")); }
 function writeJson(file, value) { fs.writeFileSync(file, JSON.stringify(value, null, 2) + "\n", "utf8"); }
 function escapeHtml(value) { return String(value ?? "").replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char])); }
+
+async function publishBlogPost(item) {
+  let generated = await generateBlogContent(item);
+  let post = normalizeBlogPost(item, generated);
+  let html = renderBlogPost(post);
+  try {
+    qaBlogPost(post, html);
+  } catch (error) {
+    console.warn("Generated blog failed QA, using template fallback: " + error.message);
+    generated = fallbackBlogContent(item, "template-blog-qa-fallback");
+    post = normalizeBlogPost(item, generated);
+    html = renderBlogPost(post);
+    qaBlogPost(post, html);
+  }
+  const targetDir = path.join(root, post.slug);
+  fs.mkdirSync(targetDir, { recursive: true });
+  fs.writeFileSync(path.join(targetDir, "index.html"), html, "utf8");
+  item.status = "published";
+  item.lastPublished = today;
+  item.publishedAt = item.publishedAt || new Date().toISOString();
+  item.url = siteBase + "/" + post.slug + "/";
+  item.title = post.title;
+  item.description = post.description;
+  item.category = post.category;
+  return post;
+}
+
+async function generateBlogContent(item) {
+  if (generationMode === "template") return fallbackBlogContent(item, "template-cost-safe");
+  if (process.env.LLM_PROXY_BASE_URL) return generateBlogViaProxy(item);
+  if (!allowDirectOpenAI || !process.env.OPENAI_API_KEY) return fallbackBlogContent(item, "template-direct-disabled");
+  const input = [blogPrompt, "Business facts JSON:", JSON.stringify(facts), "Blog request JSON:", JSON.stringify(item), "Return strict JSON with keys title, description, h1, eyebrow, excerpt, category, sections, checklist, faqs."].join("\n");
+  try {
+    const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + process.env.OPENAI_API_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ model, input, text: { format: { type: "json_object" } } }) });
+    if (!response.ok) throw new Error("OpenAI API " + response.status + ": " + await response.text());
+    const data = await response.json();
+    return parseJsonText(extractOutputText(data));
+  } catch (error) {
+    console.warn("OpenAI blog generation failed, using template fallback: " + error.message);
+    return fallbackBlogContent(item, "template-blog-api-fallback");
+  }
+}
+
+async function generateBlogViaProxy(item) {
+  const endpoint = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "") + "/chat/completions";
+  const headers = { "Content-Type": "application/json" };
+  if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
+  const input = [blogPrompt, "Business facts JSON:", JSON.stringify(facts), "Blog request JSON:", JSON.stringify(item), "Return strict JSON only with keys title, description, h1, eyebrow, excerpt, category, sections, checklist, faqs. Write Korean expert blog content with at least 5 sections, each section containing 2-3 substantial paragraphs, a practical checklist, and 4 FAQs. Keep it focused on share acquisition review, co-owner issues, ownership records, occupation, auction or partition risk where relevant."].join("\n");
+  try {
+    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "deepseek-chat", messages: [{ role: "user", content: input }], temperature: 0.35, max_tokens: 3600, response_format: { type: "json_object" } }) });
+    if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || data.output_text || "";
+    return parseJsonText(text);
+  } catch (error) {
+    console.warn("Proxy blog generation failed, using template fallback: " + error.message);
+    return fallbackBlogContent(item, "template-blog-proxy-fallback");
+  }
+}
+
+function parseJsonText(text) {
+  let raw = String(text || "").trim();
+  const fence = String.fromCharCode(96, 96, 96);
+  if (raw.startsWith(fence + "json")) raw = raw.slice(7).trim();
+  if (raw.startsWith(fence)) raw = raw.slice(3).trim();
+  if (raw.endsWith(fence)) raw = raw.slice(0, -3).trim();
+  try { return JSON.parse(raw); } catch {}
+  const start = raw.indexOf("{");
+  const end = raw.lastIndexOf("}");
+  if (start >= 0 && end > start) return JSON.parse(raw.slice(start, end + 1));
+  throw new Error("JSON response parse failed");
+}
+
+function fallbackBlogContent(item, mode) {
+  const keyword = item.keyword;
+  const titleBase = item.title || keyword;
+  const sectionSeeds = [
+    ["처음 확인할 권리관계", "등기부상 소유자, 지분율, 권리 제한, 압류나 근저당 유무를 먼저 봅니다. 지분 물건은 전체 물건의 시세보다 해당 지분을 정리할 수 있는 가능성이 더 중요합니다.", "공유자가 몇 명인지, 연락 가능성이 있는지, 이미 분쟁이나 협의가 있었는지도 함께 확인해야 합니다. 이 단계에서 매입 가능, 보류, 추가자료 필요 여부를 1차로 나눌 수 있습니다."],
+    ["주소와 사건번호만 있을 때", "주소만 있어도 소재지와 물건 유형을 기준으로 검토를 시작할 수 있습니다. 사건번호가 있으면 매각물건명세서, 감정평가, 점유 관계를 더 빠르게 확인할 수 있습니다.", "자료가 부족하다고 접수를 미룰 필요는 없습니다. 현재 알고 있는 정보와 매도 의사, 공유자 상황을 함께 남기면 후속 확인 범위를 줄일 수 있습니다."],
+    ["공유자와 점유 상태", "공유자 수가 많거나 연락이 끊긴 경우에는 협의 정리보다 절차 리스크가 커질 수 있습니다. 점유자가 누구인지, 임대차가 있는지, 실제 사용자가 공유자인지도 가격과 일정에 영향을 줍니다.", "특히 일부 지분만 매도하려는 경우에는 남은 공유자와의 관계, 사용 수익 상황, 향후 분할 가능성까지 같이 보아야 합니다."],
+    ["경매와 분할 가능성", "지분경매가 진행 중이거나 공유물분할청구 가능성이 있는 사건은 일반 매매와 판단 순서가 다릅니다. 우선매수권 행사 가능성, 낙찰 후 정리 비용, 기간을 별도 항목으로 분리합니다.", "매입 검토에서는 법률적 결론을 단정하기보다 자료 기준으로 불확실성을 줄이는 것이 우선입니다. 필요한 경우 등기, 사건 기록, 점유 자료를 추가 요청합니다."],
+    ["상담 접수 후 안내되는 내용", "상담이 접수되면 등기, 지분율, 공유자 수, 점유 상태, 경매 진행 여부를 기준으로 매입 가능성과 보류 사유를 안내합니다. 즉시 매입 판단이 어려우면 추가로 필요한 자료를 정리해 드립니다.", "매도 여부가 확정되지 않았더라도 1차 검토를 받을 수 있습니다. 검토 결과를 보고 매도, 보류, 추가 협의 중 어느 방향이 맞는지 결정하면 됩니다."]
+  ];
+  return { generationMode: mode, title: titleBase + " | 지분매입 검토 노트", description: keyword + " 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호, 분할 가능성 기준을 정리했습니다.", h1: titleBase, eyebrow: item.category || "지분매입 블로그", excerpt: keyword + " 관련 상담을 접수하기 전 확인하면 좋은 기준을 정리한 검토 노트입니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다.", category: item.category || "검토 노트", sections: sectionSeeds.map((seed) => ({ heading: seed[0], paragraphs: [seed[1], seed[2]] })), checklist: ["주소 또는 사건번호", "대략적인 지분율", "공유자 수와 연락 가능성", "점유자 또는 임차인 여부", "매도 희망 여부와 일정"], faqs: [{ q: keyword + " 상담은 자료가 모두 있어야 하나요?", a: "아닙니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다." }, { q: "지분율을 모르면 접수할 수 없나요?", a: "지분율을 몰라도 접수할 수 있습니다. 등기 확인 후 지분율과 공유자 수를 함께 정리합니다." }, { q: "공유자와 연락이 안 돼도 검토가 가능한가요?", a: "가능합니다. 연락 가능성은 매입 조건과 보류 사유를 판단하는 핵심 항목으로 따로 확인합니다." }, { q: "검토 후 바로 매도해야 하나요?", a: "아닙니다. 매입 가능성과 보류 사유를 확인한 뒤 매도 여부를 결정하면 됩니다." }] };
+}
+
+function normalizeBlogPost(item, generated) {
+  const fallback = fallbackBlogContent(item, "template-normalize-fallback");
+  const source = generated && typeof generated === "object" ? generated : fallback;
+  const sections = normalizeBlogSections(source.sections?.length ? source.sections : fallback.sections);
+  const checklist = Array.isArray(source.checklist) && source.checklist.length ? source.checklist.map(String) : fallback.checklist;
+  const faqs = Array.isArray(source.faqs) && source.faqs.length ? source.faqs : fallback.faqs;
+  return { slug: cleanSlug(item.slug), keyword: item.keyword, category: source.category || item.category || "지분매입 블로그", title: source.title || fallback.title, description: source.description || fallback.description, h1: source.h1 || item.title || item.keyword, eyebrow: source.eyebrow || item.category || "지분매입 블로그", excerpt: source.excerpt || fallback.excerpt, publishedAt: item.publishedAt || new Date().toISOString(), sections, checklist, faqs };
+}
+function normalizeBlogSections(sections) {
+  return sections.map((section, index) => {
+    const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : Array.isArray(section.items) ? section.items.map((item) => [item.title, item.text].filter(Boolean).join(": ")) : [section.summary || "공유지분 매입 가능성은 권리관계, 공유자, 점유 상태를 함께 확인해야 합니다."];
+    return { heading: section.heading || section.title || "검토 항목 " + (index + 1), paragraphs: paragraphs.filter(Boolean).map(String) };
+  });
+}
+function cleanSlug(value) { return String(value || "").split("/").filter(Boolean).join("/"); }
+function countText(value, needle) { return String(value).split(needle).length - 1; }
+
+function renderBlogPost(post) {
+  const url = siteBase + "/" + post.slug + "/";
+  const blogJson = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", headline: post.h1, description: post.description, url, datePublished: post.publishedAt, dateModified: new Date().toISOString(), inLanguage: "ko-KR", author: { "@type": "Organization", name: facts.site_name }, publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone }, mainEntityOfPage: url, image: siteBase + "/assets/hero-consultation.png" });
+  const faqJson = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: post.faqs.map((faq) => ({ "@type": "Question", name: faq.q, acceptedAnswer: { "@type": "Answer", text: faq.a } })) });
+  const sections = post.sections.map((section) => "<section class="band intro-band"><div class="section-head"><p class="eyebrow">검토 노트</p><h2>" + escapeHtml(section.heading) + "</h2>" + section.paragraphs.map((paragraph) => "<p>" + escapeHtml(paragraph) + "</p>").join("") + "</div></section>").join("
+");
+  const checklist = "<section class="band service-band"><div class="section-head"><p class="eyebrow">상담 전 체크</p><h2>접수 전에 정리하면 좋은 항목</h2></div><div class="service-grid">" + post.checklist.map((item) => "<article class="service-card"><h3>" + escapeHtml(item) + "</h3><p>정확히 몰라도 괜찮습니다. 알고 있는 범위만 남기면 검토 과정에서 추가 확인 항목을 안내합니다.</p></article>").join("") + "</div></section>";
+  const faq = post.faqs.map((item) => "<details><summary>" + escapeHtml(item.q) + "</summary><p>" + escapeHtml(item.a) + "</p></details>").join("");
+  return blogHead(post.title, post.description, url, "article", blogJson + "
+  <script type="application/ld+json">" + faqJson + "</script>") + "
+<body>
+  " + blogHeader() + "
+  <main id="main"><article><section class="sub-hero"><div><p class="eyebrow">" + escapeHtml(post.eyebrow) + "</p><h1>" + escapeHtml(post.h1) + "</h1><p class="lead">" + escapeHtml(post.excerpt) + "</p><p><time datetime="" + escapeHtml(post.publishedAt) + "">" + today + "</time> · " + escapeHtml(post.category) + "</p><div class="hero-actions"><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>무료 검토 요청</span></a><a class="btn btn-secondary" href="/blog/"><i data-lucide="newspaper"></i><span>블로그 목록</span></a></div></div></section>" + sections + checklist + "<section class="band faq-band"><div class="section-head"><p class="eyebrow">FAQ</p><h2>자주 묻는 질문</h2></div><div class="faq-list">" + faq + "</div></section>" + blogFinalCta() + "</article></main>" + blogFooter() + blogScripts() + "</body></html>
+";
+}
+
+function renderBlogIndex(posts) {
+  const url = siteBase + "/blog/";
+  const list = posts.length ? posts.slice(0, 36).map((post) => "<article class="service-card"><p class="eyebrow">" + escapeHtml(post.category || "검토 노트") + "</p><h3><a href="/" + cleanSlug(post.slug) + "/">" + escapeHtml(post.title || post.keyword) + "</a></h3><p>" + escapeHtml(post.description || post.keyword + " 관련 지분매입 검토 노트입니다.") + "</p></article>").join("") : "<article class="service-card"><h3>발행 준비 중</h3><p>공유지분 매도, 지분경매, 상속지분, 공유물분할청구 관련 검토 노트를 순차 발행합니다.</p></article>";
+  const collectionJson = JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "지분매입 블로그", url, inLanguage: "ko-KR", publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone } });
+  return blogHead("지분매입 블로그 | 공유지분 매도·검토 노트", "공유지분 매도, 지분경매, 상속지분, 공유물분할청구 상황별 검토 노트를 모아 둔 블로그입니다.", url, "website", collectionJson) + "
+<body>
+  " + blogHeader() + "
+  <main id="main"><section class="sub-hero"><div><p class="eyebrow">지분매입 블로그</p><h1>공유지분 매도와 지분경매 검토 노트</h1><p class="lead">주소나 사건번호만 있어도 검토를 시작할 수 있도록 상황별 판단 기준을 계속 발행합니다.</p><div class="hero-actions"><a class="btn btn-primary" href="/#consult"><i data-lucide="file-search"></i><span>무료 검토 요청</span></a><a class="btn btn-secondary" href="/feed.xml"><i data-lucide="rss"></i><span>RSS</span></a></div></div></section><section class="band service-band"><div class="section-head"><p class="eyebrow">최신 글</p><h2>상황별 지분매입 검토 글</h2><p>검색 유입과 상담 전환을 동시에 고려해 전문 주제별 글을 지속 발행합니다.</p></div><div class="service-grid">" + list + "</div></section>" + blogFinalCta() + "</main>" + blogFooter() + blogScripts() + "</body></html>
+";
+}
+
+function blogHead(title, description, url, ogType, jsonLd) {
+  return "<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>" + escapeHtml(title) + "</title>
+  <meta name="description" content="" + escapeHtml(description) + "">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="" + url + "">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="" + ogType + "">
+  <meta property="og:site_name" content="" + escapeHtml(facts.site_name) + "">
+  <meta property="og:title" content="" + escapeHtml(title) + "">
+  <meta property="og:description" content="" + escapeHtml(description) + "">
+  <meta property="og:url" content="" + url + "">
+  <meta property="og:image" content="" + siteBase + "/assets/hero-consultation.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#173b35">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/rss+xml" title="Jauction 지분매입 블로그 RSS" href="/feed.xml">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260701-6">
+  <script type="application/ld+json">" + jsonLd + "</script>
+  <meta name="naver-site-verification" content="3bf2b707098dc68bbe5e8db7aad10955cad77bc0" />
+</head>";
+}
+function blogHeader() { return "<a class="skip-link" href="#main">본문 바로가기</a><header class="site-header"><a class="brand" href="/" aria-label="" + escapeHtml(facts.site_name) + " 홈"><span class="brand-mark">J</span><span class="brand-text">Jauction 지분매입</span></a><nav class="primary-nav" aria-label="주요 메뉴"><a href="/#screening">검토 기준</a><a href="/#services">서비스</a><a href="/#process">진행 절차</a><a href="/blog/">블로그</a><a href="/faq/">FAQ</a></nav><a class="header-call" href="tel:" + facts.phone + ""><i data-lucide="phone"></i><span>" + facts.phone + "</span></a></header>"; }
+function blogFooter() { return "<footer class="site-footer"><div><strong>" + escapeHtml(facts.site_name) + "</strong><p>공유물 지분 매입 가능성 검토와 상담 접수를 위한 정적 랜딩 사이트입니다. 구체적인 법률·세무 판단은 사건 자료 확인 후 별도 전문가 검토가 필요할 수 있습니다.</p></div><nav class="footer-links" aria-label="하단 메뉴"><a href="/privacy/">개인정보 처리방침</a><a href="/blog/">블로그</a><a href="/faq/">FAQ</a><a href="tel:" + facts.phone + "">" + facts.phone + "</a></nav></footer>"; }
+function blogFinalCta() { return "<section class="final-cta"><div><p class="eyebrow">1차 검토 접수</p><h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2></div><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>검토 요청하기</span></a></section>"; }
+function blogScripts() { return "<div class="mobile-cta" aria-label="빠른 상담"><a href="tel:" + facts.phone + ""><i data-lucide="phone"></i><span>전화</span></a><a href="/#consult"><i data-lucide="clipboard-check"></i><span>접수</span></a></div><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script><script src="/assets/main.js?v=20260701-6" defer></script>"; }
+
+function qaBlogPost(post, html) {
+  for (const term of banned) if (html.includes(term)) throw new Error(post.slug + " contains banned term: " + term);
+  for (const required of [facts.phone, "naver-site-verification", "<link rel="canonical"", "/#consult", "BlogPosting", "FAQPage", "feed.xml"]) if (!html.includes(required)) throw new Error(post.slug + " missing " + required);
+  if (countText(html, "<h1>") !== 1) throw new Error(post.slug + " must have one h1");
+  if (html.length < 6500) throw new Error(post.slug + " content too short");
+}
+function updateBlogIndex(posts) { fs.mkdirSync("blog", { recursive: true }); fs.writeFileSync("blog/index.html", renderBlogIndex(posts), "utf8"); }
+function updateFeed(posts) {
+  const items = posts.slice(0, 30).map((post) => "  <item>
+    <title>" + escapeXml(post.title || post.keyword) + "</title>
+    <link>" + siteBase + "/" + cleanSlug(post.slug) + "/</link>
+    <guid>" + siteBase + "/" + cleanSlug(post.slug) + "/</guid>
+    <pubDate>" + new Date(post.publishedAt || post.lastPublished || new Date().toISOString()).toUTCString() + "</pubDate>
+    <description>" + escapeXml(post.description || post.keyword + " 검토 노트") + "</description>
+  </item>").join("
+");
+  const rss = "<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>Jauction 지분매입 블로그</title>
+  <link>" + siteBase + "/blog/</link>
+  <description>공유지분 매도와 지분경매 검토 노트 자동 발행 피드</description>
+  <language>ko-KR</language>
+  <lastBuildDate>" + new Date().toUTCString() + "</lastBuildDate>
+" + items + "
+</channel>
+</rss>
+";
+  fs.writeFileSync("feed.xml", rss, "utf8");
+}
+function updateBlogLinks(posts) {
+  const file = "index.html";
+  let html = fs.readFileSync(file, "utf8");
+  if (!html.includes('/blog/')) html = html.replace('<a href="/faq/">FAQ</a>', '<a href="/blog/">블로그</a>
+      <a href="/faq/">FAQ</a>');
+  const blogMarker = "<!-- blog-indexing-links -->";
+  const blogLinks = posts.slice(0, 9).map((post) => "<article class="service-card"><p class="eyebrow">" + escapeHtml(post.category || "검토 노트") + "</p><h3><a href="/" + cleanSlug(post.slug) + "/">" + escapeHtml(post.title || post.keyword) + "</a></h3><p>" + escapeHtml(post.description || "공유지분 매입 검토 블로그 글입니다.") + "</p></article>").join("");
+  const replacement = blogMarker + "<div class="service-grid">" + blogLinks + "</div><!-- /blog-indexing-links -->";
+  const start = html.indexOf(blogMarker);
+  const endMarker = "<!-- /blog-indexing-links -->";
+  if (start >= 0) {
+    const end = html.indexOf(endMarker, start);
+    html = html.slice(0, start) + replacement + html.slice(end + endMarker.length);
+  } else {
+    const blogBlock = "<section class="band service-band" id="blog-hub"><div class="section-head"><p class="eyebrow">지분매입 블로그</p><h2>검토 노트를 계속 발행합니다</h2><p>공유지분 매도, 지분경매, 상속지분, 공유물분할청구 검색 의도에 맞춘 글을 자동 발행합니다.</p></div>" + replacement + "<p class="center-link"><a href="/blog/">블로그 전체 보기</a></p></section>";
+    html = html.replace("    <section class="final-cta">", blogBlock + "
+    <section class="final-cta">");
+  }
+  fs.writeFileSync(file, html, "utf8");
+}
+function escapeXml(value) { return escapeHtml(value).replace(/'/g, "&apos;"); }
+

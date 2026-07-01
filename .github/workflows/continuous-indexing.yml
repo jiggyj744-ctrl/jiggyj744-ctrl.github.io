@@ -31,7 +31,7 @@ jobs:
           GENERATION_MODE: proxy
           LLM_PROXY_BASE_URL: https://api.deepseek.com
           LLM_PROXY_API_KEY: ${{ secrets.DEEPSEEK_API_KEY || secrets.OPENAI_API_KEY }}
-          LLM_PROXY_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-v4-flash' }}
+          LLM_PROXY_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-chat' }}
         run: node scripts/seo-content-engine.mjs --limit "${{ github.event.inputs.pages || '1' }}"
       - name: Verify static site
         run: node tools/verify_site.mjs
