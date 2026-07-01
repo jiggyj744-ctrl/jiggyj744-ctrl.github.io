@@ -48,7 +48,7 @@ const requiredText = {
     "FAQPage",
     "ProfessionalService",
   ],
-  "assets/main.js": ["localStorage", "jauction_last_submit", "feedback-modal", "상담 접수 완료", "접수가 완료되었습니다", "메일 발송이 완료되지 않았습니다", "연락처는 숫자", "접수번호"],
+  "assets/main.js": ["localStorage", "jauction_last_submit", "feedback-modal", "상담 접수 완료", "접수가 완료되었습니다", "메일 발송이 완료되지 않았습니다", "서버 응답이 지연되어", "연락처는 숫자", "접수번호"],
   "robots.txt": ["Sitemap: https://jiggyj744-ctrl.github.io/sitemap.xml"],
   "sitemap.xml": [
     "https://jiggyj744-ctrl.github.io/",
@@ -62,6 +62,7 @@ const requiredText = {
 };
 
 const errors = [];
+const verificationFileNames = new Set([verification.googleFile?.name, verification.naverFile?.name].filter(Boolean));
 
 for (const file of requiredFiles) {
   if (!fs.existsSync(path.join(root, file))) {
@@ -84,7 +85,12 @@ walk(root);
 
 for (const file of textFiles) {
   const rel = path.relative(root, file).replaceAll("\\", "/");
+  const base = path.basename(file);
+  const isVerificationFile = verificationFileNames.has(base);
   const content = fs.readFileSync(file, "utf8");
+  if (isVerificationFile) {
+    continue;
+  }
   for (const needle of banned) {
     if (content.includes(needle)) {
       errors.push(`${rel} contains banned text: ${needle}`);
@@ -98,7 +104,6 @@ for (const file of textFiles) {
   }
 }
 
-const verificationFileNames = new Set([verification.googleFile?.name, verification.naverFile?.name].filter(Boolean));
 const htmlFiles = textFiles.filter((file) => file.endsWith(".html") && !verificationFileNames.has(path.basename(file)));
 for (const file of htmlFiles) {
   const rel = path.relative(root, file).replaceAll("\\", "/");
@@ -107,8 +112,8 @@ for (const file of htmlFiles) {
   if (!content.includes('<meta name="description"')) errors.push(`${rel} missing description`);
   if (!content.includes('<link rel="canonical"')) errors.push(`${rel} missing canonical`);
   if (!content.includes('<link rel="icon"')) errors.push(`${rel} missing favicon`);
-  if (!content.includes("/assets/styles.css?v=20260701-6")) errors.push(`${rel} missing stylesheet`);
-  if (!content.includes("/assets/main.js?v=20260701-6")) errors.push(`${rel} missing script`);
+  if (!content.includes("/assets/styles.css?v=20260701-7")) errors.push(`${rel} missing stylesheet`);
+  if (!content.includes("/assets/main.js?v=20260701-7")) errors.push(`${rel} missing script`);
 }
 
 if (verification.googleFile?.name) {
