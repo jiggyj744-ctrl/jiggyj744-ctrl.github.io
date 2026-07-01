@@ -1,0 +1,12 @@
+{
+  "runs": [
+    {
+      "date": "2026-07-01T08:03:11.084Z",
+      "model": "template-fallback",
+      "count": 1,
+      "pages": [
+        "guide/inherited-share-sale"
+      ]
+    }
+  ]
+}

@@ -58,7 +58,9 @@
       "priority": 1,
       "page_type": "guide",
       "slug": "guide/inherited-share-sale",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/inherited-share-sale/"
     },
     {
       "keyword": "토지 지분매입",
