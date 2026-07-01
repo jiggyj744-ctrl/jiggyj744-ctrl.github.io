@@ -68,7 +68,9 @@
       "priority": 1,
       "page_type": "service",
       "slug": "guide/land-share-acquisition",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/land-share-acquisition/"
     },
     {
       "keyword": "상가 지분매입",
