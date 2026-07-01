@@ -93,7 +93,8 @@ for (const file of textFiles) {
   }
 }
 
-const htmlFiles = textFiles.filter((file) => file.endsWith(".html"));
+const verificationFileNames = new Set([verification.googleFile?.name, verification.naverFile?.name].filter(Boolean));
+const htmlFiles = textFiles.filter((file) => file.endsWith(".html") && !verificationFileNames.has(path.basename(file)));
 for (const file of htmlFiles) {
   const rel = path.relative(root, file).replaceAll("\\", "/");
   const content = fs.readFileSync(file, "utf8");
