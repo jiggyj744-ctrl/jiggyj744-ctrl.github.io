@@ -33,7 +33,7 @@ for (const item of selected) {
   published.push(page);
 }
 
-if (published.length) { updateSitemap(published); updateIndexLinks(published); writeJson("content/keyword-backlog.json", backlog); updateOps(published); }
+if (published.length) { updateSitemap(published); updateIndexLinks(backlog.keywords.filter((item) => item.status === "published")); writeJson("content/keyword-backlog.json", backlog); updateOps(published); }
 console.log("continuous indexing published " + published.length + " page(s)");
 
 async function generateContent(item) {
