@@ -9,7 +9,7 @@ const brand = "Jauction 지분매입 상담센터";
 const phone = "010-6899-1601";
 const tel = "01068991601";
 const buildDate = "2026-07-01";
-const assetVersion = "20260701-5";
+const assetVersion = "20260701-6";
 const leadEndpoint = "https://jauction-lead-api.jiggyj.workers.dev/lead";
 const verificationConfigPath = path.join(root, "tools", "search-verification.json");
 
@@ -874,6 +874,84 @@ h1 {
   text-decoration: none;
   font-weight: 900;
 }
+.feedback-modal[hidden] {
+  display: none;
+}
+.feedback-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(15, 25, 21, 0.62);
+}
+.feedback-modal-panel {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  width: min(100%, 480px);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  padding: 26px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  outline: none;
+}
+.feedback-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: white;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 900;
+}
+.feedback-modal-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: white;
+  background: var(--deep);
+  border-radius: 999px;
+  font-weight: 900;
+}
+.feedback-modal[data-state="success"] .feedback-modal-icon {
+  background: #0d6a43;
+}
+.feedback-modal[data-state="error"] .feedback-modal-icon {
+  background: #9f2f22;
+}
+.feedback-modal[data-state="pending"] .feedback-modal-icon {
+  background: #b88746;
+}
+.feedback-modal h2 {
+  margin: 0;
+  padding-right: 34px;
+  font-size: 24px;
+  line-height: 1.25;
+}
+.feedback-modal p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.feedback-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
 .process-list {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -1100,7 +1178,9 @@ window.addEventListener("DOMContentLoaded", () => {
       const last = Number(localStorage.getItem("jauction_last_submit") || "0");
       const now = Date.now();
       if (now - last < 60000) {
-        showResult(result, "연속 메일 접수는 1분 뒤 다시 시도해 주세요.", "error");
+        const message = "연속 메일 접수는 1분 뒤 다시 시도해 주세요.";
+        showResult(result, message, "error");
+        showFeedbackModal("접수 제한", message, "error");
         return;
       }
       const endpoint = form.dataset.endpoint || window.JAUCTION_LEAD_ENDPOINT || "";
@@ -1118,22 +1198,30 @@ window.addEventListener("DOMContentLoaded", () => {
           const payload = await response.json().catch(() => ({}));
           if (response.ok) {
             if (payload.notification_status !== "sent") {
-              showResult(result, mailFailureMessage(payload), "error");
+              const message = mailFailureMessage(payload);
+              showResult(result, message, "error");
+              showFeedbackModal("메일 발송 실패", message, "error");
               return;
             }
             const suffix = payload.id ? " 접수번호: " + payload.id : "";
             localStorage.setItem("jauction_last_submit", String(Date.now()));
-            showResult(result, "상담신청 메일이 전송되었습니다. 담당자가 확인 후 연락드리겠습니다." + suffix, "success");
+            const message = "접수가 완료되었습니다. 담당자가 검토 후 연락드리겠습니다." + suffix;
+            showResult(result, message, "success");
+            showFeedbackModal("상담 접수 완료", message, "success");
             form.reset();
             if (submittedAt) {
               submittedAt.value = new Date().toISOString();
             }
             return;
           }
-          showResult(result, serverErrorMessage(payload.error), "error");
+          const message = serverErrorMessage(payload.error);
+          showResult(result, message, "error");
+          showFeedbackModal("전송 실패", message, "error");
           return;
         } catch (error) {
-          showResult(result, "서버 연결 문제로 상담신청 메일을 보내지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.", "error");
+          const message = "서버 연결 문제로 상담신청 메일을 보내지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.";
+          showResult(result, message, "error");
+          showFeedbackModal("전송 실패", message, "error");
           return;
         } finally {
           setSubmitting(submitButton, false, originalButtonText);
@@ -1146,6 +1234,7 @@ window.addEventListener("DOMContentLoaded", () => {
         "메일 전송에 실패했습니다. 입력 내용은 접수되지 않았습니다. 잠시 후 다시 시도해 주세요.",
         "error",
       );
+      showFeedbackModal("전송 실패", "메일 전송에 실패했습니다. 입력 내용은 접수되지 않았습니다. 잠시 후 다시 시도해 주세요.", "error");
     });
   });
 });
@@ -1214,6 +1303,57 @@ function showResult(target, message, state = "info", shouldFocus = true) {
     target.scrollIntoView({ behavior: "smooth", block: "center" });
     target.focus({ preventScroll: true });
   }
+}
+
+function showFeedbackModal(title, message, state = "info") {
+  const modal = feedbackModal();
+  modal.root.hidden = false;
+  modal.root.dataset.state = state;
+  modal.icon.textContent = state === "success" ? "✓" : "!";
+  modal.title.textContent = title;
+  modal.message.textContent = message;
+  modal.panel.focus({ preventScroll: true });
+}
+
+function hideFeedbackModal() {
+  const modal = document.querySelector("[data-feedback-modal]");
+  if (!modal) return;
+  modal.hidden = true;
+}
+
+function feedbackModal() {
+  let root = document.querySelector("[data-feedback-modal]");
+  if (!root) {
+    root = document.createElement("div");
+    root.className = "feedback-modal";
+    root.dataset.feedbackModal = "";
+    root.hidden = true;
+    root.innerHTML = [
+      '<div class="feedback-modal-panel" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" tabindex="-1">',
+      '<button class="feedback-modal-close" type="button" aria-label="닫기">×</button>',
+      '<div class="feedback-modal-icon" aria-hidden="true">!</div>',
+      '<h2 id="feedback-modal-title"></h2>',
+      '<p data-feedback-modal-message></p>',
+      '<div class="feedback-modal-actions"><button class="btn btn-primary" type="button" data-feedback-modal-confirm>확인</button></div>',
+      "</div>",
+    ].join("");
+    root.addEventListener("click", (event) => {
+      if (event.target === root || event.target.closest("[data-feedback-modal-confirm]") || event.target.closest(".feedback-modal-close")) {
+        hideFeedbackModal();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") hideFeedbackModal();
+    });
+    document.body.appendChild(root);
+  }
+  return {
+    root,
+    panel: root.querySelector(".feedback-modal-panel"),
+    icon: root.querySelector(".feedback-modal-icon"),
+    title: root.querySelector("#feedback-modal-title"),
+    message: root.querySelector("[data-feedback-modal-message]"),
+  };
 }
 
 function setSubmitting(button, submitting, label) {
