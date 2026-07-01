@@ -22,10 +22,18 @@ const selected = backlog.keywords.filter((item) => ["queued", "improve"].include
 const published = [];
 
 for (const item of selected) {
-  const generated = await generateContent(item);
-  const page = normalizePage(item, generated);
-  const html = renderPage(page);
-  qaPage(page, html);
+  let generated = await generateContent(item);
+  let page = normalizePage(item, generated);
+  let html = renderPage(page);
+  try {
+    qaPage(page, html);
+  } catch (error) {
+    console.warn("Generated page failed QA, using template fallback: " + error.message);
+    generated = fallbackContent(item, "template-qa-fallback");
+    page = normalizePage(item, generated);
+    html = renderPage(page);
+    qaPage(page, html);
+  }
   const targetDir = path.join(root, page.slug);
   fs.mkdirSync(targetDir, { recursive: true });
   fs.writeFileSync(path.join(targetDir, "index.html"), html, "utf8");
@@ -55,9 +63,9 @@ async function generateViaProxy(item) {
   const endpoint = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "") + "/chat/completions";
   const headers = { "Content-Type": "application/json" };
   if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
-  const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON only."].join("\n");
+  const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON only with keys title, description, h1, eyebrow, lead, sections, faqs. Write Korean content with at least 3 sections, each section containing 4 items, and 4 FAQs. Each item text must be specific to the keyword and explain share acquisition review, co-owner issues, auction or partition risk where relevant."].join("\n");
   try {
-    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "deepseek-v4-flash", messages: [{ role: "user", content: input }], temperature: 0.4, response_format: { type: "json_object" } }) });
+    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "deepseek-chat", messages: [{ role: "user", content: input }], temperature: 0.4, max_tokens: 2500, response_format: { type: "json_object" } }) });
     if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || data.output_text || "";
