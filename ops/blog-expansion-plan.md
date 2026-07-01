@@ -27,5 +27,5 @@ GitHub Actions Continuous Share Indexing가 매일 실행된다. 실행 시 cont
 - H1 1개
 - canonical, BlogPosting, FAQPage, RSS link 포함
 - 전화번호 1688-0976 포함
-- FactoryPro, 공장경매, 기존 개인번호 미포함
+- 레거시 브랜드명, 이전 목적 키워드, 기존 개인번호 미포함
 - sitemap/feed/main/blog 허브에 자동 반영
