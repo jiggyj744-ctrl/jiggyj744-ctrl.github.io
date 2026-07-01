@@ -6,20 +6,20 @@
   <title>지분경매·공유물 지분 매입 상담 | 공유지분 검토 후 매입</title>
   <meta name="description" content="공유물 지분, 상속 지분, 토지 지분, 지분경매 사건을 검토해 매입 가능성과 보류 사유를 안내하는 지분매입 전문 랜딩입니다.">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <link rel="canonical" href="https://jauction-share-acquisition.pages.dev/">
+  <link rel="canonical" href="https://jiggyj744-ctrl.github.io/">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Jauction 지분매입 상담센터">
   <meta property="og:title" content="지분경매·공유물 지분 매입 상담 | 공유지분 검토 후 매입">
   <meta property="og:description" content="공유물 지분, 상속 지분, 토지 지분, 지분경매 사건을 검토해 매입 가능성과 보류 사유를 안내하는 지분매입 전문 랜딩입니다.">
-  <meta property="og:url" content="https://jauction-share-acquisition.pages.dev/">
-  <meta property="og:image" content="https://jauction-share-acquisition.pages.dev/assets/hero-consultation.png">
+  <meta property="og:url" content="https://jiggyj744-ctrl.github.io/">
+  <meta property="og:image" content="https://jiggyj744-ctrl.github.io/assets/hero-consultation.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#173b35">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="/assets/hero-consultation.png">
-  <link rel="stylesheet" href="/assets/styles.css?v=20260630">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Jauction 지분매입 상담센터","url":"https://jauction-share-acquisition.pages.dev","telephone":"010-6899-1601","areaServed":"KR","serviceType":["공유물 지분 매입 상담","지분경매 검토","상속 지분 정리","토지 지분 매입 검토"],"image":"https://jauction-share-acquisition.pages.dev/assets/hero-consultation.png"}</script>
+  <link rel="stylesheet" href="/assets/styles.css?v=20260701">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Jauction 지분매입 상담센터","url":"https://jiggyj744-ctrl.github.io","telephone":"010-6899-1601","areaServed":"KR","serviceType":["공유물 지분 매입 상담","지분경매 검토","상속 지분 정리","토지 지분 매입 검토"],"image":"https://jiggyj744-ctrl.github.io/assets/hero-consultation.png"}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"공유자 동의 없이 제 지분만 팔 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"자기 지분 처분은 가능하지만 실제 매입 가능성과 가격은 지분율, 점유 상태, 권리관계, 공유자 수에 따라 달라집니다."}},{"@type":"Question","name":"사건번호만 있어도 상담이 가능한가요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 법원명, 사건번호, 매각기일이나 물건번호가 있으면 1차 검토를 시작할 수 있습니다."}},{"@type":"Question","name":"지분경매 낙찰 후에도 상담할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 낙찰 후에는 공유자 협의, 우선매수권 행사 여부, 공유물분할 가능성, 점유 리스크를 따로 봐야 합니다."}},{"@type":"Question","name":"토지 지분도 매입 검토가 되나요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 다만 맹지, 도로, 지목, 용도지역, 분할 가능성에 따라 보류될 수 있습니다."}},{"@type":"Question","name":"상담하면 반드시 매각해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 먼저 매입 가능성, 예상 검토 범위, 보류 사유, 다른 정리 방법을 확인한 뒤 결정하면 됩니다."}}]}</script>
 </head>
 <body>
@@ -135,7 +135,7 @@
               <option>공유자 갈등·분할</option>
             </select>
           </label>
-          <label>주소 또는 사건번호<input name="case_or_address" placeholder="예: 서울 ○○구 / 2026타경0000"></label>
+          <label>주소 또는 사건번호<input name="case_or_address" placeholder="예: 서울 ○○구 / 2026타경0000" required></label>
           <div class="form-row">
             <label>지분율<input name="share" placeholder="예: 1/2, 1/8, 모름"></label>
             <label>공유자 수<input name="owners" placeholder="예: 3명, 모름"></label>
@@ -153,7 +153,7 @@
           <label>상담 내용<textarea name="message" rows="4" placeholder="공유자 상황, 점유자, 매도 희망 여부, 궁금한 점을 적어주세요."></textarea></label>
           <label class="privacy-check"><input type="checkbox" name="privacy_agree" required><span>상담 접수와 회신을 위한 개인정보 수집·이용에 동의합니다.</span></label>
           <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>검토 요청 정리하기</span></button>
-          <div class="form-result" hidden></div>
+          <div class="form-result" role="status" aria-live="polite" hidden></div>
           <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
         </form>
       </div>
@@ -231,6 +231,6 @@
     <a href="/#consult"><i data-lucide="clipboard-check"></i><span>접수</span></a>
   </div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
-  <script src="/assets/main.js?v=20260630" defer></script>
+  <script src="/assets/main.js?v=20260701" defer></script>
 </body>
 </html>

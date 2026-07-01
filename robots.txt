@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jauction-share-acquisition.pages.dev/sitemap.xml
+Sitemap: https://jiggyj744-ctrl.github.io/sitemap.xml

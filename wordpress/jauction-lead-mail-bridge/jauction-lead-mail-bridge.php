@@ -19,6 +19,7 @@ const JAUCTION_LEAD_MAIL_FROM_NAME = 'jauction_lead_mail_from_name';
 const JAUCTION_LEAD_MAIL_LAST_STATUS = 'jauction_lead_mail_last_status';
 const JAUCTION_LEAD_MAIL_LAST_ERROR = 'jauction_lead_mail_last_error';
 const JAUCTION_LEAD_MAIL_LAST_AT = 'jauction_lead_mail_last_at';
+const JAUCTION_LEAD_MAIL_CONSULTATION_TOKEN = 'SHARE-CONSULTATION-CUSTOMER-FORM';
 
 register_activation_hook(__FILE__, 'jauction_lead_mail_ensure_defaults');
 add_action('plugins_loaded', 'jauction_lead_mail_ensure_defaults');
@@ -52,7 +53,7 @@ function jauction_lead_mail_default_recipient(): string
 function jauction_lead_mail_default_from_name(): string
 {
     $configured = getenv('SMTP_FROM_NAME');
-    return sanitize_text_field($configured ?: 'Jauction 상담 접수');
+    return sanitize_text_field($configured ?: '지분매입 상담센터');
 }
 
 function jauction_lead_mail_external_token(): string
@@ -62,11 +63,16 @@ function jauction_lead_mail_external_token(): string
         return sanitize_text_field($token);
     }
 
-    $token_file = trailingslashit(WPMU_PLUGIN_DIR) . 'jauction-lead-mail-bridge-token.php';
-    if (is_readable($token_file)) {
-        $loaded = include $token_file;
-        if (is_string($loaded) && $loaded !== '') {
-            return sanitize_text_field($loaded);
+    $token_files = [
+        trailingslashit(WPMU_PLUGIN_DIR) . 'jauction-lead-mail-bridge-token.php',
+        trailingslashit(__DIR__) . 'jauction-lead-mail-bridge-token.php',
+    ];
+    foreach ($token_files as $token_file) {
+        if (is_readable($token_file)) {
+            $loaded = include $token_file;
+            if (is_string($loaded) && $loaded !== '') {
+                return sanitize_text_field($loaded);
+            }
         }
     }
 
@@ -128,8 +134,8 @@ function jauction_lead_mail_rest_lead(WP_REST_Request $request)
     if ($lead['event'] !== '' && $lead['event'] !== 'lead.created') {
         return new WP_Error('jauction_invalid_event', 'Unsupported event.', ['status' => 400]);
     }
-    if ($lead['name'] === '' || $lead['phone'] === '') {
-        return new WP_Error('jauction_required_field', 'Name and phone are required.', ['status' => 400]);
+    if ($lead['name'] === '' || $lead['phone'] === '' || $lead['case_or_address'] === '') {
+        return new WP_Error('jauction_required_field', 'Name, phone, and case_or_address are required.', ['status' => 400]);
     }
 
     $result = jauction_lead_mail_send($lead);
@@ -190,11 +196,14 @@ function jauction_lead_mail_send(array $lead): array
         return jauction_lead_mail_record_result(false, 'recipient_not_configured');
     }
 
-    $subject = sprintf('[Jauction 상담] %s / %s', $lead['type'] ?: '상담', $lead['name']);
+    $subject = jauction_lead_mail_subject($lead);
     $body = jauction_lead_mail_body($lead);
     $headers = [
         'Content-Type: text/plain; charset=UTF-8',
         'X-Jauction-Mail: lead-notification',
+        'X-ShareConsult-Mail: customer-inquiry',
+        'X-ShareConsult-Form: shared-interest-consultation',
+        'X-ShareConsult-Mail-Token: ' . JAUCTION_LEAD_MAIL_CONSULTATION_TOKEN,
     ];
 
     $GLOBALS['jauction_lead_mail_last_wp_error'] = '';
@@ -217,7 +226,10 @@ function jauction_lead_mail_send(array $lead): array
 function jauction_lead_mail_body(array $lead): string
 {
     return implode("\n", [
-        'Jauction 새 상담이 접수되었습니다.',
+        '내부 식별값: ' . JAUCTION_LEAD_MAIL_CONSULTATION_TOKEN,
+        '메일 유형: 고객 상담신청 폼 전송',
+        '',
+        '지분매입 상담 신청이 접수되었습니다.',
         '',
         '접수번호: ' . ($lead['id'] ?: '-'),
         '접수시각: ' . ($lead['created_at'] ?: current_time('mysql')),
@@ -230,9 +242,17 @@ function jauction_lead_mail_body(array $lead): string
         '현재 상태: ' . ($lead['status'] ?: '-'),
         '출처: ' . ($lead['source'] ?: '-'),
         '',
-        '상담 내용',
+        '상담 내용:',
         $lead['message'] ?: '-',
     ]);
+}
+
+function jauction_lead_mail_subject(array $lead): string
+{
+    $type = $lead['type'] ?: '공유지분 검토';
+    $name = $lead['name'] ?: '이름 미기재';
+    $item = $lead['case_or_address'] ?: '주소/사건번호 미기재';
+    return sprintf('[지분매입 상담신청][SHARE-CONSULTATION] %s - %s / %s', $type, $name, $item);
 }
 
 function jauction_lead_mail_recipients(): array
@@ -251,7 +271,7 @@ function jauction_lead_mail_recipients(): array
 
 function jauction_lead_mail_from_name(string $name): string
 {
-    $configured = sanitize_text_field((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, 'Jauction 상담 접수'));
+    $configured = sanitize_text_field((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터'));
     return $configured ?: $name;
 }
 
@@ -294,7 +314,7 @@ function jauction_lead_mail_admin_page(): void
     $endpoint = esc_url(rest_url('jauction/v1/lead'));
     $token = esc_html(jauction_lead_mail_current_token());
     $to = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_TO, get_option('admin_email')));
-    $from_name = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, 'Jauction 상담 접수'));
+    $from_name = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터'));
     $last_status = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_STATUS, '-'));
     $last_error = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_ERROR, ''));
     $last_at = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_AT, '-'));

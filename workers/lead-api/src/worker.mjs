@@ -5,6 +5,7 @@ const JSON_HEADERS = {
 
 const MAX_BODY_BYTES = 12_000;
 const MAX_FIELD_LENGTH = 1500;
+const CONSULTATION_TOKEN = "SHARE-CONSULTATION-CUSTOMER-FORM";
 const ADMIN_STATUSES = new Set(["new", "reviewing", "contacted", "offer", "hold", "closed", "spam"]);
 const NOTIFY_PROVIDERS = new Set(["auto", "wordpress", "cloudflare", "resend", "all"]);
 
@@ -437,12 +438,15 @@ function withCookie(existing, next) {
 
 async function sendCloudflareEmailNotification(env, lead) {
   const message = {
-    from: emailAddress(env.NOTIFY_EMAIL_FROM, env.NOTIFY_EMAIL_FROM_NAME || "Jauction 상담 접수"),
+    from: emailAddress(env.NOTIFY_EMAIL_FROM, env.NOTIFY_EMAIL_FROM_NAME || "지분매입 상담센터"),
     to: splitList(env.NOTIFY_EMAIL_TO),
-    subject: `[Jauction 상담] ${lead.type} / ${lead.name}`,
+    subject: consultationSubject(lead),
     text: notificationText(lead),
     headers: {
       "X-Jauction-Lead-Id": String(lead.id),
+      "X-ShareConsult-Mail": "customer-inquiry",
+      "X-ShareConsult-Form": "shared-interest-consultation",
+      "X-ShareConsult-Mail-Token": CONSULTATION_TOKEN,
     },
   };
   if (env.NOTIFY_EMAIL_REPLY_TO) {
@@ -467,9 +471,9 @@ async function sendResendEmailNotification(env, lead) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: formatSender(env.NOTIFY_EMAIL_FROM, env.NOTIFY_EMAIL_FROM_NAME),
+      from: formatSender(env.NOTIFY_EMAIL_FROM, env.NOTIFY_EMAIL_FROM_NAME || "지분매입 상담센터"),
       to: splitList(env.NOTIFY_EMAIL_TO),
-      subject: `[Jauction 상담] ${lead.type} / ${lead.name}`,
+      subject: consultationSubject(lead),
       text: notificationText(lead),
       reply_to: env.NOTIFY_EMAIL_REPLY_TO || undefined,
     }),
@@ -497,6 +501,8 @@ async function sendWebhookNotification(env, lead) {
 function leadNotificationPayload(lead) {
   return {
     event: "lead.created",
+    internal_token: CONSULTATION_TOKEN,
+    mail_type: "고객 상담신청 폼 전송",
     id: lead.id,
     created_at: lead.created_at,
     name: lead.name,
@@ -541,7 +547,10 @@ async function fetchWithTimeout(url, init) {
 
 function notificationText(lead) {
   return [
-    "Jauction 새 상담이 접수되었습니다.",
+    `내부 식별값: ${CONSULTATION_TOKEN}`,
+    "메일 유형: 고객 상담신청 폼 전송",
+    "",
+    "지분매입 상담 신청이 접수되었습니다.",
     "",
     `접수번호: ${lead.id}`,
     `접수시각: ${lead.created_at}`,
@@ -554,8 +563,16 @@ function notificationText(lead) {
     `현재 상태: ${lead.status || "-"}`,
     `출처: ${lead.source || "-"}`,
     "",
+    "상담 내용:",
     lead.message || "-",
   ].join("\n");
+}
+
+function consultationSubject(lead) {
+  const type = lead.type || "공유지분 검토";
+  const name = lead.name || "이름 미기재";
+  const item = lead.case_or_address || "주소/사건번호 미기재";
+  return `[지분매입 상담신청][SHARE-CONSULTATION] ${type} - ${name} / ${item}`;
 }
 
 function splitList(value) {
@@ -692,6 +709,7 @@ function validateLead(lead) {
   if (!lead.name) return "name_required";
   if (!lead.phone) return "phone_required";
   if (!lead.type) return "type_required";
+  if (!lead.case_or_address) return "case_or_address_required";
   if (!lead.privacy_agree) return "privacy_required";
   if (!/^[0-9+\-\s().]{8,30}$/.test(lead.phone)) return "phone_invalid";
   return "";

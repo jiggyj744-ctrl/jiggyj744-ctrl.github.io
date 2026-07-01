@@ -26,15 +26,19 @@ window.addEventListener("DOMContentLoaded", () => {
       const result = form.querySelector(".form-result");
       const data = Object.fromEntries(new FormData(form).entries());
       if (data.company_website) return;
+      if (!form.reportValidity()) return;
       const last = Number(localStorage.getItem("jauction_last_submit") || "0");
       const now = Date.now();
       if (now - last < 60000) {
         showResult(result, "연속 접수는 1분 뒤 다시 시도해 주세요.");
         return;
       }
-      localStorage.setItem("jauction_last_submit", String(now));
       const summary = buildSummary(data);
       const endpoint = form.dataset.endpoint || window.JAUCTION_LEAD_ENDPOINT || "";
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton ? submitButton.textContent : "";
+      setSubmitting(submitButton, true, "전송 중");
+      showResult(result, "검토 요청을 전송하고 있습니다.");
       if (endpoint) {
         try {
           const response = await fetch(endpoint, {
@@ -43,18 +47,28 @@ window.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify({ ...data, submitted_at: new Date().toISOString(), source: location.href }),
           });
           if (response.ok) {
-            showResult(result, "접수되었습니다. 담당자가 확인 후 연락드리겠습니다.");
+            const payload = await response.json().catch(() => ({}));
+            const suffix = payload.id ? " 접수번호: " + payload.id : "";
+            localStorage.setItem("jauction_last_submit", String(Date.now()));
+            showResult(result, "접수되었습니다. 담당자가 확인 후 연락드리겠습니다." + suffix);
             form.reset();
+            if (submittedAt) {
+              submittedAt.value = new Date().toISOString();
+            }
             return;
           }
         } catch (error) {
           // Fall through to SMS fallback below.
+        } finally {
+          setSubmitting(submitButton, false, originalButtonText);
         }
+      } else {
+        setSubmitting(submitButton, false, originalButtonText);
       }
       const encoded = encodeURIComponent(summary);
       showResult(
         result,
-        "접수 내용이 정리되었습니다. 아래 버튼으로 문자 전달 또는 전화 상담을 진행하세요.",
+        "자동 전송이 완료되지 않았습니다. 아래 버튼으로 문자 전달 또는 전화 상담을 진행하세요.",
         [
           { label: "문자로 보내기", href: "sms:01068991601?&body=" + encoded },
           { label: "전화하기", href: "tel:01068991601" },
@@ -103,5 +117,19 @@ function showResult(target, message, links = [], copyText = "") {
       button.textContent = "복사 완료";
     });
     target.appendChild(button);
+  }
+}
+
+function setSubmitting(button, submitting, label) {
+  if (!button) return;
+  button.disabled = submitting;
+  button.setAttribute("aria-busy", submitting ? "true" : "false");
+  if (!submitting && label) {
+    button.innerHTML = '<i data-lucide="send"></i><span>' + label + '</span>';
+  } else if (submitting) {
+    button.innerHTML = '<i data-lucide="loader-circle"></i><span>' + label + '</span>';
+  }
+  if (window.lucide) {
+    window.lucide.createIcons();
   }
 }

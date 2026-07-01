@@ -4,11 +4,12 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
-const siteUrl = "https://jauction-share-acquisition.pages.dev";
+const siteUrl = "https://jiggyj744-ctrl.github.io";
 const brand = "Jauction 지분매입 상담센터";
 const phone = "010-6899-1601";
 const tel = "01068991601";
-const buildDate = "2026-06-30";
+const buildDate = "2026-07-01";
+const assetVersion = "20260701";
 const leadEndpoint = "https://jauction-lead-api.jiggyj.workers.dev/lead";
 const verificationConfigPath = path.join(root, "tools", "search-verification.json");
 
@@ -123,7 +124,7 @@ function layout({ title, description, pathName = "/", body, extraSchema = "" }) 
   <meta name="theme-color" content="#173b35">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="/assets/hero-consultation.png">
-  <link rel="stylesheet" href="/assets/styles.css?v=20260630">
+  <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
   <script type="application/ld+json">${JSON.stringify(localBusinessSchema())}</script>
   ${extraSchema}
 </head>
@@ -137,7 +138,7 @@ function layout({ title, description, pathName = "/", body, extraSchema = "" }) 
     <a href="/#consult"><i data-lucide="clipboard-check"></i><span>접수</span></a>
   </div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
-  <script src="/assets/main.js?v=20260630" defer></script>
+  <script src="/assets/main.js?v=${assetVersion}" defer></script>
 </body>
 </html>`;
 }
@@ -362,7 +363,7 @@ function leadForm() {
               <option>공유자 갈등·분할</option>
             </select>
           </label>
-          <label>주소 또는 사건번호<input name="case_or_address" placeholder="예: 서울 ○○구 / 2026타경0000"></label>
+          <label>주소 또는 사건번호<input name="case_or_address" placeholder="예: 서울 ○○구 / 2026타경0000" required></label>
           <div class="form-row">
             <label>지분율<input name="share" placeholder="예: 1/2, 1/8, 모름"></label>
             <label>공유자 수<input name="owners" placeholder="예: 3명, 모름"></label>
@@ -380,7 +381,7 @@ function leadForm() {
           <label>상담 내용<textarea name="message" rows="4" placeholder="공유자 상황, 점유자, 매도 희망 여부, 궁금한 점을 적어주세요."></textarea></label>
           <label class="privacy-check"><input type="checkbox" name="privacy_agree" required><span>상담 접수와 회신을 위한 개인정보 수집·이용에 동의합니다.</span></label>
           <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>검토 요청 정리하기</span></button>
-          <div class="form-result" hidden></div>
+          <div class="form-result" role="status" aria-live="polite" hidden></div>
           <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
         </form>`;
 }
@@ -1073,15 +1074,19 @@ window.addEventListener("DOMContentLoaded", () => {
       const result = form.querySelector(".form-result");
       const data = Object.fromEntries(new FormData(form).entries());
       if (data.company_website) return;
+      if (!form.reportValidity()) return;
       const last = Number(localStorage.getItem("jauction_last_submit") || "0");
       const now = Date.now();
       if (now - last < 60000) {
         showResult(result, "연속 접수는 1분 뒤 다시 시도해 주세요.");
         return;
       }
-      localStorage.setItem("jauction_last_submit", String(now));
       const summary = buildSummary(data);
       const endpoint = form.dataset.endpoint || window.JAUCTION_LEAD_ENDPOINT || "";
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton ? submitButton.textContent : "";
+      setSubmitting(submitButton, true, "전송 중");
+      showResult(result, "검토 요청을 전송하고 있습니다.");
       if (endpoint) {
         try {
           const response = await fetch(endpoint, {
@@ -1090,18 +1095,28 @@ window.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify({ ...data, submitted_at: new Date().toISOString(), source: location.href }),
           });
           if (response.ok) {
-            showResult(result, "접수되었습니다. 담당자가 확인 후 연락드리겠습니다.");
+            const payload = await response.json().catch(() => ({}));
+            const suffix = payload.id ? " 접수번호: " + payload.id : "";
+            localStorage.setItem("jauction_last_submit", String(Date.now()));
+            showResult(result, "접수되었습니다. 담당자가 확인 후 연락드리겠습니다." + suffix);
             form.reset();
+            if (submittedAt) {
+              submittedAt.value = new Date().toISOString();
+            }
             return;
           }
         } catch (error) {
           // Fall through to SMS fallback below.
+        } finally {
+          setSubmitting(submitButton, false, originalButtonText);
         }
+      } else {
+        setSubmitting(submitButton, false, originalButtonText);
       }
       const encoded = encodeURIComponent(summary);
       showResult(
         result,
-        "접수 내용이 정리되었습니다. 아래 버튼으로 문자 전달 또는 전화 상담을 진행하세요.",
+        "자동 전송이 완료되지 않았습니다. 아래 버튼으로 문자 전달 또는 전화 상담을 진행하세요.",
         [
           { label: "문자로 보내기", href: "sms:${tel}?&body=" + encoded },
           { label: "전화하기", href: "tel:${tel}" },
@@ -1150,6 +1165,20 @@ function showResult(target, message, links = [], copyText = "") {
       button.textContent = "복사 완료";
     });
     target.appendChild(button);
+  }
+}
+
+function setSubmitting(button, submitting, label) {
+  if (!button) return;
+  button.disabled = submitting;
+  button.setAttribute("aria-busy", submitting ? "true" : "false");
+  if (!submitting && label) {
+    button.innerHTML = '<i data-lucide="send"></i><span>' + label + '</span>';
+  } else if (submitting) {
+    button.innerHTML = '<i data-lucide="loader-circle"></i><span>' + label + '</span>';
+  }
+  if (window.lucide) {
+    window.lucide.createIcons();
   }
 }
 `;

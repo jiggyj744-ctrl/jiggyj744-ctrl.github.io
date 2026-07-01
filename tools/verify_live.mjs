@@ -1,4 +1,4 @@
-const siteBase = process.env.JAUCTION_SITE_BASE || "https://jauction-share-acquisition.pages.dev";
+const siteBase = process.env.JAUCTION_SITE_BASE || "https://jiggyj744-ctrl.github.io";
 const workerBase = "https://jauction-lead-api.jiggyj.workers.dev";
 const legacyPattern = /FactoryPro|factorypro|Astra|google-site-verification|naver-site-verification/i;
 

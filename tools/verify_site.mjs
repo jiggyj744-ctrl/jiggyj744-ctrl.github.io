@@ -46,12 +46,12 @@ const requiredText = {
     "ProfessionalService",
   ],
   "assets/main.js": ["localStorage", "jauction_last_submit", "sms:01068991601"],
-  "robots.txt": ["Sitemap: https://jauction-share-acquisition.pages.dev/sitemap.xml"],
+  "robots.txt": ["Sitemap: https://jiggyj744-ctrl.github.io/sitemap.xml"],
   "sitemap.xml": [
-    "https://jauction-share-acquisition.pages.dev/",
-    "https://jauction-share-acquisition.pages.dev/services/share-purchase/",
-    "https://jauction-share-acquisition.pages.dev/services/share-auction/",
-    "2026-06-30",
+    "https://jiggyj744-ctrl.github.io/",
+    "https://jiggyj744-ctrl.github.io/services/share-purchase/",
+    "https://jiggyj744-ctrl.github.io/services/share-auction/",
+    "2026-07-01",
   ],
 };
 
@@ -100,8 +100,8 @@ for (const file of htmlFiles) {
   if (!content.includes('<meta name="description"')) errors.push(`${rel} missing description`);
   if (!content.includes('<link rel="canonical"')) errors.push(`${rel} missing canonical`);
   if (!content.includes('<link rel="icon"')) errors.push(`${rel} missing favicon`);
-  if (!content.includes("/assets/styles.css?v=20260630")) errors.push(`${rel} missing stylesheet`);
-  if (!content.includes("/assets/main.js?v=20260630")) errors.push(`${rel} missing script`);
+  if (!content.includes("/assets/styles.css?v=20260701")) errors.push(`${rel} missing stylesheet`);
+  if (!content.includes("/assets/main.js?v=20260701")) errors.push(`${rel} missing script`);
 }
 
 if (verification.googleFile?.name) {
