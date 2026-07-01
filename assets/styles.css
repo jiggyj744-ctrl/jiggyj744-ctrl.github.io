@@ -312,6 +312,22 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 8px;
   line-height: 1.7;
+  outline: none;
+}
+.form-result[data-state="success"] {
+  color: #0d4a32;
+  background: #eaf7ef;
+  border-color: #8fd3a8;
+}
+.form-result[data-state="error"] {
+  color: #842018;
+  background: #fff0ed;
+  border-color: #e2a39a;
+}
+.form-result[data-state="pending"] {
+  color: #61420f;
+  background: #fff7df;
+  border-color: #e6c46d;
 }
 .form-result a {
   display: inline-flex;

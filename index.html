@@ -18,7 +18,7 @@
   <meta name="theme-color" content="#173b35">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preload" as="image" href="/assets/hero-consultation.png">
-  <link rel="stylesheet" href="/assets/styles.css?v=20260701-3">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260701-4">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Jauction 지분매입 상담센터","url":"https://jiggyj744-ctrl.github.io","telephone":"010-6899-1601","areaServed":"KR","serviceType":["공유물 지분 매입 상담","지분경매 검토","상속 지분 정리","토지 지분 매입 검토"],"image":"https://jiggyj744-ctrl.github.io/assets/hero-consultation.png"}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"공유자 동의 없이 제 지분만 팔 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"자기 지분 처분은 가능하지만 실제 매입 가능성과 가격은 지분율, 점유 상태, 권리관계, 공유자 수에 따라 달라집니다."}},{"@type":"Question","name":"사건번호만 있어도 상담이 가능한가요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 법원명, 사건번호, 매각기일이나 물건번호가 있으면 1차 검토를 시작할 수 있습니다."}},{"@type":"Question","name":"지분경매 낙찰 후에도 상담할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 낙찰 후에는 공유자 협의, 우선매수권 행사 여부, 공유물분할 가능성, 점유 리스크를 따로 봐야 합니다."}},{"@type":"Question","name":"토지 지분도 매입 검토가 되나요?","acceptedAnswer":{"@type":"Answer","text":"가능합니다. 다만 맹지, 도로, 지목, 용도지역, 분할 가능성에 따라 보류될 수 있습니다."}},{"@type":"Question","name":"상담하면 반드시 매각해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"아닙니다. 먼저 매입 가능성, 예상 검토 범위, 보류 사유, 다른 정리 방법을 확인한 뒤 결정하면 됩니다."}}]}</script>
 </head>
@@ -119,11 +119,11 @@
             <li><i data-lucide="check"></i><span>매입 가능, 보류, 추가자료 필요 사유 안내</span></li>
           </ul>
         </div>
-        <form class="lead-form" data-lead-form data-endpoint="https://jauction-lead-api.jiggyj.workers.dev/lead">
+        <form class="lead-form" data-lead-form data-endpoint="https://jauction-lead-api.jiggyj.workers.dev/lead" novalidate>
           <input type="text" name="company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="submitted_at" value="">
           <label>이름<input name="name" autocomplete="name" required></label>
-          <label>연락처<input name="phone" autocomplete="tel" inputmode="tel" required></label>
+          <label>연락처<input name="phone" autocomplete="tel" inputmode="tel" pattern="[0-9+\-\s().]{8,30}" title="연락처는 숫자, +, -, 공백, 괄호만 입력해 주세요. 예: 01012345678" required></label>
           <label>이메일<input name="email" type="email" autocomplete="email" placeholder="예: name@example.com"></label>
           <label>상담 유형
             <select name="type" required>
@@ -153,8 +153,8 @@
           </label>
           <label>상담 내용<textarea name="message" rows="4" placeholder="공유자 상황, 점유자, 매도 희망 여부, 궁금한 점을 적어주세요."></textarea></label>
           <label class="privacy-check"><input type="checkbox" name="privacy_agree" required><span>상담 접수와 회신을 위한 개인정보 수집·이용에 동의합니다.</span></label>
+          <div class="form-result" role="status" aria-live="polite" tabindex="-1" hidden></div>
           <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>상담신청 메일 보내기</span></button>
-          <div class="form-result" role="status" aria-live="polite" hidden></div>
           <p class="form-note">입력한 내용은 상담신청 메일 발송, 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
         </form>
       </div>
@@ -232,6 +232,6 @@
     <a href="/#consult"><i data-lucide="clipboard-check"></i><span>접수</span></a>
   </div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
-  <script src="/assets/main.js?v=20260701-3" defer></script>
+  <script src="/assets/main.js?v=20260701-4" defer></script>
 </body>
 </html>
