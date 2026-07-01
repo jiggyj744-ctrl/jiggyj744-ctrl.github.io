@@ -118,7 +118,9 @@
       "priority": 3,
       "page_type": "area",
       "slug": "areas/busan-share-purchase",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/areas/busan-share-purchase/"
     }
   ]
 }

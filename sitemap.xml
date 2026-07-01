@@ -132,4 +132,16 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/areas/busan-share-purchase/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>

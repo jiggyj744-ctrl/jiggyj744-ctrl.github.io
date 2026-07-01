@@ -1,6 +1,22 @@
 {
   "runs": [
     {
+      "date": "2026-07-01T20:10:04.625Z",
+      "model": "proxy",
+      "count": 1,
+      "pages": [
+        "blog/inherited-share-sale-records"
+      ]
+    },
+    {
+      "date": "2026-07-01T20:09:46.895Z",
+      "model": "proxy",
+      "count": 1,
+      "pages": [
+        "areas/busan-share-purchase"
+      ]
+    },
+    {
       "date": "2026-07-01T09:59:13.008Z",
       "model": "proxy",
       "count": 1,

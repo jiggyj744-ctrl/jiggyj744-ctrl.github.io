@@ -28,7 +28,11 @@
       "category": "상속지분",
       "priority": 1,
       "slug": "blog/inherited-share-sale-records",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "publishedAt": "2026-07-01T20:10:04.623Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
+      "description": "상속지분 매도를 고려 중이라면 등기부등본에서 반드시 확인해야 할 핵심 항목을 정리했습니다. 지분율, 공유자 수, 점유 상태, 경매 진행 여부 등을 검토하여 매도 가능성을 무료로 확인하세요."
     },
     {
       "keyword": "연락 안 되는 공유자 지분",
