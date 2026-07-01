@@ -1,0 +1,20 @@
+{
+  "site_name": "Jauction 지분매입 상담센터",
+  "site_base": "https://jiggyj744-ctrl.github.io",
+  "phone": "1688-0976",
+  "lead_endpoint": "https://jauction-lead-api.jiggyj.workers.dev/lead",
+  "core_offer": "주소나 사건번호만 있어도 공유지분 매입 가능성을 무료로 검토합니다.",
+  "service_scope": [
+    "공유지분 매입",
+    "공유물 지분 매도 검토",
+    "지분경매 사건 검토",
+    "상속지분 정리",
+    "토지·상가·건물 지분 매입 검토"
+  ],
+  "required_cta": "무료 검토 요청",
+  "banned_policy": [
+    "legacy brand terms",
+    "old auction terms",
+    "old phone number"
+  ]
+}

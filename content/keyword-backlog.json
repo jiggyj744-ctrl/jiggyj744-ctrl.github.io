@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "updated": "2026-07-01",
+  "keywords": [
+    {
+      "keyword": "공유지분 매도",
+      "intent": "매도 상담",
+      "priority": 1,
+      "page_type": "guide",
+      "slug": "guide/sell-co-owned-share",
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/"
+    },
+    {
+      "keyword": "사건번호 지분 검토",
+      "intent": "경매 사건 검토",
+      "priority": 1,
+      "page_type": "guide",
+      "slug": "guide/auction-case-number-review",
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/"
+    },
+    {
+      "keyword": "공유자 우선매수권",
+      "intent": "지분경매 정보",
+      "priority": 1,
+      "page_type": "guide",
+      "slug": "guide/preemption-right",
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/preemption-right/"
+    },
+    {
+      "keyword": "서울 공유지분 매입",
+      "intent": "지역 상담",
+      "priority": 2,
+      "page_type": "area",
+      "slug": "areas/seoul-share-purchase",
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/areas/seoul-share-purchase/"
+    },
+    {
+      "keyword": "경기 공유지분 매입",
+      "intent": "지역 상담",
+      "priority": 2,
+      "page_type": "area",
+      "slug": "areas/gyeonggi-share-purchase",
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/areas/gyeonggi-share-purchase/"
+    },
+    {
+      "keyword": "상속지분 매도",
+      "intent": "상속 지분 정리",
+      "priority": 1,
+      "page_type": "guide",
+      "slug": "guide/inherited-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "토지 지분매입",
+      "intent": "토지 지분 상담",
+      "priority": 1,
+      "page_type": "service",
+      "slug": "guide/land-share-acquisition",
+      "status": "queued"
+    },
+    {
+      "keyword": "상가 지분매입",
+      "intent": "상가 지분 상담",
+      "priority": 1,
+      "page_type": "service",
+      "slug": "guide/commercial-share-acquisition",
+      "status": "queued"
+    },
+    {
+      "keyword": "공유물분할청구 지분 매도",
+      "intent": "분쟁 해결",
+      "priority": 1,
+      "page_type": "guide",
+      "slug": "guide/partition-claim-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "연락 안 되는 공유자 지분",
+      "intent": "문제 해결",
+      "priority": 2,
+      "page_type": "guide",
+      "slug": "guide/unreachable-co-owner-share",
+      "status": "queued"
+    },
+    {
+      "keyword": "인천 공유지분 매입",
+      "intent": "지역 상담",
+      "priority": 2,
+      "page_type": "area",
+      "slug": "areas/incheon-share-purchase",
+      "status": "queued"
+    },
+    {
+      "keyword": "부산 공유지분 매입",
+      "intent": "지역 상담",
+      "priority": 3,
+      "page_type": "area",
+      "slug": "areas/busan-share-purchase",
+      "status": "queued"
+    }
+  ]
+}
