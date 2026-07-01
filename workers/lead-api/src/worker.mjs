@@ -385,9 +385,15 @@ function publicNotificationError(notification) {
       ? `메일 발송 채널 설정이 완료되지 않았습니다. 누락 항목: ${missing}`
       : "메일 발송 채널 설정이 완료되지 않았습니다.";
   }
-  if (status === "failed") return "메일 발송 채널이 실패했습니다.";
-  if (status === "partial_failed") return "일부 메일 발송 채널이 실패했습니다.";
-  if (error) return truncate(error, 320);
+  if (status === "failed") {
+    const detail = publicNotificationFailureDetail(error);
+    return detail ? `메일 발송 채널이 실패했습니다. 오류: ${detail}` : "메일 발송 채널이 실패했습니다.";
+  }
+  if (status === "partial_failed") {
+    const detail = publicNotificationFailureDetail(error);
+    return detail ? `일부 메일 발송 채널이 실패했습니다. 오류: ${detail}` : "일부 메일 발송 채널이 실패했습니다.";
+  }
+  if (error) return publicNotificationFailureDetail(error);
   return "메일 발송 상태를 확인할 수 없습니다.";
 }
 
@@ -405,6 +411,20 @@ function publicMissingNotificationLabels(error) {
     NOTIFY_WEBHOOK_URL: "외부 알림 주소",
   }[item.trim()] || item.trim())).filter(Boolean);
   return labels.join(", ");
+}
+
+function publicNotificationFailureDetail(error) {
+  if (!error) return "";
+  return truncate(String(error)
+    .replaceAll("wordpress_wp_mail", "WordPress 메일")
+    .replaceAll("cloudflare_email", "Cloudflare 메일")
+    .replaceAll("resend_email", "Resend 메일")
+    .replaceAll("webhook", "외부 알림")
+    .replaceAll("wordpress_non_json_response", "WordPress 메일 브리지 비정상 응답")
+    .replaceAll("wordpress_unexpected_response", "WordPress 메일 브리지 예기치 않은 응답")
+    .replaceAll("wordpress_notification_failed", "WordPress 메일 발송 실패")
+    .replaceAll("email_send_failed", "이메일 발송 실패")
+    .replaceAll("not_configured", "설정 없음"), 320);
 }
 
 async function sendWordPressMailNotification(env, lead) {
