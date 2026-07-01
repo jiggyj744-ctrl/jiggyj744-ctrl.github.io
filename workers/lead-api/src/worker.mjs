@@ -138,6 +138,7 @@ async function handleLead(request, env, corsHeaders) {
       status: "received",
       notification_status: notification.status || "",
       notification_channel: notification.channel || "",
+      notification_error: publicNotificationError(notification),
     }, 201, corsHeaders);
   } catch (error) {
     return json({ ok: false, error: "server_error" }, 500, corsHeaders);
@@ -372,6 +373,38 @@ function notificationSummary(results, options = {}) {
     notified_at: new Date().toISOString(),
     error: failed.map((item) => `${item.channel}:${item.error}`).join(" | "),
   };
+}
+
+function publicNotificationError(notification) {
+  const status = clean(notification?.status);
+  const error = clean(notification?.error);
+  if (status === "sent") return "";
+  if (status === "not_configured") {
+    const missing = publicMissingNotificationLabels(error);
+    return missing
+      ? `메일 발송 채널 설정이 완료되지 않았습니다. 누락 항목: ${missing}`
+      : "메일 발송 채널 설정이 완료되지 않았습니다.";
+  }
+  if (status === "failed") return "메일 발송 채널이 실패했습니다.";
+  if (status === "partial_failed") return "일부 메일 발송 채널이 실패했습니다.";
+  if (error) return truncate(error, 320);
+  return "메일 발송 상태를 확인할 수 없습니다.";
+}
+
+function publicMissingNotificationLabels(error) {
+  if (!error) return "";
+  const labels = String(error).split(",").map((item) => ({
+    notification_provider: "알림 발송 방식",
+    WORDPRESS_WEBHOOK_URL_or_EMAIL_binding_or_RESEND_API_KEY_or_NOTIFY_WEBHOOK_URL: "WordPress 메일 브리지 또는 대체 메일 발송 채널",
+    WORDPRESS_WEBHOOK_URL: "WordPress 메일 브리지 주소",
+    WORDPRESS_WEBHOOK_TOKEN: "WordPress 메일 브리지 인증값",
+    EMAIL_binding: "Cloudflare Email 바인딩",
+    NOTIFY_EMAIL_FROM: "발신 이메일",
+    NOTIFY_EMAIL_TO: "수신 이메일",
+    RESEND_API_KEY: "Resend API 키",
+    NOTIFY_WEBHOOK_URL: "외부 알림 주소",
+  }[item.trim()] || item.trim())).filter(Boolean);
+  return labels.join(", ");
 }
 
 async function sendWordPressMailNotification(env, lead) {

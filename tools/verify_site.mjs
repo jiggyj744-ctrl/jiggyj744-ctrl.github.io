@@ -46,7 +46,7 @@ const requiredText = {
     "FAQPage",
     "ProfessionalService",
   ],
-  "assets/main.js": ["localStorage", "jauction_last_submit", "메일 전송에 실패했습니다", "상담신청 메일이 전송되었습니다", "연락처는 숫자", "접수번호"],
+  "assets/main.js": ["localStorage", "jauction_last_submit", "메일 전송에 실패했습니다", "상담신청 메일이 전송되었습니다", "메일 발송이 완료되지 않았습니다", "연락처는 숫자", "접수번호"],
   "robots.txt": ["Sitemap: https://jiggyj744-ctrl.github.io/sitemap.xml"],
   "sitemap.xml": [
     "https://jiggyj744-ctrl.github.io/",
@@ -101,8 +101,8 @@ for (const file of htmlFiles) {
   if (!content.includes('<meta name="description"')) errors.push(`${rel} missing description`);
   if (!content.includes('<link rel="canonical"')) errors.push(`${rel} missing canonical`);
   if (!content.includes('<link rel="icon"')) errors.push(`${rel} missing favicon`);
-  if (!content.includes("/assets/styles.css?v=20260701-4")) errors.push(`${rel} missing stylesheet`);
-  if (!content.includes("/assets/main.js?v=20260701-4")) errors.push(`${rel} missing script`);
+  if (!content.includes("/assets/styles.css?v=20260701-5")) errors.push(`${rel} missing stylesheet`);
+  if (!content.includes("/assets/main.js?v=20260701-5")) errors.push(`${rel} missing script`);
 }
 
 if (verification.googleFile?.name) {

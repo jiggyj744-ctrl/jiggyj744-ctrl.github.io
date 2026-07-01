@@ -53,7 +53,7 @@ window.addEventListener("DOMContentLoaded", () => {
           const payload = await response.json().catch(() => ({}));
           if (response.ok) {
             if (payload.notification_status !== "sent") {
-              showResult(result, "접수는 저장되었지만 메일 발송 확인이 필요합니다. 잠시 후 다시 시도해 주세요.", "error");
+              showResult(result, mailFailureMessage(payload), "error");
               return;
             }
             const suffix = payload.id ? " 접수번호: " + payload.id : "";
@@ -68,7 +68,8 @@ window.addEventListener("DOMContentLoaded", () => {
           showResult(result, serverErrorMessage(payload.error), "error");
           return;
         } catch (error) {
-          // Show a clear failure state below.
+          showResult(result, "서버 연결 문제로 상담신청 메일을 보내지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.", "error");
+          return;
         } finally {
           setSubmitting(submitButton, false, originalButtonText);
         }
@@ -117,6 +118,23 @@ function serverErrorMessage(error) {
     name_required: "이름을 입력해 주세요.",
     type_required: "상담 유형을 선택해 주세요.",
   }[error] || "메일 전송에 실패했습니다. 입력 내용을 확인한 뒤 다시 시도해 주세요.";
+}
+
+function mailFailureMessage(payload) {
+  const receipt = payload.id ? " 접수번호: " + payload.id + "." : "";
+  const status = notificationStatusLabel(payload.notification_status);
+  const channel = payload.notification_channel ? " 발송 경로: " + payload.notification_channel + "." : "";
+  const reason = payload.notification_error ? " 사유: " + payload.notification_error + "." : "";
+  return "상담 내용은 저장됐지만 메일 발송이 완료되지 않았습니다." + receipt + " 상태: " + status + "." + channel + reason + " 관리자 화면에서 접수 내용을 확인해야 합니다.";
+}
+
+function notificationStatusLabel(status) {
+  return {
+    not_configured: "메일 발송 설정 없음",
+    failed: "메일 발송 실패",
+    partial_failed: "일부 메일 발송 실패",
+    unknown: "메일 상태 확인 불가",
+  }[status] || "메일 상태 확인 불가";
 }
 
 function showResult(target, message, state = "info", shouldFocus = true) {

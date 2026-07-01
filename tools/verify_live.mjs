@@ -33,9 +33,10 @@ mustContain(home, "공유물 지분", "home core text");
 mustContain(home, "상담신청 메일 보내기", "mail submit button");
 mustContain(home, "개인정보 수집·이용에 동의합니다", "privacy consent text");
 
-const js = await fetchText(`${siteBase}/assets/main.js?v=20260701-4&live_check=${Date.now()}`);
+const js = await fetchText(`${siteBase}/assets/main.js?v=20260701-5&live_check=${Date.now()}`);
 mustContain(js, "상담신청 메일이 전송되었습니다", "mail success text");
 mustContain(js, "메일 전송에 실패했습니다", "mail failure text");
+mustContain(js, "메일 발송이 완료되지 않았습니다", "mail delivery failure detail text");
 if (/문자로 보내기|전화하기|내용 복사|sms:|navigator\.clipboard/.test(js)) {
   errors.push("public script contains removed fallback actions");
 }
