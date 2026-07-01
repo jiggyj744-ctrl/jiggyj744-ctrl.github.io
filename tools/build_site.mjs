@@ -30,40 +30,40 @@ const services = [
     title: "공유물 지분 매입",
     short: "공유자 합의가 멈춘 지분을 매입 가능성부터 검토합니다.",
     h1: "공유물 지분을 팔고 싶다면 매입 가능성부터 확인하세요",
-    desc: "아파트, 토지, 상가, 건물 등 공동명의 부동산 지분을 등기와 점유 상태 기준으로 검토해 직접 매입 또는 정리 방향을 제안합니다.",
+    desc: "아파트, 토지, 상가, 건물 등 공동명의 부동산 지분을 등기와 점유 상태 기준으로 검토해 매입 가능성과 보류 사유를 안내합니다.",
     points: ["등기부 지분율과 공유자 구조 확인", "점유, 임대차, 권리관계 검토", "매입 가능 범위와 보류 사유 안내"],
   },
   {
     slug: "share-auction",
-    title: "지분경매 낙찰 전후 검토",
-    short: "입찰 전 리스크와 낙찰 후 정리 전략을 분리해 봅니다.",
-    h1: "지분경매 사건은 낙찰가보다 정리 구조가 먼저입니다",
-    desc: "사건번호, 매각물건명세서, 공유자 우선매수권, 점유 상태, 공유물분할 가능성을 종합해 입찰 전후 판단 기준을 정리합니다.",
-    points: ["공유자 우선매수권 검토", "낙찰 후 협의 및 분할 가능성 확인", "권리관계와 점유 리스크 점검"],
+    title: "지분경매 사건자료 검토",
+    short: "사건자료와 권리관계를 기준으로 매입 가능 여부를 봅니다.",
+    h1: "지분경매 사건은 자료 확인이 먼저입니다",
+    desc: "사건번호, 매각물건명세서, 권리관계, 점유 상태를 확인해 매입 가능 여부와 보류 사유를 정리합니다.",
+    points: ["사건자료와 지분 범위 확인", "낙찰 전후 자료 확인", "권리관계와 점유 상태 점검"],
   },
   {
     slug: "inherited-share",
     title: "상속 지분 정리",
     short: "상속으로 생긴 소액 지분과 가족 공동명의 문제를 검토합니다.",
-    h1: "상속 지분은 오래 둘수록 협의 비용이 커질 수 있습니다",
+    h1: "상속 지분은 오래 둘수록 자료 확인이 복잡해질 수 있습니다",
     desc: "상속 지분, 미등기 정리, 가족 공동명의 부동산, 연락이 어려운 공유자가 있는 사건의 매입 가능성과 대안을 안내합니다.",
-    points: ["상속 지분율과 등기 상태 확인", "가족 공유자 협의 가능성 분류", "매입, 공동매각, 보류 판단"],
+    points: ["상속 지분율과 등기 상태 확인", "가족 공유자 구조 확인", "매입 가능, 보류 판단"],
   },
   {
     slug: "land-share",
     title: "토지 지분 매입",
     short: "맹지, 도로, 지목, 개발 제한까지 토지 특성을 반영합니다.",
     h1: "토지 지분은 지분율보다 이용 가능성과 접근성이 중요합니다",
-    desc: "맹지, 도로 접면, 지목, 개발 제한, 분할 가능성, 주변 거래 흐름을 확인해 토지 지분 매입 가능성을 검토합니다.",
-    points: ["도로와 접면 조건 확인", "지목, 용도지역, 개발 제한 검토", "분할 가능성과 실사용 가치 판단"],
+    desc: "맹지, 도로 접면, 지목, 개발 제한, 주변 거래 흐름을 확인해 토지 지분 매입 가능성을 검토합니다.",
+    points: ["도로와 접면 조건 확인", "지목, 용도지역, 개발 제한 검토", "자료 기준 보류 사유 확인"],
   },
   {
     slug: "co-ownership-dispute",
-    title: "공유자 갈등 및 공유물분할",
-    short: "협의 지연, 점유 갈등, 공유물분할 가능성을 정리합니다.",
+    title: "공유자 갈등 및 분쟁자료 검토",
+    short: "협의 지연, 점유 갈등, 자료상 보류 사유를 확인합니다.",
     h1: "공유자 갈등이 길어질수록 지분 정리 기준이 필요합니다",
-    desc: "협의가 어려운 공유자 구조, 점유자 문제, 공동매각 가능성, 공유물분할 청구 가능성을 구분해 현실적인 정리 방향을 봅니다.",
-    points: ["공유자 수와 연락 가능성 확인", "점유 및 사용수익 구조 점검", "분할, 공동매각, 매입 가능성 비교"],
+    desc: "협의가 어려운 공유자 구조, 점유자 문제, 분쟁 이력, 추가자료 필요 여부를 기준으로 매입 가능성과 보류 사유를 확인합니다.",
+    points: ["공유자 수와 연락 가능성 확인", "점유 및 사용 상태 점검", "분쟁자료와 보류 사유 확인"],
   },
   {
     slug: "commercial-share",
@@ -76,11 +76,11 @@ const services = [
 ];
 
 const faqItems = [
-  ["공유자 동의 없이 제 지분만 팔 수 있나요?", "자기 지분 처분은 가능하지만 실제 매입 가능성과 가격은 지분율, 점유 상태, 권리관계, 공유자 수에 따라 달라집니다."],
+  ["공유자 동의 없이 제 지분만 팔 수 있나요?", "자기 지분 처분은 가능하지만 실제 매입 가능 여부는 지분율, 점유 상태, 권리관계, 공유자 수를 확인한 뒤 안내합니다."],
   ["사건번호만 있어도 상담이 가능한가요?", "가능합니다. 법원명, 사건번호, 매각기일이나 물건번호가 있으면 1차 검토를 시작할 수 있습니다."],
-  ["지분경매 낙찰 후에도 상담할 수 있나요?", "가능합니다. 낙찰 후에는 공유자 협의, 우선매수권 행사 여부, 공유물분할 가능성, 점유 리스크를 따로 봐야 합니다."],
-  ["토지 지분도 매입 검토가 되나요?", "가능합니다. 다만 맹지, 도로, 지목, 용도지역, 분할 가능성에 따라 보류될 수 있습니다."],
-  ["상담하면 반드시 매각해야 하나요?", "아닙니다. 먼저 매입 가능성, 예상 검토 범위, 보류 사유, 다른 정리 방법을 확인한 뒤 결정하면 됩니다."],
+  ["지분경매 낙찰 후에도 상담할 수 있나요?", "가능합니다. 낙찰 후에는 공유자 구조, 권리관계, 점유 상태를 자료 기준으로 확인합니다."],
+  ["토지 지분도 매입 검토가 되나요?", "가능합니다. 다만 맹지, 도로, 지목, 용도지역 등 자료상 제한에 따라 보류될 수 있습니다."],
+  ["상담하면 반드시 매각해야 하나요?", "아닙니다. 먼저 매입 가능성, 검토 범위, 보류 사유, 추가자료 필요 여부를 확인한 뒤 결정하면 됩니다."],
   ["검토에 필요한 자료는 무엇인가요?", "주소, 사건번호, 등기부등본, 지분율, 공유자 수, 현재 점유 상태가 있으면 정확도가 올라갑니다. 자료가 부족해도 1차 접수는 가능합니다."],
 ];
 
@@ -134,7 +134,7 @@ function layout({ title, description, pathName = "/", body, extraSchema = "" }) 
   <main id="main">${body}</main>
   ${footer()}
   <div class="mobile-cta" aria-label="빠른 상담">
-    <a href="tel:${tel}"><i data-lucide="phone"></i><span>전화</span></a>
+    <a href="/#consult"><i data-lucide="mail"></i><span>메일</span></a>
     <a href="/#consult"><i data-lucide="clipboard-check"></i><span>접수</span></a>
   </div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
@@ -152,7 +152,7 @@ function header() {
     <nav class="primary-nav" aria-label="주요 메뉴">
       <a href="/#screening">검토 기준</a>
       <a href="/#services">서비스</a>
-      <a href="/#process">진행 절차</a>
+      <a href="/#process">검토 흐름</a>
       <a href="/faq/">FAQ</a>
     </nav>
     <a class="header-call" href="tel:${tel}"><i data-lucide="phone"></i><span>${phone}</span></a>
@@ -242,13 +242,13 @@ function homePage() {
       <div class="section-head">
         <p class="eyebrow">먼저 보는 기준</p>
         <h2>공유지분은 시세보다 정리 구조가 먼저입니다</h2>
-        <p>같은 1/2 지분이라도 공유자 수, 점유자, 임대차, 도로, 분할 가능성에 따라 매입 가능성과 보류 사유가 달라집니다.</p>
+        <p>같은 1/2 지분이라도 공유자 수, 점유자, 임대차, 도로 조건에 따라 매입 가능성과 보류 사유가 달라집니다.</p>
       </div>
       <div class="metric-grid">
-        <article><strong>01</strong><h3>지분율과 공유자 수</h3><p>매입 후 협의 가능성과 회수 기간을 좌우합니다.</p></article>
-        <article><strong>02</strong><h3>점유·임대차 상태</h3><p>실제 사용 가능성과 비용 부담을 먼저 봅니다.</p></article>
+        <article><strong>01</strong><h3>지분율과 공유자 수</h3><p>검토 가능 범위와 보류 사유를 좌우합니다.</p></article>
+        <article><strong>02</strong><h3>점유·임대차 상태</h3><p>실제 사용 관계와 추가 확인 항목을 먼저 봅니다.</p></article>
         <article><strong>03</strong><h3>권리관계와 제한</h3><p>압류, 근저당, 유치권, 법정지상권 가능성을 확인합니다.</p></article>
-        <article><strong>04</strong><h3>분할·공동매각 가능성</h3><p>공유물분할, 공동매각, 직접 매입 중 현실적인 방향을 나눕니다.</p></article>
+        <article><strong>04</strong><h3>분쟁·보류 사유</h3><p>분쟁 이력, 공동명의 구조, 자료상 제한을 구분합니다.</p></article>
       </div>
     </section>
 
@@ -268,7 +268,7 @@ function homePage() {
           <p>상담 요청이 들어오면 등기, 지분율, 공유자 수, 점유 상태, 경매 진행 여부를 확인해 매입 가능성·보류 사유·추가 자료를 안내합니다.</p>
           <ul class="check-list">
             <li><i data-lucide="check"></i><span>등기부·매각물건명세서 기준 검토</span></li>
-            <li><i data-lucide="check"></i><span>공유자 우선매수권과 분할 가능성 분리</span></li>
+            <li><i data-lucide="check"></i><span>권리관계와 보류 사유 분리</span></li>
             <li><i data-lucide="check"></i><span>매입 가능, 보류, 추가자료 필요 사유 안내</span></li>
           </ul>
         </div>
@@ -278,15 +278,15 @@ function homePage() {
 
     <section class="band process-band" id="process">
       <div class="section-head">
-        <p class="eyebrow">진행 절차</p>
-        <h2>접수부터 매입 제안까지 다섯 단계로 정리합니다</h2>
+        <p class="eyebrow">검토 흐름</p>
+        <h2>접수부터 회신까지 필요한 항목만 정리합니다</h2>
       </div>
       <ol class="process-list">
         <li><strong>기본정보 접수</strong><span>주소, 사건번호, 지분율, 연락처 확인</span></li>
-        <li><strong>공적자료 확인</strong><span>등기부, 경매자료, 건축물·토지 정보 검토</span></li>
+        <li><strong>공적자료 확인</strong><span>등기부, 사건자료, 건축물·토지 정보 검토</span></li>
         <li><strong>리스크 분류</strong><span>점유, 임대차, 공유자 수, 권리 제한 구분</span></li>
-        <li><strong>정리 방향 제안</strong><span>직접 매입, 공동매각, 협의, 보류 사유 안내</span></li>
-        <li><strong>조건 협의</strong><span>자료 보완, 일정, 계약 방식 협의</span></li>
+        <li><strong>1차 회신</strong><span>매입 가능, 보류, 추가자료 필요 사유 안내</span></li>
+        <li><strong>후속 안내</strong><span>자료 보완과 연락 가능 시간 확인</span></li>
       </ol>
     </section>
 
@@ -297,9 +297,9 @@ function homePage() {
       </div>
       <div class="risk-table" role="table" aria-label="지분 매입 검토 리스크">
         <div role="row"><strong>권리관계 복잡</strong><span>가압류, 근저당, 유치권, 법정지상권 등은 별도 확인이 필요합니다.</span></div>
-        <div role="row"><strong>점유자 불명확</strong><span>실사용자, 임차인, 무단점유 여부가 불명확하면 회수 기간이 길어질 수 있습니다.</span></div>
-        <div role="row"><strong>공유자 구조 복잡</strong><span>공유자 수가 많거나 연락이 어려우면 협의와 분할 가능성을 별도로 봅니다.</span></div>
-        <div role="row"><strong>토지 이용 제한</strong><span>맹지, 도로 문제, 개발 제한, 분할 제한은 매입 가능성에 직접 영향을 줍니다.</span></div>
+        <div role="row"><strong>점유자 불명확</strong><span>실사용자, 임차인, 무단점유 여부가 불명확하면 추가 확인이 필요합니다.</span></div>
+        <div role="row"><strong>공유자 구조 복잡</strong><span>공유자 수가 많거나 연락이 어려우면 검토 기간과 보류 사유를 별도로 봅니다.</span></div>
+        <div role="row"><strong>토지 이용 제한</strong><span>맹지, 도로 문제, 개발 제한 등은 별도 확인이 필요합니다.</span></div>
       </div>
     </section>
 
@@ -309,9 +309,9 @@ function homePage() {
         <h2>이런 지분이면 먼저 문의해 볼 수 있습니다</h2>
       </div>
       <div class="case-grid">
-        <article><h3>상속 아파트 1/6 지분</h3><p>가족 공동명의가 장기화된 경우 점유자, 공유자 수, 공동매각 가능성을 확인합니다.</p></article>
-        <article><h3>맹지 토지 1/8 지분</h3><p>도로 접면, 지목, 개발 제한과 분할 가능성을 먼저 검토합니다.</p></article>
-        <article><h3>지분경매 낙찰 전 사건</h3><p>우선매수권, 낙찰 후 협의 가능성, 공유물분할 전략을 사전에 확인합니다.</p></article>
+        <article><h3>상속 아파트 1/6 지분</h3><p>가족 공동명의가 장기화된 경우 점유자, 공유자 수, 등기 상태를 확인합니다.</p></article>
+        <article><h3>맹지 토지 1/8 지분</h3><p>도로 접면, 지목, 개발 제한 등 자료상 보류 사유를 먼저 확인합니다.</p></article>
+        <article><h3>지분경매 낙찰 전 사건</h3><p>사건자료, 점유 상태, 권리관계 등 접수 전 확인 항목을 정리합니다.</p></article>
         <article><h3>상가·건물 일부 지분</h3><p>임대차, 수익 배분, 관리비 부담, 권리관계를 함께 봅니다.</p></article>
       </div>
     </section>
@@ -357,11 +357,11 @@ function leadForm() {
             <select name="type" required>
               <option value="">선택</option>
               <option>공유물 지분 매도</option>
-              <option>지분경매 낙찰 전후</option>
+              <option>지분경매 사건 검토</option>
               <option>상속 지분 정리</option>
               <option>토지 지분</option>
               <option>상가·건물 지분</option>
-              <option>공유자 갈등·분할</option>
+              <option>공유자 갈등</option>
             </select>
           </label>
           <label>주소 또는 사건번호<input name="case_or_address" placeholder="예: 서울 ○○구 / 2026타경0000" required></label>
@@ -414,7 +414,7 @@ function servicePage(service) {
           <p class="eyebrow">검토 결과</p>
           <h2>무조건 매입보다 가능·보류·추가확인으로 나눠 판단합니다</h2>
         </div>
-        <p>공유지분은 일반 매매보다 권리관계와 회수 구조가 중요합니다. 1차 검토에서는 매입 가능성, 보류 사유, 추가 자료, 협의 가능성을 분리해 안내합니다.</p>
+        <p>공유지분은 일반 매매보다 권리관계와 자료 확인이 중요합니다. 1차 검토에서는 매입 가능성, 보류 사유, 추가 자료 필요 여부를 분리해 안내합니다.</p>
       </div>
     </section>
     <section class="band form-band">
@@ -442,7 +442,7 @@ function faqPage() {
       <div>
         <p class="eyebrow">FAQ</p>
         <h1>공유지분 매입 상담 전 자주 묻는 질문</h1>
-        <p class="lead">상담 가능 여부, 필요한 자료, 지분경매와 공유물분할 리스크를 미리 확인할 수 있습니다.</p>
+        <p class="lead">상담 가능 여부, 필요한 자료, 지분경매와 분쟁자료 확인 항목을 미리 확인할 수 있습니다.</p>
       </div>
     </section>
     <section class="band faq-band">
@@ -475,7 +475,7 @@ function privacyPage() {
         <h2>수집 항목</h2>
         <p>이름, 연락처, 상담 유형, 주소 또는 사건번호, 지분율, 공유자 수, 상담 내용, 개인정보 동의 여부를 상담 회신 목적으로 확인할 수 있습니다.</p>
         <h2>이용 목적</h2>
-        <p>공유지분 매입 가능성 검토, 추가 자료 안내, 상담 회신, 매입 조건 협의에 사용합니다.</p>
+        <p>공유지분 매입 가능성 검토, 추가 자료 안내, 상담 회신에 사용합니다.</p>
         <h2>보관 기준</h2>
         <p>GitHub Pages 정적 사이트 자체에는 서버 저장 기능이 없습니다. 추후 별도 접수 API를 연결하는 경우 보관 기간과 파기 기준을 이 페이지에 반영합니다.</p>
         <h2>문의</h2>

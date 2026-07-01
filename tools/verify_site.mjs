@@ -39,6 +39,57 @@ const banned = [
   "\uFFFD",
 ];
 
+const strategyBanned = [
+  ["매입", "전략"].join(""),
+  ["최저", "입찰가"].join(""),
+  ["입찰", "일정"].join(""),
+  ["현물", "분할"].join(""),
+  ["경매", "분할"].join(""),
+  ["단독", "소유"].join(""),
+  ["공유물분할", "전략"].join(""),
+  ["가치", "하락"].join(""),
+  ["최선의", "방안"].join(""),
+  ["최적의", "해결"].join(""),
+  ["종합적으로", "분석"].join(""),
+  ["경매 절차", "내"].join(""),
+  ["분할", "방법"].join(""),
+  ["예상", "비용"].join(""),
+  ["소요", "기간"].join(""),
+  ["권리", "행사"].join(""),
+  ["경매에", "참여"].join(""),
+  ["매입 가능성이", "높"].join(""),
+  ["리스크를", "최소화"].join(""),
+  ["정리", "전략"].join(""),
+  ["회수", "전략"].join(""),
+  ["청산 가능성과", "비용"].join(""),
+  ["낙찰 후", "정리"].join(""),
+  ["정리", "비용"].join(""),
+  ["회수", "기간"].join(""),
+  ["정리", "가능성"].join(""),
+  ["우선매수권 행사", "가능성"].join(""),
+  ["과도한", "입찰가"].join(""),
+  ["회수", "지연"].join(""),
+  ["일정과", "전략"].join(""),
+  "공유물분할 가능성",
+  "공유물분할 소송 등을 통해 현금화",
+  "법적 절차를 통한 현금화",
+  "변호사 선임 없이",
+  "예상 기간",
+  "적정 가격을 산정",
+  "가격에 영향을 줄 수 있습니다",
+  "오히려 매입이 용이",
+  "일반 매입 절차",
+  "모든 법적 절차",
+  "개별 협의",
+  "공동매각 가능성",
+  "현실적인 정리 방향",
+  "협의 비용",
+  "낙찰가보다",
+  "사용수익 구조",
+  "분할, 공동매각",
+  ["<span>", "전화", "</span>"].join(""),
+];
+
 const requiredText = {
   "index.html": [
     "privacy_agree",
@@ -94,6 +145,18 @@ for (const file of textFiles) {
   for (const needle of banned) {
     if (content.includes(needle)) {
       errors.push(`${rel} contains banned text: ${needle}`);
+    }
+  }
+  const shouldCheckStrategyText =
+    rel.endsWith(".html") ||
+    rel.endsWith(".xml") ||
+    rel === "tools/build_site.mjs" ||
+    rel === "scripts/seo-content-engine.mjs";
+  if (shouldCheckStrategyText) {
+    for (const needle of strategyBanned) {
+      if (content.includes(needle)) {
+        errors.push(`${rel} contains public strategy text: ${needle}`);
+      }
     }
   }
   if (!verification.googleMeta && content.includes("google-site-verification")) {

@@ -2,11 +2,75 @@ const siteBase = process.env.JAUCTION_SITE_BASE || "https://jiggyj744-ctrl.githu
 const workerBase = "https://jauction-lead-api.jiggyj.workers.dev";
 const legacyFactory = String.fromCharCode(70, 97, 99, 116, 111, 114, 121, 80, 114, 111);
 const legacyPattern = new RegExp(`${legacyFactory}|Astra|google-site-verification`, "i");
+const publicStrategyPattern = new RegExp([
+  "매입전략",
+  "매입 전략",
+  "최저 입찰가",
+  "입찰 일정",
+  "현물 분할",
+  "경매 분할",
+  "단독 소유",
+  "공유물분할 전략",
+  "가치 하락",
+  "최선의 방안",
+  "최적의 해결",
+  "종합적으로 분석",
+  "경매 절차 내",
+  "분할 방법",
+  "예상 비용",
+  "소요 기간",
+  "권리 행사",
+  "경매에 참여",
+  "매입 가능성이 높",
+  "리스크를 최소화",
+  "정리 전략",
+  "회수 전략",
+  "청산 가능성과 비용",
+  "낙찰 후 정리",
+  "정리 비용",
+  "회수 기간",
+  "정리 가능성",
+  "우선매수권 행사 가능성",
+  "과도한 입찰가",
+  "회수 지연",
+  "일정과 전략",
+  "공유물분할 가능성",
+  "공유물분할 소송 등을 통해 현금화",
+  "법적 절차를 통한 현금화",
+  "변호사 선임 없이",
+  "예상 기간",
+  "적정 가격을 산정",
+  "가격에 영향을 줄 수 있습니다",
+  "오히려 매입이 용이",
+  "일반 매입 절차",
+  "모든 법적 절차",
+  "개별 협의",
+  "공동매각 가능성",
+  "현실적인 정리 방향",
+  "협의 비용",
+  "낙찰가보다",
+  "사용수익 구조",
+  "분할, 공동매각",
+  "<span>전화</span>",
+].join("|"));
 
 const publicPaths = [
   "/",
+  "/blog/",
+  "/blog/auction-case-number-share-review/",
   "/faq/",
   "/privacy/",
+  "/areas/seoul-share-purchase/",
+  "/areas/gyeonggi-share-purchase/",
+  "/areas/incheon-share-purchase/",
+  "/guide/auction-case-number-review/",
+  "/guide/commercial-share-acquisition/",
+  "/guide/inherited-share-sale/",
+  "/guide/land-share-acquisition/",
+  "/guide/partition-claim-share-sale/",
+  "/guide/preemption-right/",
+  "/guide/sell-co-owned-share/",
+  "/guide/unreachable-co-owner-share/",
   "/services/share-purchase/",
   "/services/share-auction/",
   "/services/inherited-share/",
@@ -26,6 +90,7 @@ for (const path of publicPaths) {
   const text = await response.text();
   if (response.status !== 200) errors.push(`${path} status ${response.status}`);
   if (legacyPattern.test(text)) errors.push(`${path} contains legacy text`);
+  if (publicStrategyPattern.test(text)) errors.push(`${path} contains public strategy text`);
 }
 
 const home = await fetchText(`${siteBase}/?live_check=${Date.now()}`);
@@ -35,7 +100,7 @@ mustContain(home, "상담신청 메일 보내기", "mail submit button");
 mustContain(home, "개인정보 수집·이용에 동의합니다", "privacy consent text");
 mustContain(home, "/assets/styles.css?v=20260701-7", "home stylesheet version");
 mustContain(home, "/assets/main.js?v=20260701-7", "home script version");
-if (/문자로 보내기|전화하기|내용 복사|sms:|navigator\.clipboard/.test(home)) {
+if (/문자로 보내기|전화하기|내용 복사|sms:|navigator\.clipboard|<span>전화<\/span>/.test(home)) {
   errors.push("public home contains removed fallback actions");
 }
 
