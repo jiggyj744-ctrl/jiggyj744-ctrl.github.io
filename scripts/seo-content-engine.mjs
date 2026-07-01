@@ -57,7 +57,7 @@ async function generateViaProxy(item) {
   if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
   const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON only."].join("\n");
   try {
-    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "local-auction", messages: [{ role: "user", content: input }], temperature: 0.4 }) });
+    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "deepseek-v4-flash", messages: [{ role: "user", content: input }], temperature: 0.4, response_format: { type: "json_object" } }) });
     if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || data.output_text || "";
