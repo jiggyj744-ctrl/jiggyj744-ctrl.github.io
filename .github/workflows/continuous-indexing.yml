@@ -27,9 +27,8 @@ jobs:
           node-version: 22
       - name: Generate share acquisition SEO pages
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-5.5' }}
           SITE_BASE: https://jiggyj744-ctrl.github.io
+          GENERATION_MODE: template
         run: node scripts/seo-content-engine.mjs --limit "${{ github.event.inputs.pages || '1' }}"
       - name: Verify static site
         run: node tools/verify_site.mjs

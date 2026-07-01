@@ -4,6 +4,8 @@ import path from "node:path";
 const root = process.cwd();
 const siteBase = (process.env.SITE_BASE || "https://jiggyj744-ctrl.github.io").replace(/\/$/, "");
 const model = process.env.OPENAI_MODEL || "gpt-5.5";
+const generationMode = process.env.GENERATION_MODE || "template";
+const allowDirectOpenAI = process.env.ALLOW_DIRECT_OPENAI === "1";
 const today = new Date().toISOString().slice(0, 10);
 const args = process.argv.slice(2);
 const limit = Math.max(1, Math.min(5, Number.parseInt(args[args.indexOf("--limit") + 1] || "1", 10) || 1));
@@ -37,7 +39,9 @@ if (published.length) { updateSitemap(published); updateIndexLinks(backlog.keywo
 console.log("continuous indexing published " + published.length + " page(s)");
 
 async function generateContent(item) {
-  if (!process.env.OPENAI_API_KEY) return fallbackContent(item, "template-no-api-key");
+  if (generationMode === "template") return fallbackContent(item, "template-cost-safe");
+  if (process.env.LLM_PROXY_BASE_URL) return generateViaProxy(item);
+  if (!allowDirectOpenAI || !process.env.OPENAI_API_KEY) return fallbackContent(item, "template-direct-disabled");
   const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON with keys title, description, h1, eyebrow, lead, sections, faqs."].join("\n");
   try {
     const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + process.env.OPENAI_API_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ model, input, text: { format: { type: "json_object" } } }) });
@@ -45,6 +49,23 @@ async function generateContent(item) {
     const data = await response.json();
     return JSON.parse(extractOutputText(data));
   } catch (error) { console.warn("OpenAI generation failed, using template fallback: " + error.message); return fallbackContent(item, "template-api-fallback"); }
+}
+
+async function generateViaProxy(item) {
+  const endpoint = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "") + "/chat/completions";
+  const headers = { "Content-Type": "application/json" };
+  if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
+  const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON only."].join("\n");
+  try {
+    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "local-auction", messages: [{ role: "user", content: input }], temperature: 0.4 }) });
+    if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || data.output_text || "";
+    return JSON.parse(text);
+  } catch (error) {
+    console.warn("Proxy generation failed, using template fallback: " + error.message);
+    return fallbackContent(item, "template-proxy-fallback");
+  }
 }
 
 function extractOutputText(data) {
@@ -72,7 +93,7 @@ function renderPage(page) {
 function qaPage(page, html) { for (const term of banned) if (html.includes(term)) throw new Error(page.slug + " contains banned term: " + term); for (const required of [facts.phone, "naver-site-verification", "<link rel=\"canonical\"", "/#consult", "FAQPage"]) if (!html.includes(required)) throw new Error(page.slug + " missing " + required); if ((html.match(/<h1>/g) || []).length !== 1) throw new Error(page.slug + " must have one h1"); if (html.length < 5500) throw new Error(page.slug + " content too short"); }
 function updateSitemap(pages) { let xml = fs.readFileSync("sitemap.xml", "utf8"); for (const page of pages) { const loc = siteBase + "/" + page.slug + "/"; if (!xml.includes("<loc>" + loc + "</loc>")) xml = xml.replace("</urlset>", "  <url>\n    <loc>" + loc + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n</urlset>"); } fs.writeFileSync("sitemap.xml", xml, "utf8"); }
 function updateIndexLinks(pages) { const file = "index.html"; let html = fs.readFileSync(file, "utf8"); const marker = "<!-- continuous-indexing-links -->"; const links = pages.map((page) => "<article class=\"service-card\"><h3><a href=\"/" + page.slug + "/\">" + escapeHtml(page.keyword) + "</a></h3><p>지분 매입 검토와 상담 접수로 연결되는 색인 확장 페이지입니다.</p></article>").join(""); if (html.includes(marker)) html = html.replace(new RegExp("<!-- continuous-indexing-links --><div class=\"service-grid\">[\\s\\S]*?</div><!-- /continuous-indexing-links -->"), marker + "<div class=\"service-grid\">" + links + "</div><!-- /continuous-indexing-links -->"); else { const block = "<section class=\"band service-band\" id=\"indexing-hub\"><div class=\"section-head\"><p class=\"eyebrow\">지분매입 색인 허브</p><h2>상황별 지분 상담 페이지를 계속 확장합니다</h2><p>공유지분 매도, 지분경매, 상속지분, 지역별 지분매입 검색 의도에 맞춰 페이지를 지속 발행합니다.</p></div>" + marker + "<div class=\"service-grid\">" + links + "</div><!-- /continuous-indexing-links --></section>"; html = html.replace("    <section class=\"final-cta\">", block + "\n    <section class=\"final-cta\">"); } fs.writeFileSync(file, html, "utf8"); }
-function updateOps(published) { fs.mkdirSync("ops", { recursive: true }); const file = "ops/index-state.json"; const state = fs.existsSync(file) ? readJson(file) : { runs: [] }; state.runs.unshift({ date: new Date().toISOString(), model: process.env.OPENAI_API_KEY ? model : "template-fallback", count: published.length, pages: published.map((page) => page.slug) }); state.runs = state.runs.slice(0, 60); writeJson(file, state); }
+function updateOps(published) { fs.mkdirSync("ops", { recursive: true }); const file = "ops/index-state.json"; const state = fs.existsSync(file) ? readJson(file) : { runs: [] }; state.runs.unshift({ date: new Date().toISOString(), model: generationMode === "template" ? "template-cost-safe" : (process.env.LLM_PROXY_BASE_URL ? "proxy" : (allowDirectOpenAI ? model : "template-direct-disabled")), count: published.length, pages: published.map((page) => page.slug) }); state.runs = state.runs.slice(0, 60); writeJson(file, state); }
 function readJson(file) { return JSON.parse(fs.readFileSync(file, "utf8")); }
 function writeJson(file, value) { fs.writeFileSync(file, JSON.stringify(value, null, 2) + "\n", "utf8"); }
 function escapeHtml(value) { return String(value ?? "").replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char])); }
