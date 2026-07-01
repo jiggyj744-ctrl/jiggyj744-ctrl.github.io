@@ -88,7 +88,9 @@
       "priority": 1,
       "page_type": "guide",
       "slug": "guide/partition-claim-share-sale",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/partition-claim-share-sale/"
     },
     {
       "keyword": "연락 안 되는 공유자 지분",
