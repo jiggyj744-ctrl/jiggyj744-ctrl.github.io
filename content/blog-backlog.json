@@ -16,7 +16,11 @@
       "category": "지분경매 검토",
       "priority": 1,
       "slug": "blog/auction-case-number-share-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "publishedAt": "2026-07-01T09:59:13.007Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/",
+      "description": "지분경매 사건번호만으로 공유지분 매입 가능성을 무료로 검토하는 방법과 절차를 안내합니다."
     },
     {
       "keyword": "상속지분 매도",

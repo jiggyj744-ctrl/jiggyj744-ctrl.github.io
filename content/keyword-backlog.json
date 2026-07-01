@@ -108,7 +108,9 @@
       "priority": 2,
       "page_type": "area",
       "slug": "areas/incheon-share-purchase",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/areas/incheon-share-purchase/"
     },
     {
       "keyword": "부산 공유지분 매입",

@@ -1,6 +1,22 @@
 {
   "runs": [
     {
+      "date": "2026-07-01T09:59:13.008Z",
+      "model": "proxy",
+      "count": 1,
+      "pages": [
+        "blog/auction-case-number-share-review"
+      ]
+    },
+    {
+      "date": "2026-07-01T09:58:57.430Z",
+      "model": "proxy",
+      "count": 1,
+      "pages": [
+        "areas/incheon-share-purchase"
+      ]
+    },
+    {
       "date": "2026-07-01T09:18:55.854Z",
       "model": "proxy",
       "count": 1,
