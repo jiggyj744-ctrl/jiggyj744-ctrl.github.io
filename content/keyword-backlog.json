@@ -78,7 +78,9 @@
       "priority": 1,
       "page_type": "service",
       "slug": "guide/commercial-share-acquisition",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-01",
+      "url": "https://jiggyj744-ctrl.github.io/guide/commercial-share-acquisition/"
     },
     {
       "keyword": "공유물분할청구 지분 매도",

@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-01T08:24:56.556Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "guide/commercial-share-acquisition"
+      ]
+    },
+    {
       "date": "2026-07-01T08:04:45.357Z",
       "model": "template-fallback",
       "count": 1,
