@@ -107,6 +107,7 @@ function printTable(leads) {
     status: lead.review_status,
     name: lead.name,
     phone: lead.phone,
+    email: lead.email || "",
     type: lead.lead_type,
     notification: lead.notification_status || "",
     address: lead.case_or_address || "",
@@ -115,7 +116,7 @@ function printTable(leads) {
 }
 
 function printCsv(leads) {
-  const headers = ["id", "created_at", "updated_at", "review_status", "notification_status", "notification_channel", "notified_at", "notification_error", "name", "phone", "lead_type", "case_or_address", "share_ratio", "owners", "property_status", "admin_note", "source_url"];
+  const headers = ["id", "created_at", "updated_at", "review_status", "notification_status", "notification_channel", "notified_at", "notification_error", "name", "phone", "email", "lead_type", "case_or_address", "share_ratio", "owners", "property_status", "admin_note", "source_url"];
   console.log(headers.join(","));
   for (const lead of leads) {
     console.log(headers.map((key) => csv(lead[key] ?? "")).join(","));

@@ -9,7 +9,7 @@ const brand = "Jauction 지분매입 상담센터";
 const phone = "010-6899-1601";
 const tel = "01068991601";
 const buildDate = "2026-07-01";
-const assetVersion = "20260701";
+const assetVersion = "20260701-3";
 const leadEndpoint = "https://jauction-lead-api.jiggyj.workers.dev/lead";
 const verificationConfigPath = path.join(root, "tools", "search-verification.json");
 
@@ -352,6 +352,7 @@ function leadForm() {
           <input type="hidden" name="submitted_at" value="">
           <label>이름<input name="name" autocomplete="name" required></label>
           <label>연락처<input name="phone" autocomplete="tel" inputmode="tel" required></label>
+          <label>이메일<input name="email" type="email" autocomplete="email" placeholder="예: name@example.com"></label>
           <label>상담 유형
             <select name="type" required>
               <option value="">선택</option>
@@ -380,9 +381,9 @@ function leadForm() {
           </label>
           <label>상담 내용<textarea name="message" rows="4" placeholder="공유자 상황, 점유자, 매도 희망 여부, 궁금한 점을 적어주세요."></textarea></label>
           <label class="privacy-check"><input type="checkbox" name="privacy_agree" required><span>상담 접수와 회신을 위한 개인정보 수집·이용에 동의합니다.</span></label>
-          <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>검토 요청 정리하기</span></button>
+          <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>상담신청 메일 보내기</span></button>
           <div class="form-result" role="status" aria-live="polite" hidden></div>
-          <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
+          <p class="form-note">입력한 내용은 상담신청 메일 발송, 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
         </form>`;
 }
 
@@ -1078,15 +1079,14 @@ window.addEventListener("DOMContentLoaded", () => {
       const last = Number(localStorage.getItem("jauction_last_submit") || "0");
       const now = Date.now();
       if (now - last < 60000) {
-        showResult(result, "연속 접수는 1분 뒤 다시 시도해 주세요.");
+        showResult(result, "연속 메일 접수는 1분 뒤 다시 시도해 주세요.");
         return;
       }
-      const summary = buildSummary(data);
       const endpoint = form.dataset.endpoint || window.JAUCTION_LEAD_ENDPOINT || "";
       const submitButton = form.querySelector('button[type="submit"]');
       const originalButtonText = submitButton ? submitButton.textContent : "";
-      setSubmitting(submitButton, true, "전송 중");
-      showResult(result, "검토 요청을 전송하고 있습니다.");
+      setSubmitting(submitButton, true, "메일 전송 중");
+      showResult(result, "상담신청 메일을 전송하고 있습니다.");
       if (endpoint) {
         try {
           const response = await fetch(endpoint, {
@@ -1096,9 +1096,13 @@ window.addEventListener("DOMContentLoaded", () => {
           });
           if (response.ok) {
             const payload = await response.json().catch(() => ({}));
+            if (payload.notification_status && payload.notification_status !== "sent") {
+              showResult(result, "접수는 저장되었지만 메일 발송 확인이 필요합니다. 잠시 후 다시 시도해 주세요.");
+              return;
+            }
             const suffix = payload.id ? " 접수번호: " + payload.id : "";
             localStorage.setItem("jauction_last_submit", String(Date.now()));
-            showResult(result, "접수되었습니다. 담당자가 확인 후 연락드리겠습니다." + suffix);
+            showResult(result, "상담신청 메일이 전송되었습니다. 담당자가 확인 후 연락드리겠습니다." + suffix);
             form.reset();
             if (submittedAt) {
               submittedAt.value = new Date().toISOString();
@@ -1106,66 +1110,28 @@ window.addEventListener("DOMContentLoaded", () => {
             return;
           }
         } catch (error) {
-          // Fall through to SMS fallback below.
+          // Show a clear failure state below.
         } finally {
           setSubmitting(submitButton, false, originalButtonText);
         }
       } else {
         setSubmitting(submitButton, false, originalButtonText);
       }
-      const encoded = encodeURIComponent(summary);
       showResult(
         result,
-        "자동 전송이 완료되지 않았습니다. 아래 버튼으로 문자 전달 또는 전화 상담을 진행하세요.",
-        [
-          { label: "문자로 보내기", href: "sms:${tel}?&body=" + encoded },
-          { label: "전화하기", href: "tel:${tel}" },
-        ],
-        summary,
+        "메일 전송에 실패했습니다. 입력 내용은 접수되지 않았습니다. 잠시 후 다시 시도해 주세요.",
       );
     });
   });
 });
 
-function buildSummary(data) {
-  const rows = [
-    ["이름", data.name],
-    ["연락처", data.phone],
-    ["상담유형", data.type],
-    ["주소/사건번호", data.case_or_address],
-    ["지분율", data.share],
-    ["공유자 수", data.owners],
-    ["현재 상태", data.status],
-    ["상담 내용", data.message],
-    ["페이지", location.href],
-  ];
-  return "Jauction 지분매입 상담 요청\\n" + rows.map(([key, value]) => key + ": " + (value || "-")).join("\\n");
-}
-
-function showResult(target, message, links = [], copyText = "") {
+function showResult(target, message) {
   if (!target) return;
   target.hidden = false;
   target.innerHTML = "";
   const p = document.createElement("p");
   p.textContent = message;
   target.appendChild(p);
-  links.forEach((link) => {
-    const a = document.createElement("a");
-    a.href = link.href;
-    a.textContent = link.label;
-    target.appendChild(a);
-  });
-  if (copyText && navigator.clipboard) {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "btn btn-secondary";
-    button.textContent = "내용 복사";
-    button.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(copyText);
-      button.textContent = "복사 완료";
-    });
-    target.appendChild(button);
-  }
 }
 
 function setSubmitting(button, submitting, label) {
@@ -1215,7 +1181,7 @@ function docs() {
 
 - 메인 화면: 지분 매도 상담 유도
 - 세부 화면: 공유물 지분 매입, 지분경매, 상속 지분, 토지 지분, 공유자 갈등, 상가·건물 지분
-- 상담 접수: Cloudflare Worker와 D1에 저장
+- 상담 접수: Cloudflare Worker와 D1에 저장 후 WordPress 메일 브리지로 상담신청 메일 발송
 - 관리자 화면: \`https://jauction-lead-api.jiggyj.workers.dev/admin\`
 - 검색 등록 자료: \`robots.txt\`, \`sitemap.xml\`
 
@@ -1226,7 +1192,7 @@ function docs() {
 - \`faq/index.html\`: 자주 묻는 질문
 - \`privacy/index.html\`: 개인정보 안내
 - \`assets/styles.css\`: 화면 스타일
-- \`assets/main.js\`: 상담 접수 화면 동작
+- \`assets/main.js\`: 상담신청 메일 접수 화면 동작
 - \`workers/lead-api/\`: 상담 저장과 관리자 화면
 - \`wordpress/jauction-lead-mail-bridge/\`: WP Mail SMTP 연동용 WordPress 플러그인
 - \`tools/verify_site.mjs\`: 로컬 파일 점검
@@ -1247,7 +1213,7 @@ node workers/lead-api/scripts/leads.mjs notify-test
 
 ## 상담 알림
 
-상담 저장과 메일 발송은 별도입니다. 상담은 D1에 먼저 저장되고, 메일 발송 설정이 준비된 경우에만 알림 상태가 \`sent\`로 바뀝니다.
+상담은 D1에 먼저 저장되고, 메일 발송 설정이 준비된 경우에만 알림 상태가 \`sent\`로 바뀝니다. 공개 폼은 서버 응답의 메일 알림 상태를 확인해 상담신청 메일 전송 성공 안내를 표시합니다.
 
 - WordPress 메일 브리지: \`WORDPRESS_WEBHOOK_URL\`, \`WORDPRESS_WEBHOOK_TOKEN\`
 - Cloudflare 메일: \`send_email\` 바인딩, \`NOTIFY_EMAIL_FROM\`, \`NOTIFY_EMAIL_TO\`

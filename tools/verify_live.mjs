@@ -30,7 +30,15 @@ for (const path of publicPaths) {
 const home = await fetchText(`${siteBase}/?live_check=${Date.now()}`);
 mustContain(home, "jauction-lead-api.jiggyj.workers.dev/lead", "home lead endpoint");
 mustContain(home, "공유물 지분", "home core text");
+mustContain(home, "상담신청 메일 보내기", "mail submit button");
 mustContain(home, "개인정보 수집·이용에 동의합니다", "privacy consent text");
+
+const js = await fetchText(`${siteBase}/assets/main.js?v=20260701-3&live_check=${Date.now()}`);
+mustContain(js, "상담신청 메일이 전송되었습니다", "mail success text");
+mustContain(js, "메일 전송에 실패했습니다", "mail failure text");
+if (/문자로 보내기|전화하기|내용 복사|sms:|navigator\.clipboard/.test(js)) {
+  errors.push("public script contains removed fallback actions");
+}
 
 const health = await fetchJson(`${workerBase}/health`);
 if (!health.ok || health.service !== "jauction-lead-api") {

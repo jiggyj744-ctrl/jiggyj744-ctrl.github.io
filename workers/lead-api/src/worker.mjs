@@ -97,6 +97,7 @@ async function handleLead(request, env, corsHeaders) {
         source_url,
         name,
         phone,
+        email,
         lead_type,
         case_or_address,
         share_ratio,
@@ -106,12 +107,13 @@ async function handleLead(request, env, corsHeaders) {
         privacy_agree,
         user_agent,
         ip_hash
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).bind(
       createdAt,
       lead.source,
       lead.name,
       lead.phone,
+      lead.email,
       lead.type,
       lead.case_or_address,
       lead.share,
@@ -124,12 +126,19 @@ async function handleLead(request, env, corsHeaders) {
     ).run();
 
     const leadId = result.meta?.last_row_id || null;
+    let notification = { status: "not_configured", channel: "", notified_at: "", error: "" };
     if (leadId) {
-      const notification = await notifyLead(env, { ...lead, id: leadId, created_at: createdAt });
+      notification = await notifyLead(env, { ...lead, id: leadId, created_at: createdAt });
       await markNotification(env, leadId, notification);
     }
 
-    return json({ ok: true, id: leadId, status: "received" }, 201, corsHeaders);
+    return json({
+      ok: true,
+      id: leadId,
+      status: "received",
+      notification_status: notification.status || "",
+      notification_channel: notification.channel || "",
+    }, 201, corsHeaders);
   } catch (error) {
     return json({ ok: false, error: "server_error" }, 500, corsHeaders);
   }
@@ -153,8 +162,8 @@ async function handleAdminList(request, env, corsHeaders) {
     binds.push(status);
   }
   if (q) {
-    where.push("(name LIKE ? OR phone LIKE ? OR lead_type LIKE ? OR case_or_address LIKE ?)");
-    binds.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
+    where.push("(name LIKE ? OR phone LIKE ? OR email LIKE ? OR lead_type LIKE ? OR case_or_address LIKE ?)");
+    binds.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
   }
 
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
@@ -165,6 +174,7 @@ async function handleAdminList(request, env, corsHeaders) {
       updated_at,
       name,
       phone,
+      email,
       lead_type,
       case_or_address,
       share_ratio,
@@ -202,6 +212,7 @@ async function handleNotificationTest(request, env, corsHeaders) {
     created_at: now,
     name: "알림 점검",
     phone: "0000000000",
+    email: "codex-test@example.com",
     type: "테스트",
     case_or_address: "관리자 테스트",
     share: "-",
@@ -226,6 +237,7 @@ async function handleAdminShow(request, env, corsHeaders, id) {
       source_url,
       name,
       phone,
+      email,
       lead_type,
       case_or_address,
       share_ratio,
@@ -507,6 +519,7 @@ function leadNotificationPayload(lead) {
     created_at: lead.created_at,
     name: lead.name,
     phone: lead.phone,
+    email: lead.email,
     type: lead.type,
     case_or_address: lead.case_or_address,
     share: lead.share,
@@ -556,6 +569,7 @@ function notificationText(lead) {
     `접수시각: ${lead.created_at}`,
     `이름: ${lead.name}`,
     `연락처: ${lead.phone}`,
+    `이메일: ${lead.email || "-"}`,
     `상담유형: ${lead.type}`,
     `주소/사건번호: ${lead.case_or_address || "-"}`,
     `지분율: ${lead.share || "-"}`,
@@ -694,6 +708,7 @@ function normalizeLead(payload) {
   return {
     name: clean(payload.name),
     phone: clean(payload.phone),
+    email: clean(payload.email),
     type: clean(payload.type),
     case_or_address: clean(payload.case_or_address),
     share: clean(payload.share),
@@ -712,6 +727,7 @@ function validateLead(lead) {
   if (!lead.case_or_address) return "case_or_address_required";
   if (!lead.privacy_agree) return "privacy_required";
   if (!/^[0-9+\-\s().]{8,30}$/.test(lead.phone)) return "phone_invalid";
+  if (lead.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email)) return "email_invalid";
   return "";
 }
 
@@ -1005,7 +1021,7 @@ function adminPageHtml() {
   </header>
   <main>
     <section class="toolbar">
-      <input id="q" placeholder="이름, 연락처, 주소 검색">
+      <input id="q" placeholder="이름, 연락처, 이메일, 주소 검색">
       <select id="statusFilter">
         <option value="">전체 상태</option>
         <option value="new">new</option>
@@ -1030,13 +1046,14 @@ function adminPageHtml() {
               <th>상태</th>
               <th>이름</th>
               <th>연락처</th>
+              <th>이메일</th>
               <th>유형</th>
               <th>주소/사건</th>
               <th></th>
             </tr>
           </thead>
           <tbody id="rows">
-            <tr><td class="empty" colspan="8">조회 결과가 없습니다.</td></tr>
+            <tr><td class="empty" colspan="9">조회 결과가 없습니다.</td></tr>
           </tbody>
         </table>
       </div>
@@ -1130,7 +1147,7 @@ function adminPageHtml() {
     function renderRows() {
       rows.innerHTML = "";
       if (!state.leads.length) {
-        rows.innerHTML = '<tr><td class="empty" colspan="8">조회 결과가 없습니다.</td></tr>';
+        rows.innerHTML = '<tr><td class="empty" colspan="9">조회 결과가 없습니다.</td></tr>';
         return;
       }
       for (const lead of state.leads) {
@@ -1141,6 +1158,7 @@ function adminPageHtml() {
           "<td><span class='pill'>" + esc(lead.review_status) + "</span></td>" +
           "<td>" + esc(lead.name) + "</td>" +
           "<td>" + esc(lead.phone) + "</td>" +
+          "<td>" + esc(lead.email || "") + "</td>" +
           "<td>" + esc(lead.lead_type) + "</td>" +
           "<td>" + esc(lead.case_or_address || "") + "</td>" +
           "<td><button class='secondary' type='button' data-id='" + esc(lead.id) + "'>상세</button></td>";
@@ -1157,6 +1175,7 @@ function adminPageHtml() {
         row("접수일", formatDate(lead.created_at)) +
         row("수정일", lead.updated_at ? formatDate(lead.updated_at) : "-") +
         row("연락처", lead.phone) +
+        row("이메일", lead.email || "-") +
         row("유형", lead.lead_type) +
         row("주소/사건", lead.case_or_address || "-") +
         row("지분율", lead.share_ratio || "-") +
@@ -1173,7 +1192,7 @@ function adminPageHtml() {
     }
 
     function exportCsv() {
-      const headers = ["id", "created_at", "review_status", "notification_status", "notification_channel", "notified_at", "name", "phone", "lead_type", "case_or_address", "source_url"];
+      const headers = ["id", "created_at", "review_status", "notification_status", "notification_channel", "notified_at", "name", "phone", "email", "lead_type", "case_or_address", "source_url"];
       const lines = [headers.join(",")];
       for (const lead of state.leads) {
         lines.push(headers.map((key) => csv(lead[key] || "")).join(","));

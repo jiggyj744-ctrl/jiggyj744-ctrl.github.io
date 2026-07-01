@@ -1,6 +1,6 @@
 # Jauction 지분매입 공개 사이트
 
-대표 주소는 `https://jiggyj744-ctrl.github.io/`입니다. Cloudflare Pages 주소는 배포 보조 주소로만 유지합니다.
+대표 주소는 `https://jiggyj744-ctrl.github.io/`입니다. GitHub 주소 `https://jiggyj744-ctrl.github.io/`는 백업 공개 주소로 유지합니다.
 
 공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
 
@@ -8,7 +8,7 @@
 
 - 메인 화면: 지분 매도 상담 유도
 - 세부 화면: 공유물 지분 매입, 지분경매, 상속 지분, 토지 지분, 공유자 갈등, 상가·건물 지분
-- 상담 접수: Cloudflare Worker와 D1에 저장
+- 상담 접수: Cloudflare Worker와 D1에 저장 후 WordPress 메일 브리지로 상담신청 메일 발송
 - 관리자 화면: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - 검색 등록 자료: `robots.txt`, `sitemap.xml`
 
@@ -19,7 +19,7 @@
 - `faq/index.html`: 자주 묻는 질문
 - `privacy/index.html`: 개인정보 안내
 - `assets/styles.css`: 화면 스타일
-- `assets/main.js`: 상담 접수 화면 동작
+- `assets/main.js`: 상담신청 메일 접수 화면 동작
 - `workers/lead-api/`: 상담 저장과 관리자 화면
 - `wordpress/jauction-lead-mail-bridge/`: WP Mail SMTP 연동용 WordPress 플러그인
 - `tools/verify_site.mjs`: 로컬 파일 점검
@@ -40,7 +40,7 @@ node workers/lead-api/scripts/leads.mjs notify-test
 
 ## 상담 알림
 
-상담 저장과 메일 발송은 별도입니다. 상담은 D1에 먼저 저장되고, 메일 발송 설정이 준비된 경우에만 알림 상태가 `sent`로 바뀝니다.
+상담은 D1에 먼저 저장되고, 메일 발송 설정이 준비된 경우에만 알림 상태가 `sent`로 바뀝니다. 공개 폼은 서버 응답의 메일 알림 상태를 확인해 상담신청 메일 전송 성공 안내를 표시합니다.
 
 - WordPress 메일 브리지: `WORDPRESS_WEBHOOK_URL`, `WORDPRESS_WEBHOOK_TOKEN`
 - Cloudflare 메일: `send_email` 바인딩, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`

@@ -41,11 +41,12 @@ const requiredText = {
   "index.html": [
     "privacy_agree",
     "company_website",
+    "상담신청 메일 보내기",
     "https://jauction-lead-api.jiggyj.workers.dev/lead",
     "FAQPage",
     "ProfessionalService",
   ],
-  "assets/main.js": ["localStorage", "jauction_last_submit", "sms:01068991601"],
+  "assets/main.js": ["localStorage", "jauction_last_submit", "메일 전송에 실패했습니다", "상담신청 메일이 전송되었습니다", "접수번호"],
   "robots.txt": ["Sitemap: https://jiggyj744-ctrl.github.io/sitemap.xml"],
   "sitemap.xml": [
     "https://jiggyj744-ctrl.github.io/",
@@ -100,8 +101,8 @@ for (const file of htmlFiles) {
   if (!content.includes('<meta name="description"')) errors.push(`${rel} missing description`);
   if (!content.includes('<link rel="canonical"')) errors.push(`${rel} missing canonical`);
   if (!content.includes('<link rel="icon"')) errors.push(`${rel} missing favicon`);
-  if (!content.includes("/assets/styles.css?v=20260701")) errors.push(`${rel} missing stylesheet`);
-  if (!content.includes("/assets/main.js?v=20260701")) errors.push(`${rel} missing script`);
+  if (!content.includes("/assets/styles.css?v=20260701-3")) errors.push(`${rel} missing stylesheet`);
+  if (!content.includes("/assets/main.js?v=20260701-3")) errors.push(`${rel} missing script`);
 }
 
 if (verification.googleFile?.name) {

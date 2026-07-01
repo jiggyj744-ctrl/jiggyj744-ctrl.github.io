@@ -30,7 +30,7 @@ GitHub Pages 상담 화면에서 들어온 내용을 저장하고 관리하는 C
 
 ## 상담 알림
 
-새 상담이 저장된 뒤 아래 설정이 있으면 알림을 보냅니다. 설정이 없으면 상담은 정상 저장되고 알림 상태만 `not_configured`로 남습니다.
+새 상담이 저장된 뒤 아래 설정이 있으면 상담신청 메일 알림을 보냅니다. 설정이 없으면 상담은 정상 저장되고 알림 상태만 `not_configured`로 남습니다. 공개 폼은 응답의 `notification_status`가 `sent`일 때만 메일 전송 성공 안내를 표시합니다.
 
 - WordPress 메일 브리지: `WORDPRESS_WEBHOOK_URL`, `WORDPRESS_WEBHOOK_TOKEN`
 - Cloudflare 메일 알림: `send_email` 바인딩, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
