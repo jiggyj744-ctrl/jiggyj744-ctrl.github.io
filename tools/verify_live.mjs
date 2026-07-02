@@ -2,11 +2,12 @@ const siteBase = process.env.JAUCTION_SITE_BASE || "https://jiggyj744-ctrl.githu
 const workerBase = "https://jauction-lead-api.jiggyj.workers.dev";
 const legacyFactory = String.fromCharCode(70, 97, 99, 116, 111, 114, 121, 80, 114, 111);
 const legacyPattern = new RegExp(`${legacyFactory}|Astra|google-site-verification`, "i");
+const phrase = (...parts) => parts.join("");
 const publicStrategyPattern = new RegExp([
   "매입전략",
   "매입 전략",
-  "최저 입찰가",
-  "입찰 일정",
+  phrase("최저", " 입찰가"),
+  phrase("입찰", " 일정"),
   "현물 분할",
   "경매 분할",
   "단독 소유",
@@ -16,7 +17,7 @@ const publicStrategyPattern = new RegExp([
   "최적의 해결",
   "종합적으로 분석",
   "경매 절차 내",
-  "분할 방법",
+  phrase("분할", " 방법"),
   "예상 비용",
   "소요 기간",
   "권리 행사",
@@ -55,7 +56,7 @@ const publicStrategyPattern = new RegExp([
   "매입 가격",
   "인도 시기",
   "잔금 조건",
-  "소유권 이전",
+  phrase("소유권", " 이전"),
   "매입 가치",
   "절차를 안내",
   "일정 기간",

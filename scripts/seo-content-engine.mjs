@@ -224,11 +224,27 @@ async function publishBlogPost(item) {
   try {
     qaBlogPost(post, html);
   } catch (error) {
-    console.warn("Generated blog failed QA, using template fallback: " + error.message);
-    generated = fallbackBlogContent(item, "template-blog-qa-fallback");
-    post = normalizeBlogPost(item, generated);
-    html = renderBlogPost(post);
-    qaBlogPost(post, html);
+    if (canRetryBlogGeneration(generated)) {
+      console.warn("Generated blog failed QA, retrying proxy once: " + error.message);
+      generated = await generateBlogContent(item, { qaFeedback: error.message });
+      post = normalizeBlogPost(item, generated);
+      html = renderBlogPost(post);
+      try {
+        qaBlogPost(post, html);
+      } catch (retryError) {
+        console.warn("Retried blog failed QA, using template fallback: " + retryError.message);
+        generated = fallbackBlogContent(item, "template-blog-qa-fallback");
+        post = normalizeBlogPost(item, generated);
+        html = renderBlogPost(post);
+        qaBlogPost(post, html);
+      }
+    } else {
+      console.warn("Generated blog failed QA, using template fallback: " + error.message);
+      generated = fallbackBlogContent(item, "template-blog-qa-fallback");
+      post = normalizeBlogPost(item, generated);
+      html = renderBlogPost(post);
+      qaBlogPost(post, html);
+    }
   }
   const targetDir = path.join(root, post.slug);
   fs.mkdirSync(targetDir, { recursive: true });
@@ -242,16 +258,19 @@ async function publishBlogPost(item) {
   item.category = post.category;
   return post;
 }
-async function generateBlogContent(item) {
+async function generateBlogContent(item, options = {}) {
   if (generationMode === "template") return fallbackBlogContent(item, "template-cost-safe");
-  if (process.env.LLM_PROXY_BASE_URL) return generateBlogViaProxy(item);
+  if (process.env.LLM_PROXY_BASE_URL) return generateBlogViaProxy(item, options);
   return fallbackBlogContent(item, "template-direct-disabled");
 }
-async function generateBlogViaProxy(item) {
+async function generateBlogViaProxy(item, options = {}) {
   const endpoint = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "") + "/chat/completions";
   const headers = { "Content-Type": "application/json" };
   if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
-  const input = [blogPrompt, "Business facts JSON:", JSON.stringify(facts), "Blog request JSON:", JSON.stringify(item), "Return strict JSON only with keys title, description, h1, eyebrow, excerpt, category, sections, checklist, faqs. Write Korean expert blog content with at least 5 sections, each section containing 2-3 substantial paragraphs, a practical checklist, and 4 FAQs. Keep public copy focused on 자료 확인, 매입 가능성, 보류 사유, 추가자료 안내. Do not reveal bidding, partition, lawsuit, cost, timing, price calculation, or acquisition strategy."].join("\n");
+  const retryGuidance = options.qaFeedback
+    ? "Previous generated draft failed QA for this reason: " + options.qaFeedback + "\nRevise completely, avoid the failed phrase or concept, and keep the public copy conservative."
+    : "";
+  const input = [blogPrompt, "Business facts JSON:", JSON.stringify(facts), "Blog request JSON:", JSON.stringify(item), retryGuidance, "Return strict JSON only with keys title, description, h1, eyebrow, excerpt, category, sections, checklist, faqs. Write Korean expert blog content with at least 5 sections, each section containing 2-3 substantial paragraphs, a practical checklist, and 4 FAQs. Keep public copy focused on 자료 확인, 매입 가능성, 보류 사유, 추가자료 안내. Do not reveal bidding, partition, lawsuit, cost, timing, price calculation, or acquisition strategy."].filter(Boolean).join("\n");
   try {
     const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "gemini-pro", messages: [{ role: "user", content: input }], temperature: 0.35, max_tokens: 3600, response_format: { type: "json_object" } }) });
     if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
@@ -262,6 +281,9 @@ async function generateBlogViaProxy(item) {
     console.warn("Proxy blog generation failed, using template fallback: " + error.message);
     return fallbackBlogContent(item, "template-blog-proxy-fallback");
   }
+}
+function canRetryBlogGeneration(generated) {
+  return generationMode !== "template" && process.env.LLM_PROXY_BASE_URL && !String(generated?.generationMode || "").startsWith("template-");
 }
 function parseJsonText(text) {
   let raw = String(text || "").trim();
@@ -279,7 +301,8 @@ function fallbackBlogContent(item, mode) {
   const keyword = item.keyword;
   const titleBase = item.title || keyword;
   const sectionSeeds = [["처음 확인할 권리관계", "등기부상 소유자, 지분율, 권리 제한, 압류나 근저당 유무를 먼저 봅니다. 지분 물건은 전체 물건의 시세보다 자료상 보류 사유 확인이 더 중요합니다.", "공유자가 몇 명인지, 연락 가능성이 있는지, 이미 분쟁자료가 있는지도 함께 확인합니다. 이 단계에서 매입 가능, 보류, 추가자료 필요 여부를 1차로 나눌 수 있습니다."], ["주소와 사건번호만 있을 때", "주소만 있어도 소재지와 물건 유형을 기준으로 검토를 시작할 수 있습니다. 사건번호가 있으면 공개 사건자료와 점유 관계를 확인할 수 있습니다.", "자료가 부족하다고 접수를 미룰 필요는 없습니다. 현재 알고 있는 정보와 매도 의사, 공유자 상황을 함께 남기면 필요한 추가자료를 안내할 수 있습니다."], ["공유자와 점유 상태", "공유자 수가 많거나 연락이 끊긴 경우에는 검토 기간과 보류 사유가 달라질 수 있습니다. 점유자가 누구인지, 임대차가 있는지, 실제 사용자가 공유자인지도 함께 확인합니다.", "일부 지분만 매도하려는 경우에는 공유자 관계, 사용 상태 등 확인해야 할 자료가 늘어날 수 있습니다."], ["경매와 권리관계", "지분경매가 진행 중이거나 관련 사건이 있는 경우 사건자료와 권리관계를 분리해 확인합니다. 점유 상태, 권리 제한, 추가자료 필요 여부를 별도 항목으로 봅니다.", "매입 검토에서는 법률적 결론을 단정하기보다 자료 기준으로 불확실성을 줄이는 것이 우선입니다. 필요한 경우 등기, 사건 기록, 점유 자료를 추가 요청합니다."], ["상담 접수 후 안내되는 내용", "상담이 접수되면 등기, 지분율, 공유자 수, 점유 상태, 경매 진행 여부를 기준으로 매입 가능성과 보류 사유를 안내합니다. 즉시 매입 판단이 어려우면 추가로 필요한 자료를 정리해 드립니다.", "매도 여부가 확정되지 않았더라도 1차 검토를 받을 수 있습니다. 검토 결과를 보고 매도, 보류, 추가자료 확인 중 어느 방향이 맞는지 결정하면 됩니다."]];
-  return { generationMode: mode, title: titleBase + " | 지분매입 검토 노트", description: keyword + " 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.", h1: titleBase, eyebrow: item.category || "지분매입 블로그", excerpt: keyword + " 관련 상담을 접수하기 전 확인하면 좋은 기준을 정리한 검토 노트입니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다.", category: item.category || "검토 노트", sections: sectionSeeds.map((seed) => ({ heading: seed[0], paragraphs: [seed[1], seed[2]] })), checklist: ["주소 또는 사건번호", "대략적인 지분율", "공유자 수와 연락 가능성", "점유자 또는 임차인 여부", "매도 희망 여부"], faqs: [{ q: keyword + " 상담은 자료가 모두 있어야 하나요?", a: "아닙니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다." }, { q: "지분율을 모르면 접수할 수 없나요?", a: "지분율을 몰라도 접수할 수 있습니다. 등기 확인 후 지분율과 공유자 수를 함께 정리합니다." }, { q: "공유자와 연락이 안 돼도 검토가 가능한가요?", a: "가능합니다. 연락 가능성은 매입 가능성과 보류 사유를 판단하는 확인 항목으로 따로 봅니다." }, { q: "검토 후 바로 매도해야 하나요?", a: "아닙니다. 매입 가능성과 보류 사유를 확인한 뒤 매도 여부를 결정하면 됩니다." }] };
+  const rotatedSectionSeeds = rotateArray(sectionSeeds, stableIndex(keyword + titleBase, sectionSeeds.length));
+  return { generationMode: mode, title: titleBase + " | 지분매입 검토 노트", description: keyword + " 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.", h1: titleBase, eyebrow: item.category || "지분매입 블로그", excerpt: keyword + " 관련 상담을 접수하기 전 확인하면 좋은 기준을 정리한 검토 노트입니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다.", category: item.category || "검토 노트", sections: rotatedSectionSeeds.map((seed) => ({ heading: seed[0], paragraphs: [seed[1], seed[2]] })), checklist: ["주소 또는 사건번호", "대략적인 지분율", "공유자 수와 연락 가능성", "점유자 또는 임차인 여부", "매도 희망 여부"], faqs: [{ q: keyword + " 상담은 자료가 모두 있어야 하나요?", a: "아닙니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다." }, { q: "지분율을 모르면 접수할 수 없나요?", a: "지분율을 몰라도 접수할 수 있습니다. 등기 확인 후 지분율과 공유자 수를 함께 정리합니다." }, { q: "공유자와 연락이 안 돼도 검토가 가능한가요?", a: "가능합니다. 연락 가능성은 매입 가능성과 보류 사유를 판단하는 확인 항목으로 따로 봅니다." }, { q: "검토 후 바로 매도해야 하나요?", a: "아닙니다. 매입 가능성과 보류 사유를 확인한 뒤 매도 여부를 결정하면 됩니다." }] };
 }
 function normalizeBlogPost(item, generated) {
   const fallback = fallbackBlogContent(item, "template-normalize-fallback");
@@ -341,6 +364,17 @@ function updateBlogLinks(posts) {
     html = html.replace("    <section class=\"final-cta\">", block + "\n    <section class=\"final-cta\">");
   }
   fs.writeFileSync(file, html, "utf8");
+}
+function rotateArray(items, offset) {
+  if (!items.length) return items;
+  const start = offset % items.length;
+  return items.slice(start).concat(items.slice(0, start));
+}
+function stableIndex(value, modulo) {
+  if (!modulo) return 0;
+  let hash = 0;
+  for (const char of String(value || "")) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  return hash % modulo;
 }
 function cleanSlug(value) { return String(value || "").split("/").filter(Boolean).join("/"); }
 function countText(value, needle) { return String(value).split(needle).length - 1; }

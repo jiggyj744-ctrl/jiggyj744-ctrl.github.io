@@ -9,6 +9,7 @@ SITE_BASE="${SITE_BASE:-https://jiggyj744-ctrl.github.io}"
 GENERATION_MODE="${GENERATION_MODE:-proxy}"
 LLM_PROXY_BASE_URL="${LLM_PROXY_BASE_URL:-http://127.0.0.1:8302/v1}"
 LLM_PROXY_MODEL="${LLM_PROXY_MODEL:-gemini-pro}"
+PUBLISH_JITTER_MAX_SECONDS="${PUBLISH_JITTER_MAX_SECONDS:-0}"
 
 mkdir -p "$(dirname "$LOCK_FILE")" "$LOG_DIR"
 exec 9>"$LOCK_FILE"
@@ -21,6 +22,15 @@ fi
 
 cd "$REPO_DIR"
 export SITE_BASE GENERATION_MODE LLM_PROXY_BASE_URL LLM_PROXY_MODEL LLM_PROXY_API_KEY
+
+if [[ "$PUBLISH_JITTER_MAX_SECONDS" =~ ^[0-9]+$ ]] && [ "$PUBLISH_JITTER_MAX_SECONDS" -gt 0 ]; then
+  seed="$(date +%s%N)-$$-$RANDOM"
+  checksum="$(printf '%s' "$seed" | cksum)"
+  checksum="${checksum%% *}"
+  jitter=$((checksum % (PUBLISH_JITTER_MAX_SECONDS + 1)))
+  echo "publish jitter sleep: ${jitter}s"
+  sleep "$jitter"
+fi
 
 git fetch origin main
 git checkout main
