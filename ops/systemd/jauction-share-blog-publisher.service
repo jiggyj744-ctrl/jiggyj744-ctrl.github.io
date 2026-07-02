@@ -1,0 +1,14 @@
+[Unit]
+Description=Jauction share blog publisher
+Wants=network-online.target docker.service
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/jauction-share-blog-publisher.env
+WorkingDirectory=/srv/jiggyj744-ctrl.github.io
+ExecStart=/srv/jiggyj744-ctrl.github.io/ops/vm109-share-blog-publisher.sh
+TimeoutStartSec=1800
+
+[Install]
+WantedBy=multi-user.target

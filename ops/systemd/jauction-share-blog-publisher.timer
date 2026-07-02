@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Jauction share blog publisher
+
+[Timer]
+OnCalendar=*-*-* 06:12:00
+Persistent=true
+RandomizedDelaySec=10m
+Unit=jauction-share-blog-publisher.service
+
+[Install]
+WantedBy=timers.target
