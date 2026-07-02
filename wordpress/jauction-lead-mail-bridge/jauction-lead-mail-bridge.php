@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Jauction Lead Mail Bridge
  * Description: Receives Jauction landing leads through a protected REST endpoint and sends email through wp_mail/WP Mail SMTP.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Jauction
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -16,10 +16,12 @@ if (!defined('ABSPATH')) {
 const JAUCTION_LEAD_MAIL_TO = 'jauction_lead_mail_to';
 const JAUCTION_LEAD_MAIL_TOKEN = 'jauction_lead_mail_token';
 const JAUCTION_LEAD_MAIL_FROM_NAME = 'jauction_lead_mail_from_name';
+const JAUCTION_LEAD_MAIL_FROM_EMAIL = 'jauction_lead_mail_from_email';
 const JAUCTION_LEAD_MAIL_LAST_STATUS = 'jauction_lead_mail_last_status';
 const JAUCTION_LEAD_MAIL_LAST_ERROR = 'jauction_lead_mail_last_error';
 const JAUCTION_LEAD_MAIL_LAST_AT = 'jauction_lead_mail_last_at';
 const JAUCTION_LEAD_MAIL_CONSULTATION_TOKEN = 'SHARE-CONSULTATION-CUSTOMER-FORM';
+const JAUCTION_LEAD_MAIL_FILTER_PRIORITY = 9999;
 
 register_activation_hook(__FILE__, 'jauction_lead_mail_ensure_defaults');
 add_action('plugins_loaded', 'jauction_lead_mail_ensure_defaults');
@@ -33,6 +35,12 @@ function jauction_lead_mail_ensure_defaults(): void
     }
     if (!get_option(JAUCTION_LEAD_MAIL_FROM_NAME)) {
         update_option(JAUCTION_LEAD_MAIL_FROM_NAME, jauction_lead_mail_default_from_name());
+    }
+    if (!get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL)) {
+        $from_email = jauction_lead_mail_default_from_email();
+        if ($from_email !== '') {
+            update_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, $from_email);
+        }
     }
     $external_token = jauction_lead_mail_external_token();
     if ($external_token !== '') {
@@ -54,6 +62,13 @@ function jauction_lead_mail_default_from_name(): string
 {
     $configured = getenv('SMTP_FROM_NAME');
     return sanitize_text_field($configured ?: '지분매입 상담센터');
+}
+
+function jauction_lead_mail_default_from_email(): string
+{
+    $configured = getenv('JAUCTION_LEAD_MAIL_FROM_EMAIL') ?: getenv('SMTP_FROM_EMAIL');
+    $email = sanitize_email((string) ($configured ?: get_option('admin_email')));
+    return $email && is_email($email) ? $email : '';
 }
 
 function jauction_lead_mail_external_token(): string
@@ -208,11 +223,13 @@ function jauction_lead_mail_send(array $lead): array
 
     $GLOBALS['jauction_lead_mail_last_wp_error'] = '';
     add_action('wp_mail_failed', 'jauction_lead_mail_capture_wp_error');
-    add_filter('wp_mail_from_name', 'jauction_lead_mail_from_name', 20);
+    add_filter('wp_mail_from', 'jauction_lead_mail_from_email', JAUCTION_LEAD_MAIL_FILTER_PRIORITY);
+    add_filter('wp_mail_from_name', 'jauction_lead_mail_from_name', JAUCTION_LEAD_MAIL_FILTER_PRIORITY);
 
     $sent = wp_mail($to, $subject, $body, $headers);
 
-    remove_filter('wp_mail_from_name', 'jauction_lead_mail_from_name', 20);
+    remove_filter('wp_mail_from_name', 'jauction_lead_mail_from_name', JAUCTION_LEAD_MAIL_FILTER_PRIORITY);
+    remove_filter('wp_mail_from', 'jauction_lead_mail_from_email', JAUCTION_LEAD_MAIL_FILTER_PRIORITY);
     remove_action('wp_mail_failed', 'jauction_lead_mail_capture_wp_error');
 
     if (!$sent) {
@@ -275,6 +292,12 @@ function jauction_lead_mail_from_name(string $name): string
     return $configured ?: $name;
 }
 
+function jauction_lead_mail_from_email(string $email): string
+{
+    $configured = sanitize_email((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
+    return $configured && is_email($configured) ? $configured : $email;
+}
+
 function jauction_lead_mail_capture_wp_error(WP_Error $error): void
 {
     $GLOBALS['jauction_lead_mail_last_wp_error'] = $error->get_error_message();
@@ -315,6 +338,7 @@ function jauction_lead_mail_admin_page(): void
     $token = esc_html(jauction_lead_mail_current_token());
     $to = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_TO, get_option('admin_email')));
     $from_name = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터'));
+    $from_email = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
     $last_status = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_STATUS, '-'));
     $last_error = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_ERROR, ''));
     $last_at = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_AT, '-'));
@@ -356,7 +380,14 @@ function jauction_lead_mail_admin_page(): void
                     <th scope="row"><label for="jauction_lead_mail_from_name">발신자 이름</label></th>
                     <td>
                         <input name="jauction_lead_mail_from_name" id="jauction_lead_mail_from_name" type="text" class="regular-text" value="<?php echo $from_name; ?>">
-                        <p class="description">발신 주소는 WP Mail SMTP 설정을 따릅니다.</p>
+                        <p class="description">메일함에 표시될 발신자 이름입니다.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="jauction_lead_mail_from_email">발신자 이메일</label></th>
+                    <td>
+                        <input name="jauction_lead_mail_from_email" id="jauction_lead_mail_from_email" type="email" class="regular-text" value="<?php echo $from_email; ?>" placeholder="예: no-reply@example.com">
+                        <p class="description">WP Mail SMTP가 강제 발신 주소를 사용하면 SMTP 설정이 우선될 수 있습니다. 인증 가능한 도메인의 주소를 사용하세요.</p>
                     </td>
                 </tr>
             </table>
@@ -389,6 +420,8 @@ function jauction_lead_mail_handle_admin_post(): void
         check_admin_referer('jauction_lead_mail_save');
         update_option(JAUCTION_LEAD_MAIL_TO, sanitize_text_field((string) ($_POST['jauction_lead_mail_to'] ?? '')));
         update_option(JAUCTION_LEAD_MAIL_FROM_NAME, sanitize_text_field((string) ($_POST['jauction_lead_mail_from_name'] ?? '')));
+        $from_email = sanitize_email((string) ($_POST['jauction_lead_mail_from_email'] ?? ''));
+        update_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, $from_email && is_email($from_email) ? $from_email : '');
         add_settings_error('jauction_lead_mail', 'saved', '설정을 저장했습니다.', 'updated');
     } elseif ($action === 'rotate') {
         check_admin_referer('jauction_lead_mail_rotate');
