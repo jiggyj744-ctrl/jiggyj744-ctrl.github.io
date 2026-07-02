@@ -22,6 +22,44 @@ fi
 cd "$REPO_DIR"
 export SITE_BASE GENERATION_MODE LLM_PROXY_BASE_URL LLM_PROXY_MODEL LLM_PROXY_API_KEY
 
+git fetch origin main
+git checkout main
+git pull --ff-only origin main
+
+if [ "${FORCE_PUBLISH:-0}" != "1" ]; then
+  SHOULD_CONTINUE="$(node --input-type=module <<'NODE'
+import fs from "node:fs";
+function kstDate(value) {
+  const date = value ? new Date(value) : new Date();
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date).reduce((acc, part) => {
+    if (part.type !== "literal") acc[part.type] = part.value;
+    return acc;
+  }, {});
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+const today = kstDate();
+const state = fs.existsSync("ops/index-state.json")
+  ? JSON.parse(fs.readFileSync("ops/index-state.json", "utf8"))
+  : { runs: [] };
+const alreadyPublished = (state.runs || []).some((run) =>
+  kstDate(run.date) === today &&
+  Array.isArray(run.pages) &&
+  run.pages.some((page) => String(page).startsWith("blog/"))
+);
+console.error(alreadyPublished ? `blog already published for ${today}` : `blog publish allowed for ${today}`);
+console.log(alreadyPublished ? "0" : "1");
+NODE
+)"
+  if [ "$SHOULD_CONTINUE" != "1" ]; then
+    exit 0
+  fi
+fi
+
 node --input-type=module <<'NODE'
 const baseUrl = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "");
 const healthBase = baseUrl.replace(/\/v1$/, "");
@@ -57,10 +95,6 @@ if (!text.trim()) {
 }
 console.log("Gemini proxy completion route OK via " + process.env.LLM_PROXY_MODEL);
 NODE
-
-git fetch origin main
-git checkout main
-git pull --ff-only origin main
 
 node scripts/seo-content-engine.mjs --limit "$LIMIT"
 node tools/verify_site.mjs

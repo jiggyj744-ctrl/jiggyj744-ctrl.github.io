@@ -1,0 +1,5 @@
+*.sh text eol=lf
+ops/systemd/* text eol=lf
+.github/workflows/*.yml text eol=lf
+*.md text eol=lf
+robots.txt text eol=lf

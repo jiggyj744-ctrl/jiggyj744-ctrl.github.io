@@ -322,7 +322,7 @@ function qaBlogPost(post, html) {
 function updateBlogIndex(posts) { fs.mkdirSync("blog", { recursive: true }); fs.writeFileSync("blog/index.html", renderBlogIndex(posts), "utf8"); }
 function updateFeed(posts) {
   const items = posts.slice(0, 30).map((post) => "  <item>\n    <title>" + escapeXml(post.title || post.keyword) + "</title>\n    <link>" + siteBase + "/" + cleanSlug(post.slug) + "/</link>\n    <guid>" + siteBase + "/" + cleanSlug(post.slug) + "/</guid>\n    <pubDate>" + new Date(post.publishedAt || post.lastPublished || new Date().toISOString()).toUTCString() + "</pubDate>\n    <description>" + escapeXml(post.description || post.keyword + " 검토 노트") + "</description>\n  </item>").join("\n");
-  fs.writeFileSync("feed.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">\n<channel>\n  <title>Jauction 지분매입 블로그</title>\n  <link>" + siteBase + "/blog/</link>\n  <description>공유지분 매도와 지분경매 검토 노트 자동 발행 피드</description>\n  <language>ko-KR</language>\n  <lastBuildDate>" + new Date().toUTCString() + "</lastBuildDate>\n" + items + "\n</channel>\n</rss>\n", "utf8");
+  fs.writeFileSync("feed.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">\n<channel>\n  <title>Jauction 지분매입 블로그</title>\n  <link>" + siteBase + "/blog/</link>\n  <description>공유지분 매도와 지분경매 검토 노트 피드</description>\n  <language>ko-KR</language>\n  <lastBuildDate>" + new Date().toUTCString() + "</lastBuildDate>\n" + items + "\n</channel>\n</rss>\n", "utf8");
 }
 function updateBlogLinks(posts) {
   const file = "index.html";
@@ -337,7 +337,7 @@ function updateBlogLinks(posts) {
     const end = html.indexOf(endMarker, start);
     html = html.slice(0, start) + replacement + html.slice(end + endMarker.length);
   } else {
-    const block = "<section class=\"band service-band\" id=\"blog-hub\"><div class=\"section-head\"><p class=\"eyebrow\">지분매입 블로그</p><h2>검토 노트를 계속 발행합니다</h2><p>공유지분 매도, 지분경매, 상속지분, 공유물분할청구 검색 의도에 맞춘 글을 자동 발행합니다.</p></div>" + replacement + "<p class=\"center-link\"><a href=\"/blog/\">블로그 전체 보기</a></p></section>";
+    const block = "<section class=\"band service-band\" id=\"blog-hub\"><div class=\"section-head\"><p class=\"eyebrow\">지분매입 블로그</p><h2>검토 노트를 정기적으로 추가합니다</h2><p>공유지분 매도, 지분경매, 상속지분, 공유물분할청구 검색 의도에 맞춘 검토 글을 정리합니다.</p></div>" + replacement + "<p class=\"center-link\"><a href=\"/blog/\">블로그 전체 보기</a></p></section>";
     html = html.replace("    <section class=\"final-cta\">", block + "\n    <section class=\"final-cta\">");
   }
   fs.writeFileSync(file, html, "utf8");

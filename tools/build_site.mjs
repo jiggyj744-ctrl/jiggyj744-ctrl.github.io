@@ -1497,6 +1497,15 @@ function seoFiles() {
   write("robots.txt", `
 User-agent: *
 Allow: /
+Disallow: /.github/
+Disallow: /content/
+Disallow: /ops/
+Disallow: /prompts/
+Disallow: /scripts/
+Disallow: /tools/
+Disallow: /workers/
+Disallow: /wordpress/
+Disallow: /README.md
 
 Sitemap: ${siteUrl}/sitemap.xml
 `);

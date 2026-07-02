@@ -12,7 +12,12 @@ on:
         required: false
         default: ""
   schedule:
-    - cron: "12 21 * * *"
+    - cron: "17 23 * * *"
+    - cron: "43 1 * * *"
+    - cron: "11 4 * * *"
+    - cron: "37 6 * * *"
+    - cron: "9 9 * * *"
+    - cron: "51 12 * * *"
 
 permissions:
   contents: write
@@ -24,7 +29,7 @@ concurrency:
 jobs:
   publish:
     runs-on: self-hosted
-    timeout-minutes: 20
+    timeout-minutes: 30
     env:
       SITE_BASE: https://jiggyj744-ctrl.github.io
       GENERATION_MODE: proxy
@@ -32,11 +37,84 @@ jobs:
       LLM_PROXY_API_KEY: ${{ secrets.LLM_PROXY_API_KEY }}
       LLM_PROXY_MODEL: ${{ vars.LLM_PROXY_MODEL || 'gemini-pro' }}
     steps:
+      - name: Select daily publish slot
+        id: publish_slot
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "should_publish=1" >> "$GITHUB_OUTPUT"
+            echo "reason=manual" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "${{ github.event.schedule }}" in
+            "17 23 * * *") current_slot=0 ;;
+            "43 1 * * *") current_slot=1 ;;
+            "11 4 * * *") current_slot=2 ;;
+            "37 6 * * *") current_slot=3 ;;
+            "9 9 * * *") current_slot=4 ;;
+            "51 12 * * *") current_slot=5 ;;
+            *) current_slot=-1 ;;
+          esac
+
+          kst_date="$(TZ=Asia/Seoul date +%F)"
+          checksum="$(printf '%s' "$kst_date" | cksum)"
+          checksum="${checksum%% *}"
+          selected_slot=$((checksum % 6))
+
+          if [ "$current_slot" = "$selected_slot" ]; then
+            echo "should_publish=1" >> "$GITHUB_OUTPUT"
+            echo "reason=selected-slot-$selected_slot" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_publish=0" >> "$GITHUB_OUTPUT"
+            echo "reason=skip-slot-$current_slot-selected-$selected_slot" >> "$GITHUB_OUTPUT"
+          fi
+          echo "KST date=$kst_date current_slot=$current_slot selected_slot=$selected_slot"
+
       - uses: actions/checkout@v4
+        if: steps.publish_slot.outputs.should_publish == '1'
       - uses: actions/setup-node@v4
+        if: steps.publish_slot.outputs.should_publish == '1'
         with:
           node-version: 22
+      - name: Prevent duplicate daily blog publish
+        id: daily_guard
+        if: steps.publish_slot.outputs.should_publish == '1'
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "should_continue=1" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          function kstDate(value) {
+            const date = value ? new Date(value) : new Date();
+            const parts = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit"
+            }).formatToParts(date).reduce((acc, part) => {
+              if (part.type !== "literal") acc[part.type] = part.value;
+              return acc;
+            }, {});
+            return `${parts.year}-${parts.month}-${parts.day}`;
+          }
+          const today = kstDate();
+          const state = fs.existsSync("ops/index-state.json")
+            ? JSON.parse(fs.readFileSync("ops/index-state.json", "utf8"))
+            : { runs: [] };
+          const alreadyPublished = (state.runs || []).some((run) =>
+            kstDate(run.date) === today &&
+            Array.isArray(run.pages) &&
+            run.pages.some((page) => String(page).startsWith("blog/"))
+          );
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `should_continue=${alreadyPublished ? "0" : "1"}\n`);
+          console.log(alreadyPublished ? `blog already published for ${today}` : `blog publish allowed for ${today}`);
+          NODE
       - name: Verify Gemini proxy route
+        if: steps.publish_slot.outputs.should_publish == '1' && steps.daily_guard.outputs.should_continue == '1'
         shell: bash
         run: |
           test -n "$LLM_PROXY_BASE_URL" || { echo "LLM_PROXY_BASE_URL is required"; exit 1; }
@@ -77,10 +155,13 @@ jobs:
           console.log("Gemini proxy completion route OK via " + process.env.LLM_PROXY_MODEL);
           NODE
       - name: Generate share acquisition SEO pages
+        if: steps.publish_slot.outputs.should_publish == '1' && steps.daily_guard.outputs.should_continue == '1'
         run: node scripts/seo-content-engine.mjs --limit "${{ github.event.inputs.pages || '1' }}"
       - name: Verify static site
+        if: steps.publish_slot.outputs.should_publish == '1' && steps.daily_guard.outputs.should_continue == '1'
         run: node tools/verify_site.mjs
       - name: Commit generated pages
+        if: steps.publish_slot.outputs.should_publish == '1' && steps.daily_guard.outputs.should_continue == '1'
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"

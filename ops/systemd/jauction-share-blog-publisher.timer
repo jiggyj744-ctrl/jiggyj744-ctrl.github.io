@@ -2,9 +2,10 @@
 Description=Daily Jauction share blog publisher
 
 [Timer]
-OnCalendar=*-*-* 06:12:00
+OnCalendar=*-*-* 07:00:00
 Persistent=true
-RandomizedDelaySec=10m
+RandomizedDelaySec=14h
+AccuracySec=1m
 Unit=jauction-share-blog-publisher.service
 
 [Install]
