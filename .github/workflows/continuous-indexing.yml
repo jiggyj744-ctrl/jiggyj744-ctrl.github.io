@@ -32,7 +32,7 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: self-hosted
+    runs-on: [self-hosted, vm109]
     timeout-minutes: 30
     env:
       SITE_BASE: https://jiggyj744-ctrl.github.io

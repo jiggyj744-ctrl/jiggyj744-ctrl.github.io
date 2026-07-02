@@ -8,6 +8,16 @@ const root = fs.existsSync(path.join(workspace, "public", "index.html")) && !fs.
   ? path.join(workspace, "public")
   : workspace;
 const verification = readVerification();
+const blogBacklog = readJsonIfExists("content/blog-backlog.json", { posts: [] });
+const publishedBlogs = blogBacklog.posts.filter((post) => post.status === "published");
+const blogCategories = [
+  { label: "공유지분 매도", slug: "share-sale", match: /공유지분\s*매도|매도/i },
+  { label: "지분경매 검토", slug: "share-auction", match: /지분경매|사건번호|경매/i },
+  { label: "상속지분", slug: "inherited-share", match: /상속/i },
+  { label: "토지지분", slug: "land-share", match: /토지|임야|농지|맹지/i },
+  { label: "상가지분", slug: "commercial-share", match: /상가|건물|오피스/i },
+  { label: "공유자 문제", slug: "co-owner-issue", match: /공유자|갈등|연락/i },
+];
 
 const requiredFiles = [
   "index.html",
@@ -37,6 +47,13 @@ const requiredFiles = [
   "feed.xml",
   ".nojekyll",
 ];
+for (const post of publishedBlogs) {
+  requiredFiles.push(cleanSlug(post.slug) + "/index.html");
+  requiredFiles.push(blogSourceFile(post));
+}
+for (const category of activeBlogCategories(publishedBlogs)) {
+  requiredFiles.push("blog/category/" + category.slug + "/index.html");
+}
 
 const banned = [
   legacyFactoryToken(),
@@ -139,6 +156,12 @@ const requiredText = {
   "blog/index.html": ["지분매입 블로그", "CollectionPage", "feed.xml", "1688-0976"],
   "feed.xml": ["<rss", "<channel>", "Jauction 지분매입 블로그"],
 };
+for (const post of publishedBlogs) {
+  requiredText[cleanSlug(post.slug) + "/index.html"] = [post.title, "BlogPosting", "FAQPage", "상담신청 메일 보내기", post.thumbnail || "/assets/blog/thumb-share-sale.webp"];
+}
+for (const category of activeBlogCategories(publishedBlogs)) {
+  requiredText["blog/category/" + category.slug + "/index.html"] = [category.label, "CollectionPage", "/#consult", "/blog/"];
+}
 
 const errors = [];
 const verificationFileNames = new Set([verification.googleFile?.name, verification.naverFile?.name].filter(Boolean));
@@ -156,6 +179,33 @@ for (const [file, needles] of Object.entries(requiredText)) {
     if (!content.includes(needle)) {
       errors.push(`${file} missing text: ${needle}`);
     }
+  }
+}
+
+const sitemap = fs.existsSync(path.join(root, "sitemap.xml")) ? read("sitemap.xml") : "";
+const feed = fs.existsSync(path.join(root, "feed.xml")) ? read("feed.xml") : "";
+const blogIndex = fs.existsSync(path.join(root, "blog/index.html")) ? read("blog/index.html") : "";
+for (const post of publishedBlogs) {
+  const slug = cleanSlug(post.slug);
+  const url = "https://jiggyj744-ctrl.github.io/" + slug + "/";
+  if (!sitemap.includes(url)) errors.push(`sitemap.xml missing published blog URL: ${url}`);
+  if (!feed.includes(url)) errors.push(`feed.xml missing published blog URL: ${url}`);
+  if (!blogIndex.includes("/" + slug + "/")) errors.push(`blog/index.html missing published blog link: ${slug}`);
+  const source = readJsonIfExists(blogSourceFile(post), null);
+  if (!source || !Array.isArray(source.sections) || source.sections.length < 5) {
+    errors.push(`${blogSourceFile(post)} missing persisted blog sections`);
+  }
+  if (!source || !Array.isArray(source.faqs) || source.faqs.length < 4) {
+    errors.push(`${blogSourceFile(post)} missing persisted blog faqs`);
+  }
+}
+for (const category of activeBlogCategories(publishedBlogs)) {
+  const path = "/blog/category/" + category.slug + "/";
+  if (!sitemap.includes("https://jiggyj744-ctrl.github.io" + path)) {
+    errors.push(`sitemap.xml missing blog category URL: ${path}`);
+  }
+  if (!blogIndex.includes(path)) {
+    errors.push(`blog/index.html missing blog category link: ${path}`);
   }
 }
 
@@ -226,6 +276,25 @@ console.log(`verification passed: ${requiredFiles.length} required files, ${html
 
 function read(file) {
   return fs.readFileSync(path.join(root, file), "utf8");
+}
+function readJsonIfExists(file, fallback) {
+  const target = path.join(root, file);
+  if (!fs.existsSync(target)) return fallback;
+  return JSON.parse(fs.readFileSync(target, "utf8"));
+}
+function cleanSlug(value) {
+  return String(value || "").replace(/^\/+|\/+$/g, "");
+}
+function blogSourceFile(post) {
+  return "content/blog-posts/" + cleanSlug(post.slug).replaceAll("/", "__") + ".json";
+}
+function activeBlogCategories(posts) {
+  const active = new Set(posts.map((post) => categorySlugFor(post.category || post.keyword || post.title)));
+  return blogCategories.filter((category) => active.has(category.slug));
+}
+function categorySlugFor(value) {
+  const text = String(value || "");
+  return blogCategories.find((category) => category.label === text || category.match.test(text))?.slug || "share-sale";
 }
 
 function walk(dir) {

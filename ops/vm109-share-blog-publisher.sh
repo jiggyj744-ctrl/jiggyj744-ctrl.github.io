@@ -2,8 +2,8 @@
 set -euo pipefail
 
 REPO_DIR="${JAUCTION_REPO_DIR:-/srv/jiggyj744-ctrl.github.io}"
-LOCK_FILE="${JAUCTION_PUBLISH_LOCK:-/var/lock/jauction-share-blog-publisher.lock}"
-LOG_DIR="${JAUCTION_PUBLISH_LOG_DIR:-/var/log/jauction-share-blog-publisher}"
+LOCK_FILE="${JAUCTION_PUBLISH_LOCK:-${TMPDIR:-/tmp}/jauction-share-blog-publisher.lock}"
+LOG_DIR="${JAUCTION_PUBLISH_LOG_DIR:-${TMPDIR:-/tmp}/jauction-share-blog-publisher}"
 LIMIT="${PUBLISH_LIMIT:-1}"
 SITE_BASE="${SITE_BASE:-https://jiggyj744-ctrl.github.io}"
 GENERATION_MODE="${GENERATION_MODE:-proxy}"
@@ -12,6 +12,10 @@ LLM_PROXY_MODEL="${LLM_PROXY_MODEL:-gemini-pro}"
 PUBLISH_JITTER_MAX_SECONDS="${PUBLISH_JITTER_MAX_SECONDS:-0}"
 
 mkdir -p "$(dirname "$LOCK_FILE")" "$LOG_DIR"
+RUN_LOG="$LOG_DIR/$(date -u +%Y%m%dT%H%M%SZ)-publisher.log"
+exec > >(tee -a "$RUN_LOG") 2>&1
+echo "publisher log: $RUN_LOG"
+
 exec 9>"$LOCK_FILE"
 if ! flock -n 9; then
   echo "publisher already running"
@@ -141,3 +145,14 @@ if [ -n "$LAST_URL" ]; then
     fi
   done
 fi
+
+for attempt in 1 2 3 4 5; do
+  if node tools/verify_live.mjs; then
+    break
+  fi
+  sleep 30
+  if [ "$attempt" = "5" ]; then
+    echo "live verification failed after publish" >&2
+    exit 1
+  fi
+done

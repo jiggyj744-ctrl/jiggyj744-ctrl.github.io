@@ -1,3 +1,5 @@
+import fs from "node:fs";
+
 const siteBase = process.env.JAUCTION_SITE_BASE || "https://jiggyj744-ctrl.github.io";
 const workerBase = "https://jauction-lead-api.jiggyj.workers.dev";
 const legacyFactory = String.fromCharCode(70, 97, 99, 116, 111, 114, 121, 80, 114, 111);
@@ -76,11 +78,9 @@ const publicStrategyPattern = new RegExp([
   "<span>전화</span>",
 ].join("|"));
 
-const publicPaths = [
+const staticPublicPaths = [
   "/",
   "/blog/",
-  "/blog/auction-case-number-share-review/",
-  "/blog/inherited-share-sale-records/",
   "/faq/",
   "/privacy/",
   "/areas/seoul-share-purchase/",
@@ -105,6 +105,11 @@ const publicPaths = [
   "/robots.txt",
   "/404.html",
 ];
+const publicPaths = uniquePaths([
+  ...staticPublicPaths,
+  ...publishedBlogPaths(),
+  ...sitemapPaths(),
+]);
 
 const errors = [];
 
@@ -162,6 +167,34 @@ if (errors.length) {
 }
 
 console.log(`live verification passed: ${publicPaths.length} public pages, worker health, admin guard`);
+
+function publishedBlogPaths() {
+  if (!fs.existsSync("content/blog-backlog.json")) return [];
+  const state = JSON.parse(fs.readFileSync("content/blog-backlog.json", "utf8"));
+  return (state.posts || [])
+    .filter((post) => post.status === "published" && post.slug)
+    .map((post) => "/" + String(post.slug).replace(/^\/+|\/+$/g, "") + "/");
+}
+
+function sitemapPaths() {
+  if (!fs.existsSync("sitemap.xml")) return [];
+  const xml = fs.readFileSync("sitemap.xml", "utf8");
+  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
+    .map((match) => {
+      try {
+        const url = new URL(match[1]);
+        if (url.origin !== new URL(siteBase).origin) return "";
+        return url.pathname.endsWith("/") || /\.[a-z0-9]+$/i.test(url.pathname) ? url.pathname : url.pathname + "/";
+      } catch {
+        return "";
+      }
+    })
+    .filter(Boolean);
+}
+
+function uniquePaths(paths) {
+  return [...new Set(paths.map((path) => path.startsWith("/") ? path : "/" + path))];
+}
 
 async function fetchText(url) {
   const response = await fetch(url);

@@ -69,6 +69,15 @@ const publicStrategyBanned = [
   ["보증", "금"].join(""),
 ];
 const blogHeroImage = "/assets/blog/blog-hero-share-review.webp";
+const blogContentDir = path.join("content", "blog-posts");
+const blogCategories = [
+  { label: "공유지분 매도", slug: "share-sale", match: /공유지분\s*매도|매도/i },
+  { label: "지분경매 검토", slug: "share-auction", match: /지분경매|사건번호|경매/i },
+  { label: "상속지분", slug: "inherited-share", match: /상속/i },
+  { label: "토지지분", slug: "land-share", match: /토지|임야|농지|맹지/i },
+  { label: "상가지분", slug: "commercial-share", match: /상가|건물|오피스/i },
+  { label: "공유자 문제", slug: "co-owner-issue", match: /공유자|갈등|연락/i },
+];
 const blogThumbMap = [
   { test: /경매|사건번호|auction/i, image: "/assets/blog/thumb-share-auction.webp" },
   { test: /상속|가족|inherited/i, image: "/assets/blog/thumb-inherited-share.webp" },
@@ -84,9 +93,12 @@ const blogPrompt = fs.existsSync("prompts/share-blog-post.md") ? fs.readFileSync
 ensureBlogBacklogQueue(blogBacklog);
 if (args.includes("--rebuild-blog-only")) {
   const rebuiltPosts = rebuildPublishedBlogPages();
-  updateBlogIndex(blogBacklog.posts.filter((item) => item.status === "published"));
-  updateFeed(blogBacklog.posts.filter((item) => item.status === "published"));
-  updateBlogLinks(blogBacklog.posts.filter((item) => item.status === "published"));
+  const allPublishedBlogs = publishedBlogPosts();
+  updateBlogIndex(allPublishedBlogs);
+  updateBlogCategoryPages(allPublishedBlogs);
+  updateFeed(allPublishedBlogs);
+  syncSitemapForBlogSurfaces(allPublishedBlogs);
+  updateBlogLinks(allPublishedBlogs);
   writeJson("content/blog-backlog.json", blogBacklog);
   console.log("rebuilt blog pages " + rebuiltPosts.length + " post(s)");
   process.exit(0);
@@ -127,7 +139,9 @@ for (const item of selectedBlogs) {
 }
 const allPublishedBlogs = blogBacklog.posts.filter((item) => item.status === "published");
 updateBlogIndex(allPublishedBlogs);
+updateBlogCategoryPages(allPublishedBlogs);
 updateFeed(allPublishedBlogs);
+syncSitemapForBlogSurfaces(allPublishedBlogs);
 if (publishedBlogs.length) {
   updateSitemap(publishedBlogs);
   updateBlogLinks(allPublishedBlogs);
@@ -238,7 +252,7 @@ function buildBlogBacklogCandidates() {
 function rebuildPublishedBlogPages() {
   const rebuilt = [];
   for (const item of blogBacklog.posts.filter((entry) => entry.status === "published")) {
-    const generated = fallbackBlogContent(item, "template-blog-rebuild");
+    const generated = loadBlogSource(item) || fallbackBlogContent(item, "template-blog-rebuild-seed");
     const post = normalizeBlogPost(item, generated);
     const html = renderBlogPost(post);
     qaBlogPost(post, html);
@@ -250,6 +264,7 @@ function rebuildPublishedBlogPages() {
     item.description = post.description;
     item.category = post.category;
     item.thumbnail = blogImageFor(post);
+    persistBlogSource(item, generated, post);
     rebuilt.push(post);
   }
   blogBacklog.updated = today;
@@ -295,6 +310,8 @@ async function publishBlogPost(item) {
   item.title = post.h1;
   item.description = post.description;
   item.category = post.category;
+  item.thumbnail = blogImageFor(post);
+  persistBlogSource(item, generated, post);
   return post;
 }
 async function generateBlogContent(item, options = {}) {
@@ -349,13 +366,94 @@ function normalizeBlogPost(item, generated) {
   const sections = normalizeBlogSections(source.sections?.length ? source.sections : fallback.sections);
   const checklist = Array.isArray(source.checklist) && source.checklist.length ? source.checklist.map(String) : fallback.checklist;
   const faqs = Array.isArray(source.faqs) && source.faqs.length ? source.faqs : fallback.faqs;
-  return { slug: cleanSlug(item.slug), keyword: item.keyword, category: source.category || item.category || "지분매입 블로그", title: source.title || fallback.title, description: source.description || fallback.description, h1: source.h1 || item.title || item.keyword, eyebrow: source.eyebrow || item.category || "지분매입 블로그", excerpt: source.excerpt || fallback.excerpt, publishedAt: item.publishedAt || new Date().toISOString(), sections, checklist, faqs };
+  return { slug: cleanSlug(item.slug), keyword: item.keyword, category: source.category || item.category || "지분매입 블로그", title: source.title || fallback.title, description: source.description || fallback.description, h1: source.h1 || item.title || item.keyword, eyebrow: source.eyebrow || item.category || "지분매입 블로그", excerpt: source.excerpt || fallback.excerpt, thumbnail: source.thumbnail || item.thumbnail || "", publishedAt: item.publishedAt || new Date().toISOString(), sections, checklist, faqs };
 }
 function normalizeBlogSections(sections) {
   return sections.map((section, index) => {
     const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : Array.isArray(section.items) ? section.items.map((item) => [item.title, item.text].filter(Boolean).join(": ")) : [section.summary || "공유지분 매입 가능성은 권리관계, 공유자, 점유 상태를 함께 확인해야 합니다."];
     return { heading: section.heading || section.title || "검토 항목 " + (index + 1), paragraphs: paragraphs.filter(Boolean).map(String) };
   });
+}
+function loadBlogSource(item) {
+  const sourceFile = blogSourcePath(item);
+  if (fs.existsSync(sourceFile)) return readJson(sourceFile);
+  return extractBlogSourceFromHtml(item);
+}
+function persistBlogSource(item, generated, post) {
+  fs.mkdirSync(blogContentDir, { recursive: true });
+  const source = {
+    generationMode: generated?.generationMode || "persisted",
+    keyword: item.keyword,
+    slug: cleanSlug(item.slug),
+    title: post.title,
+    description: post.description,
+    h1: post.h1,
+    eyebrow: post.eyebrow,
+    excerpt: post.excerpt,
+    category: post.category,
+    thumbnail: blogImageFor(post),
+    sections: post.sections,
+    checklist: post.checklist,
+    faqs: post.faqs,
+  };
+  const target = blogSourcePath(item);
+  const next = JSON.stringify(source, null, 2) + "\n";
+  if (!fs.existsSync(target) || fs.readFileSync(target, "utf8") !== next) {
+    fs.writeFileSync(target, next, "utf8");
+  }
+}
+function blogSourcePath(item) {
+  return path.join(blogContentDir, cleanSlug(item.slug).replaceAll("/", "__") + ".json");
+}
+function extractBlogSourceFromHtml(item) {
+  const file = path.join(root, cleanSlug(item.slug), "index.html");
+  if (!fs.existsSync(file)) return null;
+  const html = fs.readFileSync(file, "utf8");
+  const title = firstMatch(html, /<title>([\s\S]*?)<\/title>/);
+  const description = firstMatch(html, /<meta name="description" content="([\s\S]*?)">/);
+  const h1 = firstMatch(html, /<h1>([\s\S]*?)<\/h1>/);
+  const excerpt = firstMatch(html, /<p class="lead">([\s\S]*?)<\/p>/);
+  const category = firstMatch(html, /<section class="blog-detail-hero">[\s\S]*?<p class="eyebrow">([\s\S]*?)<\/p>/) || item.category;
+  const sections = [...html.matchAll(/<section class="blog-article-section">([\s\S]*?)<\/section>/g)].map((match) => {
+    const block = match[1];
+    const heading = firstMatch(block, /<h2>([\s\S]*?)<\/h2>/);
+    const paragraphs = [...block.matchAll(/<p(?! class="eyebrow")[^>]*>([\s\S]*?)<\/p>/g)].map((item) => decodeHtml(stripTags(item[1]))).filter(Boolean);
+    return { heading: decodeHtml(stripTags(heading)), paragraphs };
+  }).filter((section) => section.heading && section.paragraphs.length);
+  const checklistBlock = firstMatch(html, /<aside class="blog-checklist"[\s\S]*?<ul>([\s\S]*?)<\/ul>/);
+  const checklist = checklistBlock ? [...checklistBlock.matchAll(/<span>([\s\S]*?)<\/span>/g)].map((match) => decodeHtml(stripTags(match[1]))).filter(Boolean) : [];
+  const faqs = [...html.matchAll(/<details><summary>([\s\S]*?)<\/summary><p>([\s\S]*?)<\/p><\/details>/g)]
+    .map((match) => ({ q: decodeHtml(stripTags(match[1])), a: decodeHtml(stripTags(match[2])) }))
+    .filter((faq) => faq.q && faq.a)
+    .slice(0, 4);
+  if (!h1 || sections.length < 3 || faqs.length < 2) return null;
+  return {
+    generationMode: "html-extracted",
+    title: decodeHtml(stripTags(title)) || (h1 + " | 지분매입 검토 노트"),
+    description: decodeHtml(stripTags(description)) || item.description,
+    h1: decodeHtml(stripTags(h1)),
+    eyebrow: decodeHtml(stripTags(category)) || item.category,
+    excerpt: decodeHtml(stripTags(excerpt)) || item.keyword + " 관련 상담 전 확인자료를 정리했습니다.",
+    category: decodeHtml(stripTags(category)) || item.category,
+    thumbnail: item.thumbnail || "",
+    sections,
+    checklist,
+    faqs,
+  };
+}
+function firstMatch(value, pattern) {
+  return value.match(pattern)?.[1] || "";
+}
+function stripTags(value) {
+  return String(value || "").replace(/<[^>]+>/g, "").trim();
+}
+function decodeHtml(value) {
+  return String(value || "")
+    .replace(/&quot;/g, "\"")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#39;/g, "'");
 }
 function renderBlogPost(post) {
   const url = siteBase + "/" + post.slug + "/";
@@ -467,7 +565,7 @@ function renderBlogIndex(posts) {
   ];
   const faqJson = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqItems.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) });
   const faq = faqItems.map((item) => `<details><summary>${escapeHtml(item.q)}</summary><p>${escapeHtml(item.a)}</p></details>`).join("");
-  const categories = ["공유지분 매도", "지분경매 검토", "상속지분", "토지지분", "상가지분", "공유자 문제"];
+  const categories = activeBlogCategories(sortedPosts);
   return `<!doctype html>
 <html lang="ko">
 <head>
@@ -514,7 +612,7 @@ function renderBlogIndex(posts) {
     </section>
     <section class="band blog-list-band">
       <div class="blog-filter-row" aria-label="블로그 주제">
-        ${categories.map((category) => `<a href="/blog/" class="blog-filter">${escapeHtml(category)}</a>`).join("")}
+        ${categories.map((category) => `<a href="${categoryHref(category)}" class="blog-filter">${escapeHtml(category.label)}</a>`).join("")}
       </div>
       ${featured ? renderFeaturedBlogCard(featured) : ""}
       <div class="section-head"><p class="eyebrow">최신 글</p><h2>상황별 지분매입 검토 글</h2><p>검색 유입과 상담 전환을 동시에 고려해 전문 주제별 글을 정리합니다.</p></div>
@@ -524,6 +622,69 @@ function renderBlogIndex(posts) {
       <div class="section-head"><p class="eyebrow">FAQ</p><h2>자주 묻는 질문</h2></div>
       <div class="faq-list">${faq}</div>
       <p class="center-link"><a href="/#consult">상담 접수로 이동</a></p>
+    </section>
+    <section class="final-cta"><div><p class="eyebrow">1차 검토 접수</p><h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2></div><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>검토 요청하기</span></a></section>
+  </main>
+  ${siteFooter()}
+  ${mobileCta()}
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/assets/main.js?v=${assetVersion}" defer></script>
+</body>
+</html>
+`;
+}
+function renderBlogCategoryIndex(category, posts) {
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.publishedAt || b.lastPublished || 0) - new Date(a.publishedAt || a.lastPublished || 0));
+  const title = category.label + " 블로그 | 지분매입 검토 노트";
+  const description = category.label + " 관련 상담 전 확인할 자료와 보류 가능성 기준을 모은 지분매입 블로그입니다.";
+  const h1 = category.label.endsWith("검토") ? category.label + " 노트" : category.label + " 검토 노트";
+  const url = siteBase + categoryHref(category);
+  const collectionJson = JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: title, url, inLanguage: "ko-KR", publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone } });
+  return `<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="${url}">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${escapeHtml(facts.site_name)}">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${siteBase}${blogHeroImage}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#173b35">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/rss+xml" title="Jauction 지분매입 블로그 RSS" href="/feed.xml">
+  <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
+  <script type="application/ld+json">${collectionJson}</script>
+  <meta name="naver-site-verification" content="3bf2b707098dc68bbe5e8db7aad10955cad77bc0" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  ${siteHeader()}
+  <main id="main">
+    <section class="blog-index-hero">
+      <div class="blog-index-copy">
+        <p class="eyebrow">지분매입 블로그</p>
+        <h1>${escapeHtml(h1)}</h1>
+        <p class="lead">상담 접수 전 공개해도 되는 확인자료 중심으로 정리한 글만 모았습니다. 세부 판단은 접수 후 자료 기준으로 안내합니다.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/#consult"><i data-lucide="file-search"></i><span>무료 검토 요청</span></a>
+          <a class="btn btn-secondary" href="/blog/"><i data-lucide="book-open"></i><span>전체 블로그</span></a>
+        </div>
+      </div>
+      <figure class="blog-index-media">
+        <img src="${blogHeroImage}" alt="${escapeHtml(category.label)} 상담 자료 검토 이미지" width="1600" height="900">
+      </figure>
+    </section>
+    <section class="band blog-list-band">
+      <div class="section-head"><p class="eyebrow">카테고리</p><h2>${escapeHtml(category.label)} 최신 글</h2><p>같은 상황의 글을 묶어 상담 전환과 색인 흐름을 분리합니다.</p></div>
+      ${renderBlogCards(sortedPosts)}
     </section>
     <section class="final-cta"><div><p class="eyebrow">1차 검토 접수</p><h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2></div><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>검토 요청하기</span></a></section>
   </main>
@@ -567,6 +728,7 @@ function renderBlogCards(posts) {
     </article>`).join("")}</div>`;
 }
 function blogImageFor(post) {
+  if (post.thumbnail && /^\/assets\/blog\/[-a-z0-9.]+$/i.test(post.thumbnail)) return post.thumbnail;
   const haystack = [post.category, post.keyword, post.title, post.slug].filter(Boolean).join(" ");
   return blogThumbMap.find((item) => item.test.test(haystack))?.image || "/assets/blog/thumb-share-sale.webp";
 }
@@ -588,9 +750,22 @@ function qaBlogPost(post, html) {
   if (html.length < 6500) throw new Error(post.slug + " content too short");
 }
 function updateBlogIndex(posts) { fs.mkdirSync("blog", { recursive: true }); fs.writeFileSync("blog/index.html", renderBlogIndex(posts), "utf8"); }
+function updateBlogCategoryPages(posts) {
+  for (const category of activeBlogCategories(posts)) {
+    const categoryPosts = posts.filter((post) => categorySlugFor(post.category) === category.slug);
+    const targetDir = path.join(root, "blog", "category", category.slug);
+    fs.mkdirSync(targetDir, { recursive: true });
+    fs.writeFileSync(path.join(targetDir, "index.html"), renderBlogCategoryIndex(category, categoryPosts), "utf8");
+  }
+}
 function updateFeed(posts) {
-  const items = posts.slice(0, 30).map((post) => "  <item>\n    <title>" + escapeXml(post.title || post.keyword) + "</title>\n    <link>" + siteBase + "/" + cleanSlug(post.slug) + "/</link>\n    <guid>" + siteBase + "/" + cleanSlug(post.slug) + "/</guid>\n    <pubDate>" + new Date(post.publishedAt || post.lastPublished || new Date().toISOString()).toUTCString() + "</pubDate>\n    <description>" + escapeXml(post.description || post.keyword + " 검토 노트") + "</description>\n  </item>").join("\n");
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.publishedAt || b.lastPublished || 0) - new Date(a.publishedAt || a.lastPublished || 0));
+  const items = sortedPosts.slice(0, 30).map((post) => "  <item>\n    <title>" + escapeXml(post.title || post.keyword) + "</title>\n    <link>" + siteBase + "/" + cleanSlug(post.slug) + "/</link>\n    <guid>" + siteBase + "/" + cleanSlug(post.slug) + "/</guid>\n    <pubDate>" + new Date(post.publishedAt || post.lastPublished || new Date().toISOString()).toUTCString() + "</pubDate>\n    <description>" + escapeXml(post.description || post.keyword + " 검토 노트") + "</description>\n  </item>").join("\n");
   fs.writeFileSync("feed.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">\n<channel>\n  <title>Jauction 지분매입 블로그</title>\n  <link>" + siteBase + "/blog/</link>\n  <description>공유지분 매도와 지분경매 검토 노트 피드</description>\n  <language>ko-KR</language>\n  <lastBuildDate>" + new Date().toUTCString() + "</lastBuildDate>\n" + items + "\n</channel>\n</rss>\n", "utf8");
+}
+function syncSitemapForBlogSurfaces(posts) {
+  const categoryPages = activeBlogCategories(posts).map((category) => ({ slug: "blog/category/" + category.slug }));
+  updateSitemap([{ slug: "blog" }, ...posts, ...categoryPages]);
 }
 function updateBlogLinks(posts) {
   const file = "index.html";
@@ -598,7 +773,8 @@ function updateBlogLinks(posts) {
   if (!html.includes('/blog/')) html = html.replace('<a href="/faq/">FAQ</a>', '<a href="/blog/">블로그</a>\n      <a href="/faq/">FAQ</a>');
   const marker = "<!-- blog-indexing-links -->";
   const endMarker = "<!-- /blog-indexing-links -->";
-  const links = posts.slice(0, 9).map((post) => "<article class=\"service-card\"><p class=\"eyebrow\">" + escapeHtml(post.category || "검토 노트") + "</p><h3><a href=\"/" + cleanSlug(post.slug) + "/\">" + escapeHtml(post.title || post.keyword) + "</a></h3><p>" + escapeHtml(post.description || "공유지분 매입 검토 블로그 글입니다.") + "</p></article>").join("");
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.publishedAt || b.lastPublished || 0) - new Date(a.publishedAt || a.lastPublished || 0));
+  const links = sortedPosts.slice(0, 9).map((post) => "<article class=\"service-card\"><p class=\"eyebrow\">" + escapeHtml(post.category || "검토 노트") + "</p><h3><a href=\"/" + cleanSlug(post.slug) + "/\">" + escapeHtml(post.title || post.keyword) + "</a></h3><p>" + escapeHtml(post.description || "공유지분 매입 검토 블로그 글입니다.") + "</p></article>").join("");
   const replacement = marker + "<div class=\"service-grid\">" + links + "</div>" + endMarker;
   const start = html.indexOf(marker);
   if (start >= 0) {
@@ -609,6 +785,17 @@ function updateBlogLinks(posts) {
     html = html.replace("    <section class=\"final-cta\">", block + "\n    <section class=\"final-cta\">");
   }
   fs.writeFileSync(file, html, "utf8");
+}
+function activeBlogCategories(posts) {
+  const active = new Set(posts.map((post) => categorySlugFor(post.category || post.keyword || post.title)));
+  return blogCategories.filter((category) => active.has(category.slug));
+}
+function categorySlugFor(value) {
+  const text = String(value || "");
+  return blogCategories.find((category) => category.label === text || category.match.test(text))?.slug || "share-sale";
+}
+function categoryHref(category) {
+  return "/blog/category/" + category.slug + "/";
 }
 function rotateArray(items, offset) {
   if (!items.length) return items;
