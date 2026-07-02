@@ -24,6 +24,13 @@ const requiredFiles = [
   "assets/styles.css",
   "assets/main.js",
   "assets/hero-consultation.png",
+  "assets/blog/blog-hero-share-review.webp",
+  "assets/blog/thumb-share-sale.webp",
+  "assets/blog/thumb-share-auction.webp",
+  "assets/blog/thumb-inherited-share.webp",
+  "assets/blog/thumb-land-share.webp",
+  "assets/blog/thumb-commercial-share.webp",
+  "assets/blog/thumb-co-owner-issue.webp",
   "favicon.svg",
   "robots.txt",
   "sitemap.xml",
@@ -196,8 +203,8 @@ for (const file of htmlFiles) {
   if (!content.includes('<meta name="description"')) errors.push(`${rel} missing description`);
   if (!content.includes('<link rel="canonical"')) errors.push(`${rel} missing canonical`);
   if (!content.includes('<link rel="icon"')) errors.push(`${rel} missing favicon`);
-  if (!content.includes("/assets/styles.css?v=20260701-7")) errors.push(`${rel} missing stylesheet`);
-  if (!content.includes("/assets/main.js?v=20260701-7")) errors.push(`${rel} missing script`);
+  if (!content.includes("/assets/styles.css?v=20260702-1")) errors.push(`${rel} missing stylesheet`);
+  if (!content.includes("/assets/main.js?v=20260702-1")) errors.push(`${rel} missing script`);
   if (/<h[23]>\s*<\/h[23]>/.test(content)) errors.push(`${rel} contains empty heading`);
   if (/<summary>\s*<\/summary>/.test(content)) errors.push(`${rel} contains empty faq summary`);
   if (/<p>\s*<\/p>/.test(content)) errors.push(`${rel} contains empty paragraph`);

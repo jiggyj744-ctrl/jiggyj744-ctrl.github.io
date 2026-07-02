@@ -127,13 +127,13 @@ mustContain(home, "jauction-lead-api.jiggyj.workers.dev/lead", "home lead endpoi
 mustContain(home, "공유물 지분", "home core text");
 mustContain(home, "상담신청 메일 보내기", "mail submit button");
 mustContain(home, "개인정보 수집·이용에 동의합니다", "privacy consent text");
-mustContain(home, "/assets/styles.css?v=20260701-7", "home stylesheet version");
-mustContain(home, "/assets/main.js?v=20260701-7", "home script version");
+mustContain(home, "/assets/styles.css?v=20260702-1", "home stylesheet version");
+mustContain(home, "/assets/main.js?v=20260702-1", "home script version");
 if (/문자로 보내기|전화하기|내용 복사|sms:|navigator\.clipboard|<span>전화<\/span>/.test(home)) {
   errors.push("public home contains removed fallback actions");
 }
 
-const js = await fetchText(`${siteBase}/assets/main.js?v=20260701-7&live_check=${Date.now()}`);
+const js = await fetchText(`${siteBase}/assets/main.js?v=20260702-1&live_check=${Date.now()}`);
 mustContain(js, "feedback-modal", "feedback modal");
 mustContain(js, "접수가 완료되었습니다", "mail success text");
 mustContain(js, "전송 실패", "mail failure text");

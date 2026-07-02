@@ -4,6 +4,7 @@ import path from "node:path";
 const root = process.cwd();
 const siteBase = (process.env.SITE_BASE || "https://jiggyj744-ctrl.github.io").replace(/\/$/, "");
 const generationMode = process.env.GENERATION_MODE || "template";
+const assetVersion = "20260702-1";
 const today = new Date().toISOString().slice(0, 10);
 const args = process.argv.slice(2);
 const limit = Math.max(1, Math.min(5, Number.parseInt(args[args.indexOf("--limit") + 1] || "1", 10) || 1));
@@ -67,12 +68,29 @@ const publicStrategyBanned = [
   ["입찰", "검토자"].join(" "),
   ["보증", "금"].join(""),
 ];
+const blogHeroImage = "/assets/blog/blog-hero-share-review.webp";
+const blogThumbMap = [
+  { test: /경매|사건번호|auction/i, image: "/assets/blog/thumb-share-auction.webp" },
+  { test: /상속|가족|inherited/i, image: "/assets/blog/thumb-inherited-share.webp" },
+  { test: /토지|임야|농지|맹지|land/i, image: "/assets/blog/thumb-land-share.webp" },
+  { test: /상가|건물|오피스|commercial/i, image: "/assets/blog/thumb-commercial-share.webp" },
+  { test: /공유자|갈등|연락|co-owner/i, image: "/assets/blog/thumb-co-owner-issue.webp" },
+];
 const facts = readJson("content/business-facts.json");
 const backlog = readJson("content/keyword-backlog.json");
 const prompt = fs.existsSync("prompts/share-index-page.md") ? fs.readFileSync("prompts/share-index-page.md", "utf8") : "";
 const blogBacklog = fs.existsSync("content/blog-backlog.json") ? readJson("content/blog-backlog.json") : { version: 1, updated: today, posts: [] };
 const blogPrompt = fs.existsSync("prompts/share-blog-post.md") ? fs.readFileSync("prompts/share-blog-post.md", "utf8") : "";
 ensureBlogBacklogQueue(blogBacklog);
+if (args.includes("--rebuild-blog-only")) {
+  const rebuiltPosts = rebuildPublishedBlogPages();
+  updateBlogIndex(blogBacklog.posts.filter((item) => item.status === "published"));
+  updateFeed(blogBacklog.posts.filter((item) => item.status === "published"));
+  updateBlogLinks(blogBacklog.posts.filter((item) => item.status === "published"));
+  writeJson("content/blog-backlog.json", blogBacklog);
+  console.log("rebuilt blog pages " + rebuiltPosts.length + " post(s)");
+  process.exit(0);
+}
 const selected = backlog.keywords.filter((item) => ["queued", "improve"].includes(item.status)).slice(0, limit);
 const published = [];
 
@@ -156,7 +174,7 @@ function renderPage(page) {
   const faqJson = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: page.faqs.map((faq) => ({ "@type": "Question", name: faq.q, acceptedAnswer: { "@type": "Answer", text: faq.a } })) });
   const sections = page.sections.map((section, si) => "<section class=\"band intro-band\"><div class=\"section-head\"><p class=\"eyebrow\">" + escapeHtml(section.eyebrow || "검토 기준") + "</p><h2>" + escapeHtml(section.heading) + "</h2><p>" + escapeHtml(section.summary) + "</p></div><div class=\"metric-grid\">" + (section.items || []).map((item, ii) => "<article><strong>" + String(si * 4 + ii + 1).padStart(2, "0") + "</strong><h3>" + escapeHtml(item.title) + "</h3><p>" + escapeHtml(item.text) + "</p></article>").join("") + "</div></section>").join("\n");
   const faq = page.faqs.map((item) => "<details><summary>" + escapeHtml(item.q) + "</summary><p>" + escapeHtml(item.a) + "</p></details>").join("");
-  return "<!doctype html>\n<html lang=\"ko\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>" + escapeHtml(page.title) + "</title>\n  <meta name=\"description\" content=\"" + escapeHtml(page.description) + "\">\n  <meta name=\"robots\" content=\"index,follow,max-image-preview:large\">\n  <link rel=\"canonical\" href=\"" + url + "\">\n  <meta property=\"og:locale\" content=\"ko_KR\">\n  <meta property=\"og:type\" content=\"article\">\n  <meta property=\"og:site_name\" content=\"" + escapeHtml(facts.site_name) + "\">\n  <meta property=\"og:title\" content=\"" + escapeHtml(page.title) + "\">\n  <meta property=\"og:description\" content=\"" + escapeHtml(page.description) + "\">\n  <meta property=\"og:url\" content=\"" + url + "\">\n  <meta property=\"og:image\" content=\"" + siteBase + "/assets/hero-consultation.png\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"theme-color\" content=\"#173b35\">\n  <link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\">\n  <link rel=\"stylesheet\" href=\"/assets/styles.css?v=20260701-7\">\n  <script type=\"application/ld+json\">" + articleJson + "</script>\n  <script type=\"application/ld+json\">" + faqJson + "</script>\n  <meta name=\"naver-site-verification\" content=\"3bf2b707098dc68bbe5e8db7aad10955cad77bc0\" />\n</head>\n<body>\n  <a class=\"skip-link\" href=\"#main\">본문 바로가기</a>\n  <header class=\"site-header\"><a class=\"brand\" href=\"/\" aria-label=\"" + escapeHtml(facts.site_name) + " 홈\"><span class=\"brand-mark\">J</span><span class=\"brand-text\">Jauction 지분매입</span></a><nav class=\"primary-nav\" aria-label=\"주요 메뉴\"><a href=\"/#screening\">검토 기준</a><a href=\"/#services\">서비스</a><a href=\"/#process\">검토 흐름</a><a href=\"/faq/\">FAQ</a></nav><a class=\"header-call\" href=\"tel:" + facts.phone + "\"><i data-lucide=\"phone\"></i><span>" + facts.phone + "</span></a></header>\n  <main id=\"main\"><section class=\"hero\"><div class=\"hero-copy\"><p class=\"eyebrow\">" + escapeHtml(page.eyebrow) + "</p><h1>" + escapeHtml(page.h1) + "</h1><p class=\"lead\">" + escapeHtml(page.lead) + "</p><div class=\"hero-actions\"><a class=\"btn btn-primary\" href=\"/#consult\"><i data-lucide=\"file-search\"></i><span>무료 검토 요청</span></a><a class=\"btn btn-secondary\" href=\"tel:" + facts.phone + "\"><i data-lucide=\"phone-call\"></i><span>" + facts.phone + "</span></a></div></div></section>" + sections + "<section class=\"band faq-band\"><div class=\"section-head\"><p class=\"eyebrow\">FAQ</p><h2>자주 묻는 질문</h2></div><div class=\"faq-list\">" + faq + "</div><p class=\"center-link\"><a href=\"/#consult\">상담 접수로 이동</a></p></section><section class=\"final-cta\"><div><p class=\"eyebrow\">1차 검토 접수</p><h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2></div><a class=\"btn btn-primary\" href=\"/#consult\"><i data-lucide=\"clipboard-check\"></i><span>검토 요청하기</span></a></section></main><footer class=\"site-footer\"><div><strong>" + escapeHtml(facts.site_name) + "</strong><p>공유물 지분 매입 가능성 검토와 상담 접수를 위한 정적 랜딩 사이트입니다. 구체적인 법률·세무 판단은 사건 자료 확인 후 별도 전문가 검토가 필요할 수 있습니다.</p></div><nav class=\"footer-links\" aria-label=\"하단 메뉴\"><a href=\"/privacy/\">개인정보 처리방침</a><a href=\"/faq/\">FAQ</a><a href=\"tel:" + facts.phone + "\">" + facts.phone + "</a></nav></footer><div class=\"mobile-cta\" aria-label=\"빠른 상담\"><a href=\"/#consult\"><i data-lucide=\"mail\"></i><span>메일</span></a><a href=\"/#consult\"><i data-lucide=\"clipboard-check\"></i><span>접수</span></a></div><script src=\"https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js\" defer></script><script src=\"/assets/main.js?v=20260701-7\" defer></script></body></html>\n";
+  return "<!doctype html>\n<html lang=\"ko\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <title>" + escapeHtml(page.title) + "</title>\n  <meta name=\"description\" content=\"" + escapeHtml(page.description) + "\">\n  <meta name=\"robots\" content=\"index,follow,max-image-preview:large\">\n  <link rel=\"canonical\" href=\"" + url + "\">\n  <meta property=\"og:locale\" content=\"ko_KR\">\n  <meta property=\"og:type\" content=\"article\">\n  <meta property=\"og:site_name\" content=\"" + escapeHtml(facts.site_name) + "\">\n  <meta property=\"og:title\" content=\"" + escapeHtml(page.title) + "\">\n  <meta property=\"og:description\" content=\"" + escapeHtml(page.description) + "\">\n  <meta property=\"og:url\" content=\"" + url + "\">\n  <meta property=\"og:image\" content=\"" + siteBase + "/assets/hero-consultation.png\">\n  <meta name=\"twitter:card\" content=\"summary_large_image\">\n  <meta name=\"theme-color\" content=\"#173b35\">\n  <link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\">\n  <link rel=\"stylesheet\" href=\"/assets/styles.css?v=" + assetVersion + "\">\n  <script type=\"application/ld+json\">" + articleJson + "</script>\n  <script type=\"application/ld+json\">" + faqJson + "</script>\n  <meta name=\"naver-site-verification\" content=\"3bf2b707098dc68bbe5e8db7aad10955cad77bc0\" />\n</head>\n<body>\n  <a class=\"skip-link\" href=\"#main\">본문 바로가기</a>\n  <header class=\"site-header\"><a class=\"brand\" href=\"/\" aria-label=\"" + escapeHtml(facts.site_name) + " 홈\"><span class=\"brand-mark\">J</span><span class=\"brand-text\">Jauction 지분매입</span></a><nav class=\"primary-nav\" aria-label=\"주요 메뉴\"><a href=\"/#screening\">검토 기준</a><a href=\"/#services\">서비스</a><a href=\"/#process\">검토 흐름</a><a href=\"/faq/\">FAQ</a></nav><a class=\"header-call\" href=\"tel:" + facts.phone + "\"><i data-lucide=\"phone\"></i><span>" + facts.phone + "</span></a></header>\n  <main id=\"main\"><section class=\"hero\"><div class=\"hero-copy\"><p class=\"eyebrow\">" + escapeHtml(page.eyebrow) + "</p><h1>" + escapeHtml(page.h1) + "</h1><p class=\"lead\">" + escapeHtml(page.lead) + "</p><div class=\"hero-actions\"><a class=\"btn btn-primary\" href=\"/#consult\"><i data-lucide=\"file-search\"></i><span>무료 검토 요청</span></a><a class=\"btn btn-secondary\" href=\"tel:" + facts.phone + "\"><i data-lucide=\"phone-call\"></i><span>" + facts.phone + "</span></a></div></div></section>" + sections + "<section class=\"band faq-band\"><div class=\"section-head\"><p class=\"eyebrow\">FAQ</p><h2>자주 묻는 질문</h2></div><div class=\"faq-list\">" + faq + "</div><p class=\"center-link\"><a href=\"/#consult\">상담 접수로 이동</a></p></section><section class=\"final-cta\"><div><p class=\"eyebrow\">1차 검토 접수</p><h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2></div><a class=\"btn btn-primary\" href=\"/#consult\"><i data-lucide=\"clipboard-check\"></i><span>검토 요청하기</span></a></section></main><footer class=\"site-footer\"><div><strong>" + escapeHtml(facts.site_name) + "</strong><p>공유물 지분 매입 가능성 검토와 상담 접수를 위한 정적 랜딩 사이트입니다. 구체적인 법률·세무 판단은 사건 자료 확인 후 별도 전문가 검토가 필요할 수 있습니다.</p></div><nav class=\"footer-links\" aria-label=\"하단 메뉴\"><a href=\"/privacy/\">개인정보 처리방침</a><a href=\"/faq/\">FAQ</a><a href=\"tel:" + facts.phone + "\">" + facts.phone + "</a></nav></footer><div class=\"mobile-cta\" aria-label=\"빠른 상담\"><a href=\"/#consult\"><i data-lucide=\"mail\"></i><span>메일</span></a><a href=\"/#consult\"><i data-lucide=\"clipboard-check\"></i><span>접수</span></a></div><script src=\"https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js\" defer></script><script src=\"/assets/main.js?v=" + assetVersion + "\" defer></script></body></html>\n";
 }
 function qaPage(page, html) { for (const term of banned) if (html.includes(term)) throw new Error(page.slug + " contains banned term: " + term); for (const term of publicStrategyBanned) if (html.includes(term)) throw new Error(page.slug + " contains public strategy term: " + term); for (const required of [facts.phone, "naver-site-verification", "<link rel=\"canonical\"", "/#consult", "FAQPage"]) if (!html.includes(required)) throw new Error(page.slug + " missing " + required); if ((html.match(/<h1>/g) || []).length !== 1) throw new Error(page.slug + " must have one h1"); if (html.length < 5500) throw new Error(page.slug + " content too short"); }
 function updateSitemap(pages) { let xml = fs.readFileSync("sitemap.xml", "utf8"); for (const page of pages) { const loc = siteBase + "/" + page.slug + "/"; if (!xml.includes("<loc>" + loc + "</loc>")) xml = xml.replace("</urlset>", "  <url>\n    <loc>" + loc + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n</urlset>"); } fs.writeFileSync("sitemap.xml", xml, "utf8"); }
@@ -217,6 +235,27 @@ function buildBlogBacklogCandidates() {
   return candidates;
 }
 
+function rebuildPublishedBlogPages() {
+  const rebuilt = [];
+  for (const item of blogBacklog.posts.filter((entry) => entry.status === "published")) {
+    const generated = fallbackBlogContent(item, "template-blog-rebuild");
+    const post = normalizeBlogPost(item, generated);
+    const html = renderBlogPost(post);
+    qaBlogPost(post, html);
+    const targetDir = path.join(root, post.slug);
+    fs.mkdirSync(targetDir, { recursive: true });
+    fs.writeFileSync(path.join(targetDir, "index.html"), html, "utf8");
+    item.url = siteBase + "/" + post.slug + "/";
+    item.title = post.h1;
+    item.description = post.description;
+    item.category = post.category;
+    item.thumbnail = blogImageFor(post);
+    rebuilt.push(post);
+  }
+  blogBacklog.updated = today;
+  return rebuilt;
+}
+
 async function publishBlogPost(item) {
   let generated = await generateBlogContent(item);
   let post = normalizeBlogPost(item, generated);
@@ -253,7 +292,7 @@ async function publishBlogPost(item) {
   item.lastPublished = today;
   item.publishedAt = item.publishedAt || new Date().toISOString();
   item.url = siteBase + "/" + post.slug + "/";
-  item.title = post.title;
+  item.title = post.h1;
   item.description = post.description;
   item.category = post.category;
   return post;
@@ -299,7 +338,7 @@ function parseJsonText(text) {
 }
 function fallbackBlogContent(item, mode) {
   const keyword = item.keyword;
-  const titleBase = item.title || keyword;
+  const titleBase = stripBlogTitleSuffix(item.title || keyword);
   const sectionSeeds = [["처음 확인할 권리관계", "등기부상 소유자, 지분율, 권리 제한, 압류나 근저당 유무를 먼저 봅니다. 지분 물건은 전체 물건의 시세보다 자료상 보류 사유 확인이 더 중요합니다.", "공유자가 몇 명인지, 연락 가능성이 있는지, 이미 분쟁자료가 있는지도 함께 확인합니다. 이 단계에서 매입 가능, 보류, 추가자료 필요 여부를 1차로 나눌 수 있습니다."], ["주소와 사건번호만 있을 때", "주소만 있어도 소재지와 물건 유형을 기준으로 검토를 시작할 수 있습니다. 사건번호가 있으면 공개 사건자료와 점유 관계를 확인할 수 있습니다.", "자료가 부족하다고 접수를 미룰 필요는 없습니다. 현재 알고 있는 정보와 매도 의사, 공유자 상황을 함께 남기면 필요한 추가자료를 안내할 수 있습니다."], ["공유자와 점유 상태", "공유자 수가 많거나 연락이 끊긴 경우에는 검토 기간과 보류 사유가 달라질 수 있습니다. 점유자가 누구인지, 임대차가 있는지, 실제 사용자가 공유자인지도 함께 확인합니다.", "일부 지분만 매도하려는 경우에는 공유자 관계, 사용 상태 등 확인해야 할 자료가 늘어날 수 있습니다."], ["경매와 권리관계", "지분경매가 진행 중이거나 관련 사건이 있는 경우 사건자료와 권리관계를 분리해 확인합니다. 점유 상태, 권리 제한, 추가자료 필요 여부를 별도 항목으로 봅니다.", "매입 검토에서는 법률적 결론을 단정하기보다 자료 기준으로 불확실성을 줄이는 것이 우선입니다. 필요한 경우 등기, 사건 기록, 점유 자료를 추가 요청합니다."], ["상담 접수 후 안내되는 내용", "상담이 접수되면 등기, 지분율, 공유자 수, 점유 상태, 경매 진행 여부를 기준으로 매입 가능성과 보류 사유를 안내합니다. 즉시 매입 판단이 어려우면 추가로 필요한 자료를 정리해 드립니다.", "매도 여부가 확정되지 않았더라도 1차 검토를 받을 수 있습니다. 검토 결과를 보고 매도, 보류, 추가자료 확인 중 어느 방향이 맞는지 결정하면 됩니다."]];
   const rotatedSectionSeeds = rotateArray(sectionSeeds, stableIndex(keyword + titleBase, sectionSeeds.length));
   return { generationMode: mode, title: titleBase + " | 지분매입 검토 노트", description: keyword + " 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.", h1: titleBase, eyebrow: item.category || "지분매입 블로그", excerpt: keyword + " 관련 상담을 접수하기 전 확인하면 좋은 기준을 정리한 검토 노트입니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다.", category: item.category || "검토 노트", sections: rotatedSectionSeeds.map((seed) => ({ heading: seed[0], paragraphs: [seed[1], seed[2]] })), checklist: ["주소 또는 사건번호", "대략적인 지분율", "공유자 수와 연락 가능성", "점유자 또는 임차인 여부", "매도 희망 여부"], faqs: [{ q: keyword + " 상담은 자료가 모두 있어야 하나요?", a: "아닙니다. 주소나 사건번호만 있어도 1차 검토를 시작할 수 있습니다." }, { q: "지분율을 모르면 접수할 수 없나요?", a: "지분율을 몰라도 접수할 수 있습니다. 등기 확인 후 지분율과 공유자 수를 함께 정리합니다." }, { q: "공유자와 연락이 안 돼도 검토가 가능한가요?", a: "가능합니다. 연락 가능성은 매입 가능성과 보류 사유를 판단하는 확인 항목으로 따로 봅니다." }, { q: "검토 후 바로 매도해야 하나요?", a: "아닙니다. 매입 가능성과 보류 사유를 확인한 뒤 매도 여부를 결정하면 됩니다." }] };
@@ -319,21 +358,227 @@ function normalizeBlogSections(sections) {
   });
 }
 function renderBlogPost(post) {
-  const blogPage = { slug: post.slug, keyword: post.keyword, pageType: "blog", title: post.title, description: post.description, h1: post.h1, eyebrow: post.eyebrow, lead: post.excerpt, sections: post.sections.map((section) => ({ eyebrow: "검토 노트", heading: section.heading, summary: section.paragraphs.join(" "), items: section.paragraphs.map((paragraph, index) => ({ title: "핵심 " + (index + 1), text: paragraph })) })), faqs: post.faqs };
-  let html = renderPage(blogPage);
   const url = siteBase + "/" + post.slug + "/";
-  const blogJson = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", headline: post.h1, description: post.description, url, datePublished: post.publishedAt, dateModified: new Date().toISOString(), inLanguage: "ko-KR", author: { "@type": "Organization", name: facts.site_name }, publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone }, mainEntityOfPage: url, image: siteBase + "/assets/hero-consultation.png" });
-  html = html.replace("</head>", "  <link rel=\"alternate\" type=\"application/rss+xml\" title=\"Jauction 지분매입 블로그 RSS\" href=\"/feed.xml\">\n  <script type=\"application/ld+json\">" + blogJson + "</script>\n</head>");
-  return html;
+  const image = blogImageFor(post);
+  const absoluteImage = siteBase + image;
+  const related = relatedBlogPosts(post, 3);
+  const sections = post.sections.map((section, index) => `<section class="blog-article-section">
+        <p class="eyebrow">검토 노트 ${String(index + 1).padStart(2, "0")}</p>
+        <h2>${escapeHtml(section.heading)}</h2>
+        ${section.paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
+      </section>`).join("");
+  const checklist = post.checklist.map((item) => `<li><i data-lucide="check"></i><span>${escapeHtml(item)}</span></li>`).join("");
+  const faq = post.faqs.map((item) => `<details><summary>${escapeHtml(item.q)}</summary><p>${escapeHtml(item.a)}</p></details>`).join("");
+  const blogJson = JSON.stringify({ "@context": "https://schema.org", "@type": "BlogPosting", headline: post.h1, description: post.description, url, datePublished: post.publishedAt, dateModified: new Date().toISOString(), inLanguage: "ko-KR", author: { "@type": "Organization", name: facts.site_name }, publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone }, mainEntityOfPage: url, image: absoluteImage });
+  const faqJson = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: post.faqs.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) });
+  return `<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(post.title)}</title>
+  <meta name="description" content="${escapeHtml(post.description)}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="${url}">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="${escapeHtml(facts.site_name)}">
+  <meta property="og:title" content="${escapeHtml(post.title)}">
+  <meta property="og:description" content="${escapeHtml(post.description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${absoluteImage}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#173b35">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="${image}">
+  <link rel="alternate" type="application/rss+xml" title="Jauction 지분매입 블로그 RSS" href="/feed.xml">
+  <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
+  <script type="application/ld+json">${blogJson}</script>
+  <script type="application/ld+json">${faqJson}</script>
+  <meta name="naver-site-verification" content="3bf2b707098dc68bbe5e8db7aad10955cad77bc0" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  ${siteHeader()}
+  <main id="main">
+    <section class="blog-detail-hero">
+      <div class="blog-detail-copy">
+        <p class="eyebrow">${escapeHtml(post.eyebrow)}</p>
+        <h1>${escapeHtml(post.h1)}</h1>
+        <p class="lead">${escapeHtml(post.excerpt)}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/#consult"><i data-lucide="file-search"></i><span>무료 검토 요청</span></a>
+          <a class="btn btn-secondary" href="/blog/"><i data-lucide="book-open"></i><span>블로그 목록</span></a>
+        </div>
+      </div>
+      <figure class="blog-detail-media">
+        <img src="${image}" alt="${escapeHtml(post.category)} 검토 자료 이미지" width="720" height="405">
+      </figure>
+    </section>
+    <section class="blog-body-band">
+      <article class="blog-article">
+        ${sections}
+        <aside class="blog-checklist" aria-label="상담 전 확인자료">
+          <p class="eyebrow">상담 전 확인자료</p>
+          <h2>접수 전 준비하면 좋은 항목</h2>
+          <ul>${checklist}</ul>
+        </aside>
+        <div class="blog-inline-cta">
+          <div>
+            <p class="eyebrow">무료 1차 접수</p>
+            <h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2>
+          </div>
+          <a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>상담신청 메일 보내기</span></a>
+        </div>
+      </article>
+    </section>
+    <section class="band faq-band">
+      <div class="section-head"><p class="eyebrow">FAQ</p><h2>자주 묻는 질문</h2></div>
+      <div class="faq-list">${faq}</div>
+      <p class="center-link"><a href="/#consult">상담 접수로 이동</a></p>
+    </section>
+    <section class="band service-band">
+      <div class="section-head"><p class="eyebrow">관련 글</p><h2>함께 확인할 검토 노트</h2></div>
+      ${renderBlogCards(related.length ? related : publishedBlogPosts().filter((item) => cleanSlug(item.slug) !== post.slug).slice(0, 3))}
+    </section>
+    <section class="final-cta"><div><p class="eyebrow">1차 검토 접수</p><h2>매도 여부가 확정되지 않아도 먼저 확인할 수 있습니다</h2></div><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>검토 요청하기</span></a></section>
+  </main>
+  ${siteFooter()}
+  ${mobileCta()}
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/assets/main.js?v=${assetVersion}" defer></script>
+</body>
+</html>
+`;
 }
 function renderBlogIndex(posts) {
-  const items = posts.length ? posts.slice(0, 24).map((post) => ({ title: post.title || post.keyword, text: (post.description || post.keyword + " 관련 지분매입 검토 노트입니다.") + " / " + siteBase + "/" + cleanSlug(post.slug) + "/" })) : [{ title: "발행 준비 중", text: "공유지분 매도, 지분경매, 상속지분, 공유물분할청구 관련 검토 노트를 순차 발행합니다." }];
-  const page = { slug: "blog", keyword: "지분매입 블로그", pageType: "blog-index", title: "지분매입 블로그 | 공유지분 매도·검토 노트", description: "공유지분 매도, 지분경매, 상속지분, 공유물분할청구 상황별 검토 노트를 모아 둔 블로그입니다.", h1: "공유지분 매도와 지분경매 검토 노트", eyebrow: "지분매입 블로그", lead: "주소나 사건번호만 있어도 검토를 시작할 수 있도록 상황별 판단 기준을 계속 발행합니다.", sections: [{ eyebrow: "최신 글", heading: "상황별 지분매입 검토 글", summary: "검색 유입과 상담 전환을 동시에 고려해 전문 주제별 글을 지속 발행합니다.", items }], faqs: [{ q: "블로그 글은 어떤 기준으로 발행되나요?", a: "공유지분 매도, 지분경매, 상속지분, 공유물분할청구 등 상담 유입 가능성이 높은 주제를 우선 발행합니다." }, { q: "글을 보고 바로 상담할 수 있나요?", a: "가능합니다. 주소나 사건번호만 있어도 무료 검토 요청을 남길 수 있습니다." }, { q: "RSS를 제출해도 되나요?", a: "가능합니다. /feed.xml은 최신 블로그 글을 반영합니다." }, { q: "법률 자문 글인가요?", a: "아닙니다. 자료 기준 1차 검토와 상담 접수를 위한 안내입니다." }] };
-  let html = renderPage(page);
-  const collectionJson = JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "지분매입 블로그", url: siteBase + "/blog/", inLanguage: "ko-KR", publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone } });
-  html = html.replace("</head>", "  <link rel=\"alternate\" type=\"application/rss+xml\" title=\"Jauction 지분매입 블로그 RSS\" href=\"/feed.xml\">\n  <script type=\"application/ld+json\">" + collectionJson + "</script>\n</head>");
-  for (const post of posts.slice(0, 24)) html = html.replace("<h3>" + escapeHtml(post.title || post.keyword) + "</h3>", "<h3><a href=\"/" + cleanSlug(post.slug) + "/\">" + escapeHtml(post.title || post.keyword) + "</a></h3>");
-  return html;
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.publishedAt || b.lastPublished || 0) - new Date(a.publishedAt || a.lastPublished || 0));
+  const featured = sortedPosts[0];
+  const cards = sortedPosts.slice(1, 24);
+  const title = "지분매입 블로그 | 공유지분 매도·검토 노트";
+  const description = "공유지분 매도, 지분경매, 상속지분, 공유물분할청구 상황별 검토 노트를 모아 둔 블로그입니다.";
+  const url = siteBase + "/blog/";
+  const collectionJson = JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", name: "지분매입 블로그", url, inLanguage: "ko-KR", publisher: { "@type": "Organization", name: facts.site_name, telephone: facts.phone } });
+  const faqItems = [
+    { q: "블로그 글은 어떤 기준으로 발행되나요?", a: "공유지분 매도, 지분경매, 상속지분, 공유자 문제 등 상담 유입 가능성이 높은 주제를 우선 발행합니다." },
+    { q: "글을 보고 바로 상담할 수 있나요?", a: "가능합니다. 주소나 사건번호만 있어도 무료 검토 요청을 남길 수 있습니다." },
+    { q: "RSS를 제출해도 되나요?", a: "가능합니다. /feed.xml은 최신 블로그 글을 반영합니다." },
+    { q: "법률 자문 글인가요?", a: "아닙니다. 자료 기준 1차 검토와 상담 접수를 위한 안내입니다." },
+  ];
+  const faqJson = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqItems.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) });
+  const faq = faqItems.map((item) => `<details><summary>${escapeHtml(item.q)}</summary><p>${escapeHtml(item.a)}</p></details>`).join("");
+  const categories = ["공유지분 매도", "지분경매 검토", "상속지분", "토지지분", "상가지분", "공유자 문제"];
+  return `<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="${url}">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${escapeHtml(facts.site_name)}">
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(description)}">
+  <meta property="og:url" content="${url}">
+  <meta property="og:image" content="${siteBase}${blogHeroImage}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#173b35">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" as="image" href="${blogHeroImage}">
+  <link rel="alternate" type="application/rss+xml" title="Jauction 지분매입 블로그 RSS" href="/feed.xml">
+  <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
+  <script type="application/ld+json">${collectionJson}</script>
+  <script type="application/ld+json">${faqJson}</script>
+  <meta name="naver-site-verification" content="3bf2b707098dc68bbe5e8db7aad10955cad77bc0" />
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  ${siteHeader()}
+  <main id="main">
+    <section class="blog-index-hero">
+      <div class="blog-index-copy">
+        <p class="eyebrow">지분매입 블로그</p>
+        <h1>공유지분 매도자가 먼저 확인할 검토 노트</h1>
+        <p class="lead">주소나 사건번호만 있어도 상담 접수를 시작할 수 있도록 상황별 확인자료와 보류 가능성을 정리합니다.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/#consult"><i data-lucide="file-search"></i><span>무료 검토 요청</span></a>
+          <a class="btn btn-secondary" href="tel:${facts.phone}"><i data-lucide="phone-call"></i><span>${facts.phone}</span></a>
+        </div>
+      </div>
+      <figure class="blog-index-media">
+        <img src="${blogHeroImage}" alt="지분매입 상담 자료 검토 이미지" width="1600" height="900">
+      </figure>
+    </section>
+    <section class="band blog-list-band">
+      <div class="blog-filter-row" aria-label="블로그 주제">
+        ${categories.map((category) => `<a href="/blog/" class="blog-filter">${escapeHtml(category)}</a>`).join("")}
+      </div>
+      ${featured ? renderFeaturedBlogCard(featured) : ""}
+      <div class="section-head"><p class="eyebrow">최신 글</p><h2>상황별 지분매입 검토 글</h2><p>검색 유입과 상담 전환을 동시에 고려해 전문 주제별 글을 정리합니다.</p></div>
+      ${renderBlogCards(cards.length ? cards : sortedPosts)}
+    </section>
+    <section class="band faq-band">
+      <div class="section-head"><p class="eyebrow">FAQ</p><h2>자주 묻는 질문</h2></div>
+      <div class="faq-list">${faq}</div>
+      <p class="center-link"><a href="/#consult">상담 접수로 이동</a></p>
+    </section>
+    <section class="final-cta"><div><p class="eyebrow">1차 검토 접수</p><h2>주소나 사건번호만 있어도 검토를 시작할 수 있습니다</h2></div><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>검토 요청하기</span></a></section>
+  </main>
+  ${siteFooter()}
+  ${mobileCta()}
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script>
+  <script src="/assets/main.js?v=${assetVersion}" defer></script>
+</body>
+</html>
+`;
+}
+function siteHeader() {
+  return `<header class="site-header"><a class="brand" href="/" aria-label="${escapeHtml(facts.site_name)} 홈"><span class="brand-mark">J</span><span class="brand-text">Jauction 지분매입</span></a><nav class="primary-nav" aria-label="주요 메뉴"><a href="/#screening">검토 기준</a><a href="/#services">서비스</a><a href="/blog/">블로그</a><a href="/faq/">FAQ</a></nav><a class="header-call" href="tel:${facts.phone}"><i data-lucide="phone"></i><span>${facts.phone}</span></a></header>`;
+}
+function siteFooter() {
+  return `<footer class="site-footer"><div><strong>${escapeHtml(facts.site_name)}</strong><p>공유물 지분 매입 가능성 검토와 상담 접수를 위한 정적 랜딩 사이트입니다. 구체적인 법률·세무 판단은 사건 자료 확인 후 별도 전문가 검토가 필요할 수 있습니다.</p></div><nav class="footer-links" aria-label="하단 메뉴"><a href="/privacy/">개인정보 처리방침</a><a href="/faq/">FAQ</a><a href="tel:${facts.phone}">${facts.phone}</a></nav></footer>`;
+}
+function mobileCta() {
+  return `<div class="mobile-cta" aria-label="빠른 상담"><a href="/#consult"><i data-lucide="mail"></i><span>메일</span></a><a href="/#consult"><i data-lucide="clipboard-check"></i><span>접수</span></a></div>`;
+}
+function renderFeaturedBlogCard(post) {
+  return `<article class="blog-featured-card">
+    <a class="blog-featured-media" href="/${cleanSlug(post.slug)}/"><img src="${blogImageFor(post)}" alt="${escapeHtml(post.category || "지분매입")} 대표 이미지" width="720" height="405"></a>
+    <div class="blog-featured-copy">
+      <p class="eyebrow">${escapeHtml(post.category || "검토 노트")}</p>
+      <h2><a href="/${cleanSlug(post.slug)}/">${escapeHtml(post.title || post.keyword)}</a></h2>
+      <p>${escapeHtml(post.description || post.keyword + " 관련 검토 노트입니다.")}</p>
+      <a class="text-link" href="/${cleanSlug(post.slug)}/">검토 글 보기</a>
+    </div>
+  </article>`;
+}
+function renderBlogCards(posts) {
+  const cardPosts = posts.length ? posts : [{ title: "발행 준비 중", keyword: "지분매입 검토 노트", category: "검토 노트", description: "공유지분 매도, 지분경매, 상속지분 관련 검토 글을 순차 발행합니다.", slug: "blog" }];
+  return `<div class="blog-card-grid">${cardPosts.map((post) => `<article class="blog-card">
+      <a class="blog-card-media" href="/${cleanSlug(post.slug)}/"><img src="${blogImageFor(post)}" alt="${escapeHtml(post.category || "지분매입")} 썸네일" width="720" height="405"></a>
+      <div class="blog-card-body">
+        <p class="eyebrow">${escapeHtml(post.category || "검토 노트")}</p>
+        <h3><a href="/${cleanSlug(post.slug)}/">${escapeHtml(post.title || post.keyword)}</a></h3>
+        <p>${escapeHtml(post.description || post.keyword + " 관련 지분매입 검토 노트입니다.")}</p>
+      </div>
+    </article>`).join("")}</div>`;
+}
+function blogImageFor(post) {
+  const haystack = [post.category, post.keyword, post.title, post.slug].filter(Boolean).join(" ");
+  return blogThumbMap.find((item) => item.test.test(haystack))?.image || "/assets/blog/thumb-share-sale.webp";
+}
+function publishedBlogPosts() {
+  return blogBacklog.posts.filter((item) => item.status === "published");
+}
+function relatedBlogPosts(post, count) {
+  const current = cleanSlug(post.slug);
+  const category = post.category || "";
+  const published = publishedBlogPosts().filter((item) => cleanSlug(item.slug) !== current);
+  const sameCategory = published.filter((item) => item.category === category);
+  return sameCategory.concat(published.filter((item) => item.category !== category)).slice(0, count);
 }
 function qaBlogPost(post, html) {
   for (const term of banned) if (html.includes(term)) throw new Error(post.slug + " contains banned term: " + term);
@@ -376,7 +621,13 @@ function stableIndex(value, modulo) {
   for (const char of String(value || "")) hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
   return hash % modulo;
 }
+function stripBlogTitleSuffix(value) {
+  let text = String(value || "");
+  while (/\s*\|\s*지분매입 검토 노트\s*$/u.test(text)) {
+    text = text.replace(/\s*\|\s*지분매입 검토 노트\s*$/u, "");
+  }
+  return text;
+}
 function cleanSlug(value) { return String(value || "").split("/").filter(Boolean).join("/"); }
 function countText(value, needle) { return String(value).split(needle).length - 1; }
 function escapeXml(value) { return escapeHtml(value).replace(/'/g, "&apos;"); }
-

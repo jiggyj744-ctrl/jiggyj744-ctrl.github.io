@@ -4,7 +4,7 @@
   "posts": [
     {
       "keyword": "공유지분 매도",
-      "title": "공유지분 팔고 싶을 때 먼저 확인할 7가지 | 지분매입 검토 노트",
+      "title": "공유지분 팔고 싶을 때 먼저 확인할 7가지",
       "category": "공유지분 매도",
       "priority": 1,
       "slug": "blog/sell-co-owned-share-checklist",
@@ -12,7 +12,8 @@
       "lastPublished": "2026-07-02",
       "publishedAt": "2026-07-02T01:59:04.036Z",
       "url": "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/",
-      "description": "공유지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다."
+      "description": "공유지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "사건번호 지분 검토",
@@ -24,7 +25,8 @@
       "lastPublished": "2026-07-01",
       "publishedAt": "2026-07-01T09:59:13.007Z",
       "url": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/",
-      "description": "지분경매 사건번호 기준 공유지분 매입 가능성과 접수 항목을 안내합니다."
+      "description": "사건번호 지분 검토 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-auction.webp"
     },
     {
       "keyword": "상속지분 매도",
@@ -36,7 +38,8 @@
       "lastPublished": "2026-07-01",
       "publishedAt": "2026-07-01T20:10:04.623Z",
       "url": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
-      "description": "상속지분 매도를 고려 중이라면 등기부등본에서 반드시 확인해야 할 핵심 항목을 정리했습니다. 지분율, 공유자 수, 점유 상태, 경매 진행 여부 등을 검토하여 매도 가능성을 무료로 확인하세요."
+      "description": "상속지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-inherited-share.webp"
     },
     {
       "keyword": "연락 안 되는 공유자 지분",

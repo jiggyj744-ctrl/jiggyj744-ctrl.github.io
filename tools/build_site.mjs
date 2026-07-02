@@ -9,7 +9,7 @@ const brand = "Jauction 지분매입 상담센터";
 const phone = "1688-0976";
 const tel = "1688-0976";
 const buildDate = "2026-07-01";
-const assetVersion = "20260701-7";
+const assetVersion = "20260702-1";
 const leadEndpoint = "https://jauction-lead-api.jiggyj.workers.dev/lead";
 const verificationConfigPath = path.join(root, "tools", "search-verification.json");
 
