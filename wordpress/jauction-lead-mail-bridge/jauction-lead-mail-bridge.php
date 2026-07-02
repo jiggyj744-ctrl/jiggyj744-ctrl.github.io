@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Jauction Lead Mail Bridge
  * Description: Receives Jauction landing leads through a protected REST endpoint and sends email through wp_mail/WP Mail SMTP.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Jauction
  * Requires at least: 6.0
  * Requires PHP: 7.4
@@ -20,8 +20,11 @@ const JAUCTION_LEAD_MAIL_FROM_EMAIL = 'jauction_lead_mail_from_email';
 const JAUCTION_LEAD_MAIL_LAST_STATUS = 'jauction_lead_mail_last_status';
 const JAUCTION_LEAD_MAIL_LAST_ERROR = 'jauction_lead_mail_last_error';
 const JAUCTION_LEAD_MAIL_LAST_AT = 'jauction_lead_mail_last_at';
+const JAUCTION_LEAD_MAIL_SETTINGS_VERSION = 'jauction_lead_mail_settings_version';
 const JAUCTION_LEAD_MAIL_CONSULTATION_TOKEN = 'SHARE-CONSULTATION-CUSTOMER-FORM';
 const JAUCTION_LEAD_MAIL_FILTER_PRIORITY = 9999;
+const JAUCTION_LEAD_MAIL_PLUGIN_VERSION = '1.0.2';
+const JAUCTION_LEAD_MAIL_FALLBACK_FROM_EMAIL = 'jiggyj@naver.com';
 
 register_activation_hook(__FILE__, 'jauction_lead_mail_ensure_defaults');
 add_action('plugins_loaded', 'jauction_lead_mail_ensure_defaults');
@@ -42,6 +45,7 @@ function jauction_lead_mail_ensure_defaults(): void
             update_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, $from_email);
         }
     }
+    jauction_lead_mail_migrate_sender_defaults();
     $external_token = jauction_lead_mail_external_token();
     if ($external_token !== '') {
         if ((string) get_option(JAUCTION_LEAD_MAIL_TOKEN, '') !== $external_token) {
@@ -67,8 +71,38 @@ function jauction_lead_mail_default_from_name(): string
 function jauction_lead_mail_default_from_email(): string
 {
     $configured = getenv('JAUCTION_LEAD_MAIL_FROM_EMAIL') ?: getenv('SMTP_FROM_EMAIL');
-    $email = sanitize_email((string) ($configured ?: get_option('admin_email')));
-    return $email && is_email($email) ? $email : '';
+    $email = sanitize_email((string) $configured);
+    if ($email && is_email($email)) {
+        return $email;
+    }
+
+    $admin_email = sanitize_email((string) get_option('admin_email'));
+    if ($admin_email && is_email($admin_email) && !jauction_lead_mail_is_legacy_sender($admin_email)) {
+        return $admin_email;
+    }
+
+    return JAUCTION_LEAD_MAIL_FALLBACK_FROM_EMAIL;
+}
+
+function jauction_lead_mail_migrate_sender_defaults(): void
+{
+    $stored_version = (string) get_option(JAUCTION_LEAD_MAIL_SETTINGS_VERSION, '');
+    $from_email = sanitize_email((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
+    if ($stored_version === JAUCTION_LEAD_MAIL_PLUGIN_VERSION && !jauction_lead_mail_is_legacy_sender($from_email)) {
+        return;
+    }
+
+    if ($from_email === '' || jauction_lead_mail_is_legacy_sender($from_email)) {
+        update_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, jauction_lead_mail_default_from_email());
+    }
+    update_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터');
+    update_option(JAUCTION_LEAD_MAIL_SETTINGS_VERSION, JAUCTION_LEAD_MAIL_PLUGIN_VERSION);
+}
+
+function jauction_lead_mail_is_legacy_sender(string $email): bool
+{
+    $value = strtolower(trim($email));
+    return $value !== '' && strpos($value, '@factorypro.co.kr') !== false;
 }
 
 function jauction_lead_mail_external_token(): string
@@ -176,6 +210,7 @@ function jauction_lead_mail_sanitize_lead(array $params): array
         'created_at' => jauction_lead_mail_clean($params['created_at'] ?? '', 120),
         'name' => jauction_lead_mail_clean($params['name'] ?? '', 120),
         'phone' => jauction_lead_mail_clean($params['phone'] ?? '', 80),
+        'email' => jauction_lead_mail_clean_email($params['email'] ?? ''),
         'type' => jauction_lead_mail_clean($params['type'] ?? '', 160),
         'case_or_address' => jauction_lead_mail_clean($params['case_or_address'] ?? '', 500),
         'share' => jauction_lead_mail_clean($params['share'] ?? '', 80),
@@ -194,6 +229,12 @@ function jauction_lead_mail_clean($value, int $limit): string
 function jauction_lead_mail_clean_textarea($value, int $limit): string
 {
     return jauction_lead_mail_limit(sanitize_textarea_field((string) $value), $limit);
+}
+
+function jauction_lead_mail_clean_email($value): string
+{
+    $email = sanitize_email((string) $value);
+    return $email && is_email($email) ? $email : '';
 }
 
 function jauction_lead_mail_limit(string $value, int $limit): string
@@ -220,6 +261,13 @@ function jauction_lead_mail_send(array $lead): array
         'X-ShareConsult-Form: shared-interest-consultation',
         'X-ShareConsult-Mail-Token: ' . JAUCTION_LEAD_MAIL_CONSULTATION_TOKEN,
     ];
+    $from_email = jauction_lead_mail_configured_from_email();
+    if ($from_email !== '') {
+        $headers[] = 'From: ' . jauction_lead_mail_format_mailbox($from_email, jauction_lead_mail_configured_from_name());
+    }
+    if ($lead['email'] !== '') {
+        $headers[] = 'Reply-To: ' . jauction_lead_mail_format_mailbox($lead['email'], $lead['name']);
+    }
 
     $GLOBALS['jauction_lead_mail_last_wp_error'] = '';
     add_action('wp_mail_failed', 'jauction_lead_mail_capture_wp_error');
@@ -252,6 +300,7 @@ function jauction_lead_mail_body(array $lead): string
         '접수시각: ' . ($lead['created_at'] ?: current_time('mysql')),
         '이름: ' . ($lead['name'] ?: '-'),
         '연락처: ' . ($lead['phone'] ?: '-'),
+        '이메일: ' . ($lead['email'] ?: '-'),
         '상담유형: ' . ($lead['type'] ?: '-'),
         '주소/사건번호: ' . ($lead['case_or_address'] ?: '-'),
         '지분율: ' . ($lead['share'] ?: '-'),
@@ -288,14 +337,35 @@ function jauction_lead_mail_recipients(): array
 
 function jauction_lead_mail_from_name(string $name): string
 {
-    $configured = sanitize_text_field((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터'));
+    $configured = jauction_lead_mail_configured_from_name();
     return $configured ?: $name;
 }
 
 function jauction_lead_mail_from_email(string $email): string
 {
-    $configured = sanitize_email((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
+    $configured = jauction_lead_mail_configured_from_email();
     return $configured && is_email($configured) ? $configured : $email;
+}
+
+function jauction_lead_mail_configured_from_name(): string
+{
+    return sanitize_text_field((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터'));
+}
+
+function jauction_lead_mail_configured_from_email(): string
+{
+    $configured = sanitize_email((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
+    if ($configured && is_email($configured) && !jauction_lead_mail_is_legacy_sender($configured)) {
+        return $configured;
+    }
+    return jauction_lead_mail_default_from_email();
+}
+
+function jauction_lead_mail_format_mailbox(string $email, string $name): string
+{
+    $safe_email = sanitize_email($email);
+    $safe_name = trim(str_replace(["\r", "\n"], '', sanitize_text_field($name)));
+    return $safe_name !== '' ? sprintf('%s <%s>', $safe_name, $safe_email) : $safe_email;
 }
 
 function jauction_lead_mail_capture_wp_error(WP_Error $error): void
@@ -339,6 +409,9 @@ function jauction_lead_mail_admin_page(): void
     $to = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_TO, get_option('admin_email')));
     $from_name = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_FROM_NAME, '지분매입 상담센터'));
     $from_email = esc_attr((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
+    $effective_from_email = esc_html(jauction_lead_mail_configured_from_email());
+    $effective_from_name = esc_html(jauction_lead_mail_configured_from_name());
+    $legacy_from_warning = jauction_lead_mail_is_legacy_sender((string) get_option(JAUCTION_LEAD_MAIL_FROM_EMAIL, ''));
     $last_status = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_STATUS, '-'));
     $last_error = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_ERROR, ''));
     $last_at = esc_html((string) get_option(JAUCTION_LEAD_MAIL_LAST_AT, '-'));
@@ -361,6 +434,15 @@ function jauction_lead_mail_admin_page(): void
                 <tr>
                     <th scope="row">마지막 발송 상태</th>
                     <td><?php echo $last_status; ?> / <?php echo $last_at; ?><?php echo $last_error ? ' / ' . $last_error : ''; ?></td>
+                </tr>
+                <tr>
+                    <th scope="row">적용 발신자</th>
+                    <td>
+                        <code><?php echo $effective_from_name; ?> &lt;<?php echo $effective_from_email; ?>&gt;</code>
+                        <?php if ($legacy_from_warning) : ?>
+                            <p style="color:#b32d2e;margin:8px 0 0;">기존 발신 주소가 이전 사이트 도메인으로 감지되어 지분매입 기본 발신자로 보정됩니다.</p>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -386,8 +468,9 @@ function jauction_lead_mail_admin_page(): void
                 <tr>
                     <th scope="row"><label for="jauction_lead_mail_from_email">발신자 이메일</label></th>
                     <td>
-                        <input name="jauction_lead_mail_from_email" id="jauction_lead_mail_from_email" type="email" class="regular-text" value="<?php echo $from_email; ?>" placeholder="예: no-reply@example.com">
-                        <p class="description">WP Mail SMTP가 강제 발신 주소를 사용하면 SMTP 설정이 우선될 수 있습니다. 인증 가능한 도메인의 주소를 사용하세요.</p>
+                        <input name="jauction_lead_mail_from_email" id="jauction_lead_mail_from_email" type="email" class="regular-text" value="<?php echo $from_email; ?>" placeholder="예: jiggyj@naver.com">
+                        <p class="description">현재 기본값은 <?php echo esc_html(JAUCTION_LEAD_MAIL_FALLBACK_FROM_EMAIL); ?>입니다. WP Mail SMTP가 강제 발신 주소를 사용하면 SMTP 설정이 우선될 수 있습니다.</p>
+                        <p class="description">무료 github.io 주소는 메일 발신 도메인으로 인증할 수 없습니다. 전용 도메인을 연결하면 no-reply@전용도메인 같은 인증 주소로 바꾸세요.</p>
                     </td>
                 </tr>
             </table>
@@ -435,6 +518,7 @@ function jauction_lead_mail_handle_admin_post(): void
             'created_at' => current_time('mysql'),
             'name' => '알림 점검',
             'phone' => '0000000000',
+            'email' => 'codex-share-mail-bridge@example.com',
             'type' => '테스트',
             'case_or_address' => 'WordPress 관리자 테스트',
             'share' => '-',
