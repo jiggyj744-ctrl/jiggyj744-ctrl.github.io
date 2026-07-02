@@ -50,7 +50,28 @@ const publicStrategyPattern = new RegExp([
   "협의 비용",
   "낙찰가보다",
   "사용수익 구조",
+  "수익 배분",
   "분할, 공동매각",
+  "매입 가격",
+  "인도 시기",
+  "잔금 조건",
+  "소유권 이전",
+  "매입 가치",
+  "절차를 안내",
+  "일정 기간",
+  "매수 의사",
+  "통지해야",
+  "우선매수권 절차",
+  "매입 절차",
+  "현금화",
+  "배당",
+  "명도",
+  "매도 시나리오",
+  "지분 가치",
+  "법적으로 보호되는 권리",
+  "매입 후에도 분쟁",
+  "입찰 검토자",
+  "보증금",
   "<span>전화</span>",
 ].join("|"));
 
@@ -93,6 +114,11 @@ for (const path of publicPaths) {
   if (response.status !== 200) errors.push(`${path} status ${response.status}`);
   if (legacyPattern.test(text)) errors.push(`${path} contains legacy text`);
   if (publicStrategyPattern.test(text)) errors.push(`${path} contains public strategy text`);
+  if (!path.endsWith(".xml") && !path.endsWith(".txt")) {
+    if (/<h[23]>\s*<\/h[23]>/.test(text)) errors.push(`${path} contains empty heading`);
+    if (/<summary>\s*<\/summary>/.test(text)) errors.push(`${path} contains empty faq summary`);
+    if (/<p>\s*<\/p>/.test(text)) errors.push(`${path} contains empty paragraph`);
+  }
 }
 
 const home = await fetchText(`${siteBase}/?live_check=${Date.now()}`);

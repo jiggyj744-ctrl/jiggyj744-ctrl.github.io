@@ -86,7 +86,28 @@ const strategyBanned = [
   "협의 비용",
   "낙찰가보다",
   "사용수익 구조",
+  "수익 배분",
   "분할, 공동매각",
+  "매입 가격",
+  "인도 시기",
+  "잔금 조건",
+  "소유권 이전",
+  "매입 가치",
+  "절차를 안내",
+  "일정 기간",
+  "매수 의사",
+  "통지해야",
+  "우선매수권 절차",
+  "매입 절차",
+  "현금화",
+  "배당",
+  "명도",
+  "매도 시나리오",
+  "지분 가치",
+  "법적으로 보호되는 권리",
+  "매입 후에도 분쟁",
+  "입찰 검토자",
+  "보증금",
   ["<span>", "전화", "</span>"].join(""),
 ];
 
@@ -177,6 +198,9 @@ for (const file of htmlFiles) {
   if (!content.includes('<link rel="icon"')) errors.push(`${rel} missing favicon`);
   if (!content.includes("/assets/styles.css?v=20260701-7")) errors.push(`${rel} missing stylesheet`);
   if (!content.includes("/assets/main.js?v=20260701-7")) errors.push(`${rel} missing script`);
+  if (/<h[23]>\s*<\/h[23]>/.test(content)) errors.push(`${rel} contains empty heading`);
+  if (/<summary>\s*<\/summary>/.test(content)) errors.push(`${rel} contains empty faq summary`);
+  if (/<p>\s*<\/p>/.test(content)) errors.push(`${rel} contains empty paragraph`);
 }
 
 if (verification.googleFile?.name) {

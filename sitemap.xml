@@ -7,67 +7,19 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/faq/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/privacy/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/services/share-purchase/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/services/share-auction/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/services/inherited-share/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/services/land-share/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/services/co-ownership-dispute/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/services/commercial-share/</loc>
-    <lastmod>2026-07-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/areas/busan-share-purchase/</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/areas/gyeonggi-share-purchase/</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/guide/preemption-right/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/areas/incheon-share-purchase/</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -79,7 +31,37 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/areas/gyeonggi-share-purchase/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/blog/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/faq/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/guide/commercial-share-acquisition/</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -97,13 +79,19 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/guide/commercial-share-acquisition/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/guide/partition-claim-share-sale/</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/guide/partition-claim-share-sale/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/guide/preemption-right/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -115,33 +103,45 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/blog/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/privacy/</loc>
     <lastmod>2026-07-01</lastmod>
-    <changefreq>daily</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/areas/incheon-share-purchase/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/services/co-ownership-dispute/</loc>
     <lastmod>2026-07-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/services/commercial-share/</loc>
     <lastmod>2026-07-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/areas/busan-share-purchase/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/services/inherited-share/</loc>
     <lastmod>2026-07-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/</loc>
+    <loc>https://jiggyj744-ctrl.github.io/services/land-share/</loc>
     <lastmod>2026-07-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/services/share-auction/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://jiggyj744-ctrl.github.io/services/share-purchase/</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>
