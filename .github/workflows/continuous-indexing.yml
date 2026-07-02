@@ -1,4 +1,4 @@
-name: Continuous Share Indexing
+name: Continuous Share Blog Publishing
 
 on:
   workflow_dispatch:
@@ -7,8 +7,12 @@ on:
         description: Pages to publish in this run
         required: false
         default: "1"
+      proxy_base_url:
+        description: Optional OpenAI-compatible Gemini proxy base URL
+        required: false
+        default: ""
   schedule:
-    - cron: "12 18 * * *"
+    - cron: "12 21 * * *"
 
 permissions:
   contents: write
@@ -19,19 +23,60 @@ concurrency:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    timeout-minutes: 20
+    env:
+      SITE_BASE: https://jiggyj744-ctrl.github.io
+      GENERATION_MODE: proxy
+      LLM_PROXY_BASE_URL: ${{ github.event.inputs.proxy_base_url || vars.LLM_PROXY_BASE_URL || 'http://127.0.0.1:8302/v1' }}
+      LLM_PROXY_API_KEY: ${{ secrets.LLM_PROXY_API_KEY }}
+      LLM_PROXY_MODEL: ${{ vars.LLM_PROXY_MODEL || 'gemini-pro' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Verify Gemini proxy route
+        shell: bash
+        run: |
+          test -n "$LLM_PROXY_BASE_URL" || { echo "LLM_PROXY_BASE_URL is required"; exit 1; }
+          test -n "$LLM_PROXY_API_KEY" || { echo "LLM_PROXY_API_KEY secret is required"; exit 1; }
+          node --input-type=module <<'NODE'
+          const baseUrl = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "");
+          const healthBase = baseUrl.replace(/\/v1$/, "");
+          const headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + process.env.LLM_PROXY_API_KEY
+          };
+          const health = await fetch(healthBase + "/health", { headers });
+          if (!health.ok) {
+            console.error("Gemini proxy health failed: " + health.status + " " + await health.text());
+            process.exit(1);
+          }
+          const completion = await fetch(baseUrl + "/chat/completions", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              model: process.env.LLM_PROXY_MODEL,
+              messages: [{ role: "user", content: "Return one short JSON object confirming the route is online." }],
+              temperature: 0,
+              max_tokens: 128,
+              response_format: { type: "json_object" }
+            })
+          });
+          if (!completion.ok) {
+            console.error("Gemini proxy completion failed: " + completion.status + " " + await completion.text());
+            process.exit(1);
+          }
+          const data = await completion.json();
+          const text = data.choices?.[0]?.message?.content || data.output_text || "";
+          if (!text.trim()) {
+            console.error("Gemini proxy returned an empty completion");
+            process.exit(1);
+          }
+          console.log("Gemini proxy completion route OK via " + process.env.LLM_PROXY_MODEL);
+          NODE
       - name: Generate share acquisition SEO pages
-        env:
-          SITE_BASE: https://jiggyj744-ctrl.github.io
-          GENERATION_MODE: proxy
-          LLM_PROXY_BASE_URL: https://api.deepseek.com
-          LLM_PROXY_API_KEY: ${{ secrets.DEEPSEEK_API_KEY || secrets.OPENAI_API_KEY }}
-          LLM_PROXY_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-chat' }}
         run: node scripts/seo-content-engine.mjs --limit "${{ github.event.inputs.pages || '1' }}"
       - name: Verify static site
         run: node tools/verify_site.mjs

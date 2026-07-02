@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-01",
+  "updated": "2026-07-02",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -104,6 +104,374 @@
       "category": "점유 리스크",
       "priority": 3,
       "slug": "blog/occupied-co-owned-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "공유 아파트 지분 매도",
+      "title": "공유 아파트 지분 매도 전 확인할 자료",
+      "category": "주거 지분",
+      "priority": 2,
+      "slug": "blog/co-owned-apartment-share-sale-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "토지 공유지분 매도",
+      "title": "토지 공유지분 매도 상담 전 확인 항목",
+      "category": "토지지분",
+      "priority": 2,
+      "slug": "blog/co-owned-land-share-sale-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "소액 지분 매도",
+      "title": "소액 공유지분 매도도 검토가 필요한 이유",
+      "category": "소액지분",
+      "priority": 2,
+      "slug": "blog/small-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "1/2 지분 매도",
+      "title": "2분의 1 지분 매도 상담 준비자료",
+      "category": "지분율",
+      "priority": 2,
+      "slug": "blog/one-half-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "1/8 지분 매도",
+      "title": "8분의 1 지분 매도 검토 기준",
+      "category": "지분율",
+      "priority": 3,
+      "slug": "blog/one-eighth-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "상속 아파트 지분 매도",
+      "title": "상속 아파트 지분 매도 전 등기 확인 항목",
+      "category": "상속지분",
+      "priority": 2,
+      "slug": "blog/inherited-apartment-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "형제 공동명의 지분 매도",
+      "title": "형제 공동명의 상속지분 매도 검토 기준",
+      "category": "상속지분",
+      "priority": 2,
+      "slug": "blog/siblings-inherited-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "공유자 갈등 지분 매도",
+      "title": "공유자 갈등 중 지분 매도 상담 기준",
+      "category": "공유자 문제",
+      "priority": 2,
+      "slug": "blog/co-owner-dispute-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "공유자가 매도 반대할 때",
+      "title": "공유자가 매도에 반대할 때 지분 검토 항목",
+      "category": "공유자 문제",
+      "priority": 2,
+      "slug": "blog/co-owner-refuses-sale-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "임차인 있는 상가 지분",
+      "title": "임차인이 있는 상가 공유지분 매도 검토",
+      "category": "상가지분",
+      "priority": 2,
+      "slug": "blog/tenant-occupied-commercial-share",
+      "status": "queued"
+    },
+    {
+      "keyword": "나대지 공유지분 매도",
+      "title": "나대지 공유지분 매도 상담 전 확인자료",
+      "category": "토지지분",
+      "priority": 3,
+      "slug": "blog/vacant-land-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "임야 지분 매도",
+      "title": "임야 공유지분 매도 검토 기준",
+      "category": "토지지분",
+      "priority": 3,
+      "slug": "blog/forest-land-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "농지 지분 매도",
+      "title": "농지 공유지분 매도 전 확인 항목",
+      "category": "토지지분",
+      "priority": 3,
+      "slug": "blog/farmland-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "도로 지분 매도",
+      "title": "도로 지분 매도 상담에서 확인할 자료",
+      "category": "특수 토지지분",
+      "priority": 4,
+      "slug": "blog/road-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "맹지 지분 매도",
+      "title": "맹지 공유지분 매도 검토 시 확인할 사항",
+      "category": "특수 토지지분",
+      "priority": 4,
+      "slug": "blog/landlocked-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "빌라 지분 매도",
+      "title": "빌라 공유지분 매도 상담 준비자료",
+      "category": "주거 지분",
+      "priority": 3,
+      "slug": "blog/villa-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "단독주택 지분 매도",
+      "title": "단독주택 공유지분 매도 검토 항목",
+      "category": "주거 지분",
+      "priority": 3,
+      "slug": "blog/detached-house-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "오피스텔 지분 매도",
+      "title": "오피스텔 공유지분 매도 전 확인 기준",
+      "category": "주거 지분",
+      "priority": 4,
+      "slug": "blog/officetel-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "상가건물 지분 매도",
+      "title": "상가건물 공유지분 매도 검토 노트",
+      "category": "상가지분",
+      "priority": 3,
+      "slug": "blog/commercial-building-share-sale-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "등기부등본 지분율 확인",
+      "title": "등기부등본에서 지분율 확인 후 상담하는 방법",
+      "category": "상담 준비",
+      "priority": 2,
+      "slug": "blog/register-share-ratio-check",
+      "status": "queued"
+    },
+    {
+      "keyword": "매각물건명세서 지분 확인",
+      "title": "매각물건명세서에 지분 표시가 있을 때 검토 기준",
+      "category": "지분경매 검토",
+      "priority": 3,
+      "slug": "blog/sale-statement-share-check",
+      "status": "queued"
+    },
+    {
+      "keyword": "주소만 있는 공유지분 상담",
+      "title": "주소만 있어도 공유지분 상담을 시작할 수 있습니다",
+      "category": "상담 준비",
+      "priority": 2,
+      "slug": "blog/address-only-share-consultation",
+      "status": "queued"
+    },
+    {
+      "keyword": "사건번호만 있는 지분 상담",
+      "title": "사건번호만 있는 지분 상담 접수 기준",
+      "category": "지분경매 검토",
+      "priority": 2,
+      "slug": "blog/case-number-only-share-consultation",
+      "status": "queued"
+    },
+    {
+      "keyword": "지분율 모를 때 상담",
+      "title": "지분율을 모를 때 공유지분 상담 접수 방법",
+      "category": "상담 준비",
+      "priority": 3,
+      "slug": "blog/unknown-share-ratio-consultation",
+      "status": "queued"
+    },
+    {
+      "keyword": "공유물분할청구 통보 지분",
+      "title": "공유물분할청구 통보를 받은 지분 매도 검토",
+      "category": "분할청구",
+      "priority": 3,
+      "slug": "blog/partition-claim-notice-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "공동명의 부동산 지분 정리",
+      "title": "공동명의 부동산 지분 정리 전 상담 항목",
+      "category": "공동명의",
+      "priority": 3,
+      "slug": "blog/joint-name-property-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "부모님 부동산 지분 매도",
+      "title": "부모님 부동산 상속지분 매도 전 확인자료",
+      "category": "상속지분",
+      "priority": 3,
+      "slug": "blog/parents-property-inherited-share-sale",
+      "status": "queued"
+    },
+    {
+      "keyword": "지분경매 사건자료 상담",
+      "title": "지분경매 사건자료 상담 전 확인할 항목",
+      "category": "지분경매 검토",
+      "priority": 3,
+      "slug": "blog/share-auction-case-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "지분경매 낙찰 후 지분 검토",
+      "title": "지분경매 낙찰 후 공유지분 검토 항목",
+      "category": "지분경매 검토",
+      "priority": 4,
+      "slug": "blog/share-auction-after-award-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "인천 공유지분 매입",
+      "title": "인천 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 3,
+      "slug": "blog/incheon-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "부산 공유지분 매입",
+      "title": "부산 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 3,
+      "slug": "blog/busan-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 공유지분 매입",
+      "title": "대구 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/daegu-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 공유지분 매입",
+      "title": "대전 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/daejeon-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 공유지분 매입",
+      "title": "광주 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/gwangju-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "울산 공유지분 매입",
+      "title": "울산 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/ulsan-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "수원 공유지분 매입",
+      "title": "수원 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/suwon-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "용인 공유지분 매입",
+      "title": "용인 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/yongin-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "성남 공유지분 매입",
+      "title": "성남 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/seongnam-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "고양 공유지분 매입",
+      "title": "고양 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/goyang-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "부천 공유지분 매입",
+      "title": "부천 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/bucheon-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "화성 공유지분 매입",
+      "title": "화성 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 4,
+      "slug": "blog/hwaseong-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "김포 공유지분 매입",
+      "title": "김포 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 5,
+      "slug": "blog/gimpo-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "남양주 공유지분 매입",
+      "title": "남양주 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 5,
+      "slug": "blog/namyangju-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "천안 공유지분 매입",
+      "title": "천안 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 5,
+      "slug": "blog/cheonan-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "청주 공유지분 매입",
+      "title": "청주 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 5,
+      "slug": "blog/cheongju-share-purchase-documents",
+      "status": "queued"
+    },
+    {
+      "keyword": "제주 공유지분 매입",
+      "title": "제주 공유지분 매입 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 5,
+      "slug": "blog/jeju-share-purchase-documents",
       "status": "queued"
     }
   ]

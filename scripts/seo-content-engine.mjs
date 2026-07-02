@@ -3,9 +3,7 @@ import path from "node:path";
 
 const root = process.cwd();
 const siteBase = (process.env.SITE_BASE || "https://jiggyj744-ctrl.github.io").replace(/\/$/, "");
-const model = process.env.OPENAI_MODEL || "gpt-5.5";
 const generationMode = process.env.GENERATION_MODE || "template";
-const allowDirectOpenAI = process.env.ALLOW_DIRECT_OPENAI === "1";
 const today = new Date().toISOString().slice(0, 10);
 const args = process.argv.slice(2);
 const limit = Math.max(1, Math.min(5, Number.parseInt(args[args.indexOf("--limit") + 1] || "1", 10) || 1));
@@ -74,6 +72,7 @@ const backlog = readJson("content/keyword-backlog.json");
 const prompt = fs.existsSync("prompts/share-index-page.md") ? fs.readFileSync("prompts/share-index-page.md", "utf8") : "";
 const blogBacklog = fs.existsSync("content/blog-backlog.json") ? readJson("content/blog-backlog.json") : { version: 1, updated: today, posts: [] };
 const blogPrompt = fs.existsSync("prompts/share-blog-post.md") ? fs.readFileSync("prompts/share-blog-post.md", "utf8") : "";
+ensureBlogBacklogQueue(blogBacklog);
 const selected = backlog.keywords.filter((item) => ["queued", "improve"].includes(item.status)).slice(0, limit);
 const published = [];
 
@@ -124,14 +123,7 @@ console.log("continuous blog indexing published " + publishedBlogs.length + " po
 async function generateContent(item) {
   if (generationMode === "template") return fallbackContent(item, "template-cost-safe");
   if (process.env.LLM_PROXY_BASE_URL) return generateViaProxy(item);
-  if (!allowDirectOpenAI || !process.env.OPENAI_API_KEY) return fallbackContent(item, "template-direct-disabled");
-  const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON with keys title, description, h1, eyebrow, lead, sections, faqs."].join("\n");
-  try {
-    const response = await fetch("https://api.openai.com/v1/responses", { method: "POST", headers: { Authorization: "Bearer " + process.env.OPENAI_API_KEY, "Content-Type": "application/json" }, body: JSON.stringify({ model, input, text: { format: { type: "json_object" } } }) });
-    if (!response.ok) throw new Error("OpenAI API " + response.status + ": " + await response.text());
-    const data = await response.json();
-    return JSON.parse(extractOutputText(data));
-  } catch (error) { console.warn("OpenAI generation failed, using template fallback: " + error.message); return fallbackContent(item, "template-api-fallback"); }
+  return fallbackContent(item, "template-proxy-disabled");
 }
 
 async function generateViaProxy(item) {
@@ -140,7 +132,7 @@ async function generateViaProxy(item) {
   if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
   const input = [prompt, "Business facts JSON:", JSON.stringify(facts), "Keyword request JSON:", JSON.stringify(item), "Return strict JSON only with keys title, description, h1, eyebrow, lead, sections, faqs. Write Korean content with at least 3 sections, each section containing 4 items, and 4 FAQs. Keep public copy focused on 자료 확인, 매입 가능성, 보류 사유, 추가자료 안내. Do not reveal bidding, partition, lawsuit, cost, timing, price calculation, or acquisition strategy."].join("\n");
   try {
-    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "deepseek-chat", messages: [{ role: "user", content: input }], temperature: 0.4, max_tokens: 2500, response_format: { type: "json_object" } }) });
+    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "gemini-pro", messages: [{ role: "user", content: input }], temperature: 0.4, max_tokens: 2500, response_format: { type: "json_object" } }) });
     if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || data.output_text || "";
@@ -149,13 +141,6 @@ async function generateViaProxy(item) {
     console.warn("Proxy generation failed, using template fallback: " + error.message);
     return fallbackContent(item, "template-proxy-fallback");
   }
-}
-
-function extractOutputText(data) {
-  if (typeof data.output_text === "string") return data.output_text;
-  const chunks = [];
-  for (const item of data.output || []) for (const content of item.content || []) if (typeof content.text === "string") chunks.push(content.text);
-  return chunks.join("\n");
 }
 
 function fallbackContent(item, mode) {
@@ -176,10 +161,61 @@ function renderPage(page) {
 function qaPage(page, html) { for (const term of banned) if (html.includes(term)) throw new Error(page.slug + " contains banned term: " + term); for (const term of publicStrategyBanned) if (html.includes(term)) throw new Error(page.slug + " contains public strategy term: " + term); for (const required of [facts.phone, "naver-site-verification", "<link rel=\"canonical\"", "/#consult", "FAQPage"]) if (!html.includes(required)) throw new Error(page.slug + " missing " + required); if ((html.match(/<h1>/g) || []).length !== 1) throw new Error(page.slug + " must have one h1"); if (html.length < 5500) throw new Error(page.slug + " content too short"); }
 function updateSitemap(pages) { let xml = fs.readFileSync("sitemap.xml", "utf8"); for (const page of pages) { const loc = siteBase + "/" + page.slug + "/"; if (!xml.includes("<loc>" + loc + "</loc>")) xml = xml.replace("</urlset>", "  <url>\n    <loc>" + loc + "</loc>\n    <lastmod>" + today + "</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n</urlset>"); } fs.writeFileSync("sitemap.xml", xml, "utf8"); }
 function updateIndexLinks(pages) { const file = "index.html"; let html = fs.readFileSync(file, "utf8"); const marker = "<!-- continuous-indexing-links -->"; const links = pages.map((page) => "<article class=\"service-card\"><h3><a href=\"/" + page.slug + "/\">" + escapeHtml(page.keyword) + "</a></h3><p>지분 매입 검토와 상담 접수로 연결되는 색인 확장 페이지입니다.</p></article>").join(""); if (html.includes(marker)) html = html.replace(new RegExp("<!-- continuous-indexing-links --><div class=\"service-grid\">[\\s\\S]*?</div><!-- /continuous-indexing-links -->"), marker + "<div class=\"service-grid\">" + links + "</div><!-- /continuous-indexing-links -->"); else { const block = "<section class=\"band service-band\" id=\"indexing-hub\"><div class=\"section-head\"><p class=\"eyebrow\">지분매입 색인 허브</p><h2>상황별 지분 상담 페이지를 계속 확장합니다</h2><p>공유지분 매도, 지분경매, 상속지분, 지역별 지분매입 검색 의도에 맞춰 페이지를 지속 발행합니다.</p></div>" + marker + "<div class=\"service-grid\">" + links + "</div><!-- /continuous-indexing-links --></section>"; html = html.replace("    <section class=\"final-cta\">", block + "\n    <section class=\"final-cta\">"); } fs.writeFileSync(file, html, "utf8"); }
-function updateOps(published) { fs.mkdirSync("ops", { recursive: true }); const file = "ops/index-state.json"; const state = fs.existsSync(file) ? readJson(file) : { runs: [] }; state.runs.unshift({ date: new Date().toISOString(), model: generationMode === "template" ? "template-cost-safe" : (process.env.LLM_PROXY_BASE_URL ? "proxy" : (allowDirectOpenAI ? model : "template-direct-disabled")), count: published.length, pages: published.map((page) => page.slug) }); state.runs = state.runs.slice(0, 60); writeJson(file, state); }
+function updateOps(published) { fs.mkdirSync("ops", { recursive: true }); const file = "ops/index-state.json"; const state = fs.existsSync(file) ? readJson(file) : { runs: [] }; state.runs.unshift({ date: new Date().toISOString(), model: generationMode === "template" ? "template-cost-safe" : (process.env.LLM_PROXY_BASE_URL ? "proxy:" + (process.env.LLM_PROXY_MODEL || "gemini-pro") : "template-proxy-disabled"), count: published.length, pages: published.map((page) => page.slug) }); state.runs = state.runs.slice(0, 60); writeJson(file, state); }
 function readJson(file) { return JSON.parse(fs.readFileSync(file, "utf8")); }
 function writeJson(file, value) { fs.writeFileSync(file, JSON.stringify(value, null, 2) + "\n", "utf8"); }
 function escapeHtml(value) { return String(value ?? "").replace(/[&<>\"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[char])); }
+
+function ensureBlogBacklogQueue(state) {
+  const queuedCount = state.posts.filter((item) => ["queued", "improve"].includes(item.status)).length;
+  if (queuedCount >= 20) return;
+  const seen = new Set(state.posts.map((item) => item.slug));
+  const candidates = buildBlogBacklogCandidates();
+  const added = [];
+  for (const candidate of candidates) {
+    if (seen.has(candidate.slug)) continue;
+    state.posts.push(candidate);
+    seen.add(candidate.slug);
+    added.push(candidate);
+    if (queuedCount + added.length >= 40) break;
+  }
+  if (!added.length) return;
+  state.updated = today;
+  writeJson("content/blog-backlog.json", state);
+  console.log("blog backlog refilled " + added.length + " post(s)");
+}
+
+function buildBlogBacklogCandidates() {
+  const regions = [
+    ["seoul", "서울"], ["gyeonggi", "경기"], ["incheon", "인천"], ["busan", "부산"],
+    ["daegu", "대구"], ["daejeon", "대전"], ["gwangju", "광주"], ["ulsan", "울산"],
+    ["suwon", "수원"], ["yongin", "용인"], ["seongnam", "성남"], ["goyang", "고양"],
+    ["bucheon", "부천"], ["hwaseong", "화성"], ["gimpo", "김포"], ["namyangju", "남양주"],
+    ["cheonan", "천안"], ["cheongju", "청주"], ["jeju", "제주"]
+  ];
+  const intents = [
+    { slug: "share-sale-consultation", keyword: "공유지분 매도", title: "공유지분 매도 상담 준비자료", category: "지역별 지분매입", priority: 6 },
+    { slug: "inherited-share-review", keyword: "상속지분 매도", title: "상속지분 매도 전 확인자료", category: "상속지분", priority: 6 },
+    { slug: "auction-case-review", keyword: "지분경매 사건번호", title: "지분경매 사건번호 상담 항목", category: "지분경매 검토", priority: 6 },
+    { slug: "land-share-review", keyword: "토지 공유지분 매도", title: "토지 공유지분 매도 검토 항목", category: "토지지분", priority: 7 },
+    { slug: "apartment-share-review", keyword: "아파트 공유지분 매도", title: "아파트 공유지분 매도 상담 기준", category: "주거 지분", priority: 7 },
+    { slug: "co-owner-issue-review", keyword: "공유자 갈등 지분", title: "공유자 갈등이 있는 지분 상담 항목", category: "공유자 문제", priority: 7 }
+  ];
+  const candidates = [];
+  for (const [regionSlug, regionName] of regions) {
+    for (const intent of intents) {
+      candidates.push({
+        keyword: regionName + " " + intent.keyword,
+        title: regionName + " " + intent.title,
+        category: intent.category,
+        priority: intent.priority,
+        slug: "blog/" + regionSlug + "-" + intent.slug,
+        status: "queued"
+      });
+    }
+  }
+  return candidates;
+}
 
 async function publishBlogPost(item) {
   let generated = await generateBlogContent(item);
@@ -217,7 +253,7 @@ async function generateBlogViaProxy(item) {
   if (process.env.LLM_PROXY_API_KEY) headers.Authorization = "Bearer " + process.env.LLM_PROXY_API_KEY;
   const input = [blogPrompt, "Business facts JSON:", JSON.stringify(facts), "Blog request JSON:", JSON.stringify(item), "Return strict JSON only with keys title, description, h1, eyebrow, excerpt, category, sections, checklist, faqs. Write Korean expert blog content with at least 5 sections, each section containing 2-3 substantial paragraphs, a practical checklist, and 4 FAQs. Keep public copy focused on 자료 확인, 매입 가능성, 보류 사유, 추가자료 안내. Do not reveal bidding, partition, lawsuit, cost, timing, price calculation, or acquisition strategy."].join("\n");
   try {
-    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "deepseek-chat", messages: [{ role: "user", content: input }], temperature: 0.35, max_tokens: 3600, response_format: { type: "json_object" } }) });
+    const response = await fetch(endpoint, { method: "POST", headers, body: JSON.stringify({ model: process.env.LLM_PROXY_MODEL || "gemini-pro", messages: [{ role: "user", content: input }], temperature: 0.35, max_tokens: 3600, response_format: { type: "json_object" } }) });
     if (!response.ok) throw new Error("Proxy API " + response.status + ": " + await response.text());
     const data = await response.json();
     const text = data.choices?.[0]?.message?.content || data.output_text || "";
