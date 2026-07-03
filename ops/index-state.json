@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-03T11:47:14.312Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/unreachable-co-owner-share-options"
+      ]
+    },
+    {
       "date": "2026-07-02T01:59:04.045Z",
       "model": "proxy:gemini-pro",
       "count": 1,

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-02",
+  "updated": "2026-07-03",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -47,7 +47,12 @@
       "category": "공유자 문제",
       "priority": 1,
       "slug": "blog/unreachable-co-owner-share-options",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-03",
+      "publishedAt": "2026-07-03T11:47:14.289Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/",
+      "description": "연락 안 되는 공유자 지분 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-co-owner-issue.webp"
     },
     {
       "keyword": "공유물분할청구 지분 매도",
