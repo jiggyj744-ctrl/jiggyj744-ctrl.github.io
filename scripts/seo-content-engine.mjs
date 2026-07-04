@@ -8,6 +8,10 @@ const assetVersion = "20260702-1";
 const today = new Date().toISOString().slice(0, 10);
 const args = process.argv.slice(2);
 const limit = Math.max(1, Math.min(5, Number.parseInt(args[args.indexOf("--limit") + 1] || "1", 10) || 1));
+const publishScope = String(process.env.PUBLISH_SCOPE || "all").toLowerCase();
+const publishPages = ["all", "page", "pages", "landing", "landings"].includes(publishScope);
+const publishBlogs = ["all", "blog", "blogs"].includes(publishScope);
+if (!publishPages && !publishBlogs) throw new Error("Unsupported PUBLISH_SCOPE: " + publishScope);
 const legacyFactory = String.fromCharCode(70,97,99,116,111,114,121,80,114,111);
 const legacyAuction = ["공장", "경매"].join("");
 const legacyKey = ["Key", "zard"].join("");
@@ -103,7 +107,7 @@ if (args.includes("--rebuild-blog-only")) {
   console.log("rebuilt blog pages " + rebuiltPosts.length + " post(s)");
   process.exit(0);
 }
-const selected = backlog.keywords.filter((item) => ["queued", "improve"].includes(item.status)).slice(0, limit);
+const selected = publishPages ? backlog.keywords.filter((item) => ["queued", "improve"].includes(item.status)).slice(0, limit) : [];
 const published = [];
 
 for (const item of selected) {
@@ -131,7 +135,7 @@ for (const item of selected) {
 if (published.length) { updateSitemap(published); updateIndexLinks(backlog.keywords.filter((item) => item.status === "published")); writeJson("content/keyword-backlog.json", backlog); updateOps(published); }
 console.log("continuous indexing published " + published.length + " page(s)");
 
-const selectedBlogs = blogBacklog.posts.filter((item) => ["queued", "improve"].includes(item.status)).sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99) || String(a.slug).localeCompare(String(b.slug))).slice(0, limit);
+const selectedBlogs = publishBlogs ? blogBacklog.posts.filter((item) => ["queued", "improve"].includes(item.status)).sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99) || String(a.slug).localeCompare(String(b.slug))).slice(0, limit) : [];
 const publishedBlogs = [];
 for (const item of selectedBlogs) {
   const post = await publishBlogPost(item);

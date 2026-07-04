@@ -1,10 +1,11 @@
 [Unit]
-Description=Daily Jauction share blog publisher
+Description=Jauction share blog publisher watchdog
 
 [Timer]
-OnCalendar=*-*-* 07:00:00
+OnBootSec=10m
+OnUnitActiveSec=30m
 Persistent=true
-RandomizedDelaySec=14h
+RandomizedDelaySec=20m
 AccuracySec=1m
 Unit=jauction-share-blog-publisher.service
 

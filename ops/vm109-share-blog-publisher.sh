@@ -9,7 +9,17 @@ SITE_BASE="${SITE_BASE:-https://jiggyj744-ctrl.github.io}"
 GENERATION_MODE="${GENERATION_MODE:-proxy}"
 LLM_PROXY_BASE_URL="${LLM_PROXY_BASE_URL:-http://127.0.0.1:8302/v1}"
 LLM_PROXY_MODEL="${LLM_PROXY_MODEL:-gemini-pro}"
+LLM_PROXY_API_KEY="${LLM_PROXY_API_KEY:-}"
 PUBLISH_JITTER_MAX_SECONDS="${PUBLISH_JITTER_MAX_SECONDS:-0}"
+ALLOW_TEMPLATE_ON_PROXY_FAILURE="${ALLOW_TEMPLATE_ON_PROXY_FAILURE:-0}"
+PUBLISH_SCOPE="${PUBLISH_SCOPE:-blog}"
+
+use_template_generation() {
+  GENERATION_MODE="template"
+  LLM_PROXY_BASE_URL=""
+  LLM_PROXY_API_KEY=""
+  export GENERATION_MODE LLM_PROXY_BASE_URL LLM_PROXY_API_KEY
+}
 
 mkdir -p "$(dirname "$LOCK_FILE")" "$LOG_DIR"
 RUN_LOG="$LOG_DIR/$(date -u +%Y%m%dT%H%M%SZ)-publisher.log"
@@ -22,10 +32,8 @@ if ! flock -n 9; then
   exit 0
 fi
 
-: "${LLM_PROXY_API_KEY:?LLM_PROXY_API_KEY is required}"
-
 cd "$REPO_DIR"
-export SITE_BASE GENERATION_MODE LLM_PROXY_BASE_URL LLM_PROXY_MODEL LLM_PROXY_API_KEY
+export SITE_BASE GENERATION_MODE LLM_PROXY_BASE_URL LLM_PROXY_MODEL LLM_PROXY_API_KEY PUBLISH_SCOPE
 
 if [[ "$PUBLISH_JITTER_MAX_SECONDS" =~ ^[0-9]+$ ]] && [ "$PUBLISH_JITTER_MAX_SECONDS" -gt 0 ]; then
   seed="$(date +%s%N)-$$-$RANDOM"
@@ -74,7 +82,20 @@ NODE
   fi
 fi
 
-node --input-type=module <<'NODE'
+if [ "$GENERATION_MODE" != "template" ]; then
+  if [ -z "$LLM_PROXY_API_KEY" ]; then
+    if [ "$ALLOW_TEMPLATE_ON_PROXY_FAILURE" = "1" ]; then
+      echo "LLM_PROXY_API_KEY is missing; falling back to template generation"
+      use_template_generation
+    else
+      echo "LLM_PROXY_API_KEY is required for proxy generation" >&2
+      exit 1
+    fi
+  fi
+fi
+
+if [ "$GENERATION_MODE" != "template" ]; then
+  if ! node --input-type=module <<'NODE'
 const baseUrl = process.env.LLM_PROXY_BASE_URL.replace(/\/$/, "");
 const healthBase = baseUrl.replace(/\/v1$/, "");
 const headers = {
@@ -109,6 +130,18 @@ if (!text.trim()) {
 }
 console.log("Gemini proxy completion route OK via " + process.env.LLM_PROXY_MODEL);
 NODE
+  then
+    if [ "$ALLOW_TEMPLATE_ON_PROXY_FAILURE" = "1" ]; then
+      echo "Gemini proxy probe failed; falling back to template generation"
+      use_template_generation
+    else
+      exit 1
+    fi
+  fi
+else
+  use_template_generation
+  echo "template generation mode; skipping Gemini proxy probe"
+fi
 
 node scripts/seo-content-engine.mjs --limit "$LIMIT"
 node tools/verify_site.mjs

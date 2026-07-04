@@ -31,18 +31,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
-    runs-on: [self-hosted, vm109]
-    timeout-minutes: 30
-    env:
-      SITE_BASE: https://jiggyj744-ctrl.github.io
-      GENERATION_MODE: proxy
-      LLM_PROXY_BASE_URL: ${{ github.event.inputs.proxy_base_url || vars.LLM_PROXY_BASE_URL || 'http://127.0.0.1:8302/v1' }}
-      LLM_PROXY_API_KEY: ${{ secrets.LLM_PROXY_API_KEY }}
-      LLM_PROXY_MODEL: ${{ vars.LLM_PROXY_MODEL || 'gemini-pro' }}
-      PUBLISH_LIMIT: ${{ github.event.inputs.pages || '1' }}
-      FORCE_PUBLISH: ${{ github.event.inputs.force || '0' }}
-      PUBLISH_JITTER_MAX_SECONDS: ${{ github.event_name == 'schedule' && '1800' || '0' }}
+  select:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      should_publish: ${{ steps.publish_slot.outputs.should_publish }}
+      reason: ${{ steps.publish_slot.outputs.reason }}
     steps:
       - name: Select daily publish slot
         id: publish_slot
@@ -78,17 +72,31 @@ jobs:
           fi
           echo "KST date=$kst_date current_slot=$current_slot selected_slot=$selected_slot"
 
+  publish:
+    needs: select
+    if: needs.select.outputs.should_publish == '1'
+    runs-on: [self-hosted, vm109]
+    timeout-minutes: 30
+    env:
+      SITE_BASE: https://jiggyj744-ctrl.github.io
+      GENERATION_MODE: proxy
+      PUBLISH_SCOPE: blog
+      LLM_PROXY_BASE_URL: ${{ github.event.inputs.proxy_base_url || vars.LLM_PROXY_BASE_URL || 'http://127.0.0.1:8302/v1' }}
+      LLM_PROXY_API_KEY: ${{ secrets.LLM_PROXY_API_KEY }}
+      LLM_PROXY_MODEL: ${{ vars.LLM_PROXY_MODEL || 'gemini-pro' }}
+      PUBLISH_LIMIT: ${{ github.event.inputs.pages || '1' }}
+      FORCE_PUBLISH: ${{ github.event.inputs.force || '0' }}
+      PUBLISH_JITTER_MAX_SECONDS: ${{ github.event_name == 'schedule' && '1800' || '0' }}
+      ALLOW_TEMPLATE_ON_PROXY_FAILURE: "1"
+    steps:
       - uses: actions/checkout@v4
-        if: steps.publish_slot.outputs.should_publish == '1'
         with:
           ref: main
           fetch-depth: 0
       - uses: actions/setup-node@v4
-        if: steps.publish_slot.outputs.should_publish == '1'
         with:
           node-version: 22
       - name: Run guarded share blog publisher
-        if: steps.publish_slot.outputs.should_publish == '1'
         shell: bash
         run: |
           export JAUCTION_REPO_DIR="$GITHUB_WORKSPACE"
