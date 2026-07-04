@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-03",
+  "updated": "2026-07-04",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -292,7 +292,12 @@
       "category": "상담 준비",
       "priority": 2,
       "slug": "blog/address-only-share-consultation",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-04",
+      "publishedAt": "2026-07-04T12:33:41.890Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+      "description": "주소만 있는 공유지분 상담 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "사건번호만 있는 지분 상담",

@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-04T12:33:41.906Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/address-only-share-consultation"
+      ]
+    },
+    {
       "date": "2026-07-03T11:47:14.312Z",
       "model": "template-cost-safe",
       "count": 1,
