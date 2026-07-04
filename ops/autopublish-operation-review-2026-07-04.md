@@ -36,6 +36,7 @@
 9. systemd timer는 부팅 10분 뒤부터 30분마다 watchdog 방식으로 같은 스크립트를 호출한다.
 10. lock 파일과 daily guard가 GitHub Actions, hosted fallback, systemd timer 간 중복 발행을 막는다.
 11. 자동발행 스크립트 기본값은 `PUBLISH_SCOPE=blog`라서 키워드 랜딩 대기열이 생겨도 하루 자동발행은 블로그 1건만 처리한다.
+12. 기존 pending run이 새 스케줄을 막지 않도록 기본 workflow concurrency group을 `continuous-share-indexing-v2`로 분리했다.
 
 ## 하루 발행량
 - 기본값: 하루 블로그 1건.

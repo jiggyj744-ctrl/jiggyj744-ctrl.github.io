@@ -27,7 +27,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: continuous-share-indexing
+  group: continuous-share-indexing-v2
   cancel-in-progress: false
 
 jobs:
