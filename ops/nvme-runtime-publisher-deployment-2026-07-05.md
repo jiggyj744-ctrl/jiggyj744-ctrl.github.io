@@ -12,6 +12,7 @@
 - 로그 위치를 `/srv/nvme/services/jiggyj744-ctrl.github.io/.runtime/logs`로 고정했다.
 - systemd service가 `/srv/nvme/services` mount를 조건으로 실행되도록 했다.
 - `git fetch`, `git pull`, `git push`에 재시도 로직을 추가했다.
+- GitHub push credential이 없으면 생성 단계로 들어가지 않도록 `REQUIRE_GIT_PUSH_READY=1`을 적용했다.
 - proxy 장애 시 템플릿 발행으로 전환할 수 있도록 `ALLOW_TEMPLATE_ON_PROXY_FAILURE=1`을 service 기본값으로 둔다.
 - `RESPECT_PUBLISH_SLOT=1`을 적용해 systemd가 자주 깨어나도 하루 선택 슬롯 이후에만 발행한다.
 
@@ -28,7 +29,8 @@
 ## 현재 차단 항목
 - `/etc/jauction-share-blog-publisher.env`의 `LLM_PROXY_API_KEY`가 비어 있다.
 - `GIT_TERMINAL_PROMPT=0 git push --dry-run origin main` 결과 GitHub username을 읽을 수 없어 실패했다.
-- 따라서 CT104가 실제 글을 생성하더라도 GitHub Pages repo로 push하려면 HTTPS credential helper 또는 SSH deploy key 설정이 필요하다.
+- 따라서 CT104는 GitHub credential 설정 전까지 글 생성 단계로 들어가지 않고 안전하게 종료한다.
+- GitHub Pages repo로 직접 push하려면 HTTPS credential helper 또는 SSH deploy key 설정이 필요하다.
 
 ## 운영 기준
 - GitHub Actions hosted fallback은 계속 유지한다.

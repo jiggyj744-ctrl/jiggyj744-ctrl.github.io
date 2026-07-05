@@ -20,6 +20,7 @@ Environment=PUBLISH_LIMIT=1
 Environment=PUBLISH_JITTER_MAX_SECONDS=1200
 Environment=ALLOW_TEMPLATE_ON_PROXY_FAILURE=1
 Environment=RESPECT_PUBLISH_SLOT=1
+Environment=REQUIRE_GIT_PUSH_READY=1
 Environment=GIT_RETRY_ATTEMPTS=5
 Environment=GIT_RETRY_DELAY_SECONDS=20
 EnvironmentFile=-/etc/jauction-share-blog-publisher.env

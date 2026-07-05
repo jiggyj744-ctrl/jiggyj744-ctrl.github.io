@@ -14,6 +14,7 @@ PUBLISH_JITTER_MAX_SECONDS="${PUBLISH_JITTER_MAX_SECONDS:-0}"
 ALLOW_TEMPLATE_ON_PROXY_FAILURE="${ALLOW_TEMPLATE_ON_PROXY_FAILURE:-0}"
 PUBLISH_SCOPE="${PUBLISH_SCOPE:-blog}"
 RESPECT_PUBLISH_SLOT="${RESPECT_PUBLISH_SLOT:-0}"
+REQUIRE_GIT_PUSH_READY="${REQUIRE_GIT_PUSH_READY:-0}"
 GIT_RETRY_ATTEMPTS="${GIT_RETRY_ATTEMPTS:-5}"
 GIT_RETRY_DELAY_SECONDS="${GIT_RETRY_DELAY_SECONDS:-20}"
 
@@ -97,6 +98,13 @@ if [ "$RESPECT_PUBLISH_SLOT" = "1" ] && [ "${FORCE_PUBLISH:-0}" != "1" ]; then
   SHOULD_RUN_SLOT="$(node tools/runtime_publish_gate.mjs)"
   if [ "$SHOULD_RUN_SLOT" != "1" ]; then
     echo "runtime publish slot not open yet"
+    exit 0
+  fi
+fi
+
+if [ "$REQUIRE_GIT_PUSH_READY" = "1" ]; then
+  if ! GIT_TERMINAL_PROMPT=0 git push --dry-run origin main; then
+    echo "git push credential is not ready; skipping publish before generating changes" >&2
     exit 0
   fi
 fi
