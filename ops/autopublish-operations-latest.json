@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-07-05T06:11:14.688Z",
-  "kstDate": "2026-07-05",
+  "generatedAt": "2026-07-05T15:17:46.329Z",
+  "kstDate": "2026-07-06",
   "site": "https://jiggyj744-ctrl.github.io",
   "summary": {
-    "publishedBlogPosts": 5,
-    "queuedBlogPosts": 53,
+    "publishedBlogPosts": 6,
+    "queuedBlogPosts": 52,
     "publishedToday": false,
     "todayPublishCount": 0,
-    "latestPublishedUrl": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
-    "consoleUrls": 12,
+    "latestPublishedUrl": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+    "consoleUrls": 13,
     "diagnosticsCritical": 0,
     "diagnosticsWarning": 0,
     "blogInternalLinkFailures": 0
@@ -21,16 +21,6 @@
     "duplicateGuard": "ops/index-state.json의 KST 날짜별 blog/* 발행 여부 확인"
   },
   "schedulePreview": [
-    {
-      "kstDate": "2026-07-05",
-      "selectedSlot": 3,
-      "primaryKst": "15:37",
-      "primaryWindowKst": "15:37~+30분",
-      "fallbackKst": "15:49",
-      "fallbackWindowKst": "15:49~+45분",
-      "primaryCron": "37 6 * * *",
-      "fallbackCron": "49 6 * * *"
-    },
     {
       "kstDate": "2026-07-06",
       "selectedSlot": 0,
@@ -160,83 +150,99 @@
       "fallbackWindowKst": "10:57~+45분",
       "primaryCron": "43 1 * * *",
       "fallbackCron": "57 1 * * *"
+    },
+    {
+      "kstDate": "2026-07-19",
+      "selectedSlot": 2,
+      "primaryKst": "13:11",
+      "primaryWindowKst": "13:11~+30분",
+      "fallbackKst": "13:23",
+      "fallbackWindowKst": "13:23~+45분",
+      "primaryCron": "11 4 * * *",
+      "fallbackCron": "23 4 * * *"
     }
   ],
   "actions": [
     {
-      "name": "Search Index Readiness",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "6b0dab9cf43dcf4b6d57e5ae71acdee6f6e9a094",
-      "created_at": "2026-07-05T06:05:26Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731491373"
-    },
-    {
-      "name": "pages build and deployment",
-      "event": "dynamic",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "6b0dab9cf43dcf4b6d57e5ae71acdee6f6e9a094",
-      "created_at": "2026-07-05T06:05:26Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731491174"
-    },
-    {
-      "name": "pages build and deployment",
-      "event": "dynamic",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "824f7372bba233f5fdfc8e2a13ba526e10cba256",
-      "created_at": "2026-07-05T05:59:57Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731357581"
-    },
-    {
-      "name": "Search Index Readiness",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "1fe7eea2b0b9de7783f5ffc66650594ef97bab37",
-      "created_at": "2026-07-05T05:58:30Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731328358"
-    },
-    {
-      "name": "pages build and deployment",
-      "event": "dynamic",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "1fe7eea2b0b9de7783f5ffc66650594ef97bab37",
-      "created_at": "2026-07-05T05:58:29Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731328009"
-    },
-    {
-      "name": "Search Index Readiness",
-      "event": "push",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "3f4057a067f698889be2b01e81c32f393d4b9fd3",
-      "created_at": "2026-07-05T05:56:57Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731297175"
-    },
-    {
-      "name": "pages build and deployment",
-      "event": "dynamic",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "3f4057a067f698889be2b01e81c32f393d4b9fd3",
-      "created_at": "2026-07-05T05:56:57Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731296856"
+      "name": "Daily Share Site Operations Report",
+      "event": "schedule",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "9758df6468485dd2c59612d27c35e9ffe6f33195",
+      "created_at": "2026-07-05T15:17:35Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28745370785"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "061ece3f60ea0ccf1ad5ce2077521324a0d0d9c7",
-      "created_at": "2026-07-05T05:56:47Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28731293603"
+      "head_sha": "9758df6468485dd2c59612d27c35e9ffe6f33195",
+      "created_at": "2026-07-05T14:48:09Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28744542386"
+    },
+    {
+      "name": "Continuous Share Blog Publishing",
+      "event": "schedule",
+      "status": "pending",
+      "conclusion": null,
+      "head_sha": "9758df6468485dd2c59612d27c35e9ffe6f33195",
+      "created_at": "2026-07-05T14:20:51Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28743800087"
+    },
+    {
+      "name": "Hosted Template Blog Fallback",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "9758df6468485dd2c59612d27c35e9ffe6f33195",
+      "created_at": "2026-07-05T11:14:25Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28738890425"
+    },
+    {
+      "name": "Continuous Share Blog Publishing",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head_sha": "9758df6468485dd2c59612d27c35e9ffe6f33195",
+      "created_at": "2026-07-05T11:09:13Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28738748895"
+    },
+    {
+      "name": "pages build and deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "9758df6468485dd2c59612d27c35e9ffe6f33195",
+      "created_at": "2026-07-05T09:56:19Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28736929318"
+    },
+    {
+      "name": "Hosted Template Blog Fallback",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "fafa5c2bca7545e6d56a502baee0772fea28679d",
+      "created_at": "2026-07-05T09:31:47Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28736337604"
+    },
+    {
+      "name": "Continuous Share Blog Publishing",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head_sha": "fafa5c2bca7545e6d56a502baee0772fea28679d",
+      "created_at": "2026-07-05T09:30:15Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28736296190"
     }
   ],
   "publishedPosts": [
+    {
+      "title": "사건번호만 있는 지분 상담 접수 기준",
+      "slug": "blog/case-number-only-share-consultation",
+      "publishedAt": "2026-07-05T09:56:17.621Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/"
+    },
     {
       "title": "주소만 있어도 공유지분 상담을 시작할 수 있습니다",
       "slug": "blog/address-only-share-consultation",
@@ -269,13 +275,6 @@
     }
   ],
   "nextQueuedPosts": [
-    {
-      "title": "사건번호만 있는 지분 상담 접수 기준",
-      "keyword": "사건번호만 있는 지분 상담",
-      "category": "지분경매 검토",
-      "priority": 2,
-      "slug": "blog/case-number-only-share-consultation"
-    },
     {
       "title": "공유 아파트 지분 매도 전 확인할 자료",
       "keyword": "공유 아파트 지분 매도",
@@ -352,6 +351,13 @@
       "category": "우선매수권",
       "priority": 2,
       "slug": "blog/preemption-right-share-auction"
+    },
+    {
+      "title": "등기부등본에서 지분율 확인 후 상담하는 방법",
+      "keyword": "등기부등본 지분율 확인",
+      "category": "상담 준비",
+      "priority": 2,
+      "slug": "blog/register-share-ratio-check"
     }
   ]
 }
