@@ -463,7 +463,7 @@ function renderBlogPost(post) {
   const url = siteBase + "/" + post.slug + "/";
   const image = blogImageFor(post);
   const absoluteImage = siteBase + image;
-  const related = relatedBlogPosts(post, 3);
+  const related = relatedBlogPosts(post, 4);
   const sections = post.sections.map((section, index) => `<section class="blog-article-section">
         <p class="eyebrow">검토 노트 ${String(index + 1).padStart(2, "0")}</p>
         <h2>${escapeHtml(section.heading)}</h2>
@@ -541,7 +541,7 @@ function renderBlogPost(post) {
     </section>
     <section class="band service-band">
       <div class="section-head"><p class="eyebrow">관련 글</p><h2>함께 확인할 검토 노트</h2></div>
-      ${renderBlogCards(related.length ? related : publishedBlogPosts().filter((item) => cleanSlug(item.slug) !== post.slug).slice(0, 3))}
+      ${renderBlogCards(related.length ? related : publishedBlogPosts().filter((item) => cleanSlug(item.slug) !== post.slug).slice(0, 4))}
     </section>
     <section class="final-cta"><div><p class="eyebrow">1차 검토 접수</p><h2>매도 여부가 확정되지 않아도 먼저 확인할 수 있습니다</h2></div><a class="btn btn-primary" href="/#consult"><i data-lucide="clipboard-check"></i><span>검토 요청하기</span></a></section>
   </main>

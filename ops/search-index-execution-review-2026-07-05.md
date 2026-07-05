@@ -6,7 +6,11 @@
 - sitemap, RSS, robots, 네이버 확인 파일 공개 200 확인
 - 핵심 제출 URL 12개 공개 200 확인
 - `tools/build_indexing_submission_pack.mjs` 추가
+- `tools/sync_search_console_status.mjs` 추가
+- `tools/diagnose_indexing_failures.mjs` 추가
+- `tools/augment_blog_internal_links.mjs` 추가
 - `Search Index Readiness` GitHub Actions workflow 추가
+- 블로그 상세 글 관련 글 링크를 글당 최대 4개로 보강
 - 로컬 사이트 검증과 라이브 검증 통과
 
 ## 생성 산출물
@@ -14,6 +18,12 @@
 - `ops/search-index-submission-pack-2026-07-05.json`
 - `ops/search-index-submission-report-2026-07-05.md`
 - `ops/search-index-next-plan-2026-07-05.md`
+- `ops/search-console-status.json`
+- `ops/search-console-status-2026-07-05.md`
+- `ops/search-index-diagnostics-2026-07-05.json`
+- `ops/search-index-diagnostics-2026-07-05.md`
+- `ops/blog-internal-link-report-2026-07-05.json`
+- `ops/blog-internal-link-report-2026-07-05.md`
 
 ## 제출할 sitemap/RSS
 - sitemap: `https://jiggyj744-ctrl.github.io/sitemap.xml`
@@ -52,6 +62,9 @@
 ## 검증 결과
 - `node --check tools/build_indexing_submission_pack.mjs`: 통과
 - `node tools/build_indexing_submission_pack.mjs`: 통과, 실패 URL 0
+- `node tools/sync_search_console_status.mjs`: 통과, URL 상태 12개 생성
+- `node tools/diagnose_indexing_failures.mjs`: 통과, critical 0, warning 0
+- `node tools/augment_blog_internal_links.mjs --check`: 통과, 블로그 5개 관련 글 링크 4/4
 - `node tools/verify_site.mjs`: 통과
 - `node tools/verify_live.mjs`: 통과, 공개 34페이지 정상
 

@@ -6,6 +6,7 @@
 *.html text eol=lf
 *.json text eol=lf
 *.xml text eol=lf
+*.txt text eol=lf
 *.webp binary
 ops/systemd/* text eol=lf
 .github/workflows/*.yml text eol=lf

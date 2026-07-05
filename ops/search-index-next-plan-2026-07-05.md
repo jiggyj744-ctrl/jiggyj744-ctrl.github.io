@@ -82,6 +82,9 @@
 - `ops/search-index-submission-urls-YYYY-MM-DD.txt`: 네이버/구글에 순서대로 넣을 핵심 URL 목록
 - `ops/search-index-submission-pack-YYYY-MM-DD.json`: sitemap, RSS, 라이브 URL 상태 JSON
 - `ops/search-index-submission-report-YYYY-MM-DD.md`: 콘솔 제출용 요약 보고서
+- `ops/search-console-status.json`: URL별 네이버/구글 제출 상태 관리 원본
+- `ops/search-index-diagnostics-YYYY-MM-DD.md`: 실패/보류 URL 기술 진단 보고서
+- `ops/blog-internal-link-report-YYYY-MM-DD.md`: 블로그 내부 링크 보강 점검 보고서
 
 ## 성공 기준
 - 네이버 소유확인 완료

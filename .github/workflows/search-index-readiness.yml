@@ -25,6 +25,12 @@ jobs:
           node-version: 22
       - name: Build indexing submission pack
         run: node tools/build_indexing_submission_pack.mjs
+      - name: Sync console status scaffold
+        run: node tools/sync_search_console_status.mjs
+      - name: Diagnose indexing readiness
+        run: node tools/diagnose_indexing_failures.mjs
+      - name: Check blog internal links
+        run: node tools/augment_blog_internal_links.mjs --check
       - name: Verify live site
         run: node tools/verify_live.mjs
       - name: Upload indexing pack
@@ -35,3 +41,10 @@ jobs:
             ops/search-index-submission-pack-*.json
             ops/search-index-submission-report-*.md
             ops/search-index-submission-urls-*.txt
+            ops/search-console-status*.json
+            ops/search-console-status-*.md
+            ops/search-index-diagnostics-*.json
+            ops/search-index-diagnostics-*.md
+            ops/blog-internal-link-report-*.json
+            ops/blog-internal-link-report-*.md
+          retention-days: 30
