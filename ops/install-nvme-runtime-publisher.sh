@@ -5,10 +5,17 @@ REPO_URL="${REPO_URL:-https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io
 TARGET_DIR="${TARGET_DIR:-/srv/nvme/services/jiggyj744-ctrl.github.io}"
 SERVICE_NAME="${SERVICE_NAME:-jauction-share-blog-publisher}"
 ENV_FILE="${ENV_FILE:-/etc/jauction-share-blog-publisher.env}"
+TARGET_PARENT="$(dirname "$TARGET_DIR")"
+MOUNT_CHECK_PATH="$TARGET_DIR"
 
-if ! findmnt -T "$TARGET_DIR" | grep -q "nvme-runtime/services"; then
+mkdir -p "$TARGET_PARENT"
+if [ ! -e "$MOUNT_CHECK_PATH" ]; then
+  MOUNT_CHECK_PATH="$TARGET_PARENT"
+fi
+
+if ! findmnt -T "$MOUNT_CHECK_PATH" | grep -q "nvme-runtime/services"; then
   echo "target is not on nvme-runtime/services: $TARGET_DIR" >&2
-  findmnt -T "$TARGET_DIR" || true
+  findmnt -T "$MOUNT_CHECK_PATH" || true
   exit 1
 fi
 
@@ -23,7 +30,6 @@ if ! command -v node >/dev/null; then
   exit 1
 fi
 
-mkdir -p "$(dirname "$TARGET_DIR")"
 if [ -d "$TARGET_DIR/.git" ]; then
   git -C "$TARGET_DIR" fetch origin main
   git -C "$TARGET_DIR" checkout main
