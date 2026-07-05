@@ -1,0 +1,58 @@
+name: Daily Share Site Operations Report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 13 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-share-site-operations-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Refresh operation evidence
+        run: |
+          node tools/build_indexing_submission_pack.mjs
+          node tools/sync_search_console_status.mjs
+          node tools/diagnose_indexing_failures.mjs
+          node tools/augment_blog_internal_links.mjs --check
+          node tools/verify_publish_slot_policy.mjs
+          node tools/build_autopublish_operations_report.mjs
+          node tools/verify_site.mjs
+      - name: Commit operation report
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No operation report changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ops
+          git commit -m "Refresh daily share site operations report"
+          git push origin main
+      - name: Upload operation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-share-site-operations-report
+          path: |
+            ops/autopublish-operations-*.md
+            ops/autopublish-operations-latest.json
+            ops/search-index-submission-pack-*.json
+            ops/search-index-submission-report-*.md
+            ops/search-index-diagnostics-*.md
+            ops/blog-internal-link-report-*.md
+          retention-days: 30

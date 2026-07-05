@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/search-index-readiness.yml"
+      - ".github/workflows/**"
       - "assets/**"
       - "blog/**"
       - "guide/**"
@@ -46,6 +46,10 @@ jobs:
         run: node tools/diagnose_indexing_failures.mjs
       - name: Check blog internal links
         run: node tools/augment_blog_internal_links.mjs --check
+      - name: Verify publish slot policy
+        run: node tools/verify_publish_slot_policy.mjs
+      - name: Build autopublish operations report
+        run: node tools/build_autopublish_operations_report.mjs
       - name: Verify live site
         run: node tools/verify_live.mjs
       - name: Upload indexing pack
@@ -62,4 +66,6 @@ jobs:
             ops/search-index-diagnostics-*.md
             ops/blog-internal-link-report-*.json
             ops/blog-internal-link-report-*.md
+            ops/autopublish-operations-*.md
+            ops/autopublish-operations-latest.json
           retention-days: 30

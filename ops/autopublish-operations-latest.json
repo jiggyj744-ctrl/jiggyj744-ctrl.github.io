@@ -1,0 +1,357 @@
+{
+  "generatedAt": "2026-07-05T02:49:45.223Z",
+  "kstDate": "2026-07-05",
+  "site": "https://jiggyj744-ctrl.github.io",
+  "summary": {
+    "publishedBlogPosts": 5,
+    "queuedBlogPosts": 53,
+    "publishedToday": false,
+    "todayPublishCount": 0,
+    "latestPublishedUrl": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+    "consoleUrls": 12,
+    "diagnosticsCritical": 0,
+    "diagnosticsWarning": 0,
+    "blogInternalLinkFailures": 0
+  },
+  "policy": {
+    "dailyLimit": 1,
+    "selection": "KST 날짜 기반 6개 슬롯 중 1개만 선택",
+    "primary": "Gemini proxy self-hosted runner, selected slot only, up to 30 minutes jitter",
+    "fallback": "Hosted template runner, same selected slot only, up to 45 minutes jitter, daily duplicate guard",
+    "duplicateGuard": "ops/index-state.json의 KST 날짜별 blog/* 발행 여부 확인"
+  },
+  "schedulePreview": [
+    {
+      "kstDate": "2026-07-05",
+      "selectedSlot": 3,
+      "primaryKst": "15:37",
+      "primaryWindowKst": "15:37~+30분",
+      "fallbackKst": "15:49",
+      "fallbackWindowKst": "15:49~+45분",
+      "primaryCron": "37 6 * * *",
+      "fallbackCron": "49 6 * * *"
+    },
+    {
+      "kstDate": "2026-07-06",
+      "selectedSlot": 0,
+      "primaryKst": "08:17",
+      "primaryWindowKst": "08:17~+30분",
+      "fallbackKst": "08:27",
+      "fallbackWindowKst": "08:27~+45분",
+      "primaryCron": "17 23 * * *",
+      "fallbackCron": "27 23 * * *"
+    },
+    {
+      "kstDate": "2026-07-07",
+      "selectedSlot": 5,
+      "primaryKst": "21:51",
+      "primaryWindowKst": "21:51~+30분",
+      "fallbackKst": "22:07",
+      "fallbackWindowKst": "22:07~+45분",
+      "primaryCron": "51 12 * * *",
+      "fallbackCron": "7 13 * * *"
+    },
+    {
+      "kstDate": "2026-07-08",
+      "selectedSlot": 4,
+      "primaryKst": "18:09",
+      "primaryWindowKst": "18:09~+30분",
+      "fallbackKst": "18:21",
+      "fallbackWindowKst": "18:21~+45분",
+      "primaryCron": "9 9 * * *",
+      "fallbackCron": "21 9 * * *"
+    },
+    {
+      "kstDate": "2026-07-09",
+      "selectedSlot": 3,
+      "primaryKst": "15:37",
+      "primaryWindowKst": "15:37~+30분",
+      "fallbackKst": "15:49",
+      "fallbackWindowKst": "15:49~+45분",
+      "primaryCron": "37 6 * * *",
+      "fallbackCron": "49 6 * * *"
+    },
+    {
+      "kstDate": "2026-07-10",
+      "selectedSlot": 5,
+      "primaryKst": "21:51",
+      "primaryWindowKst": "21:51~+30분",
+      "fallbackKst": "22:07",
+      "fallbackWindowKst": "22:07~+45분",
+      "primaryCron": "51 12 * * *",
+      "fallbackCron": "7 13 * * *"
+    },
+    {
+      "kstDate": "2026-07-11",
+      "selectedSlot": 0,
+      "primaryKst": "08:17",
+      "primaryWindowKst": "08:17~+30분",
+      "fallbackKst": "08:27",
+      "fallbackWindowKst": "08:27~+45분",
+      "primaryCron": "17 23 * * *",
+      "fallbackCron": "27 23 * * *"
+    },
+    {
+      "kstDate": "2026-07-12",
+      "selectedSlot": 3,
+      "primaryKst": "15:37",
+      "primaryWindowKst": "15:37~+30분",
+      "fallbackKst": "15:49",
+      "fallbackWindowKst": "15:49~+45분",
+      "primaryCron": "37 6 * * *",
+      "fallbackCron": "49 6 * * *"
+    },
+    {
+      "kstDate": "2026-07-13",
+      "selectedSlot": 4,
+      "primaryKst": "18:09",
+      "primaryWindowKst": "18:09~+30분",
+      "fallbackKst": "18:21",
+      "fallbackWindowKst": "18:21~+45분",
+      "primaryCron": "9 9 * * *",
+      "fallbackCron": "21 9 * * *"
+    },
+    {
+      "kstDate": "2026-07-14",
+      "selectedSlot": 1,
+      "primaryKst": "10:43",
+      "primaryWindowKst": "10:43~+30분",
+      "fallbackKst": "10:57",
+      "fallbackWindowKst": "10:57~+45분",
+      "primaryCron": "43 1 * * *",
+      "fallbackCron": "57 1 * * *"
+    },
+    {
+      "kstDate": "2026-07-15",
+      "selectedSlot": 2,
+      "primaryKst": "13:11",
+      "primaryWindowKst": "13:11~+30분",
+      "fallbackKst": "13:23",
+      "fallbackWindowKst": "13:23~+45분",
+      "primaryCron": "11 4 * * *",
+      "fallbackCron": "23 4 * * *"
+    },
+    {
+      "kstDate": "2026-07-16",
+      "selectedSlot": 5,
+      "primaryKst": "21:51",
+      "primaryWindowKst": "21:51~+30분",
+      "fallbackKst": "22:07",
+      "fallbackWindowKst": "22:07~+45분",
+      "primaryCron": "51 12 * * *",
+      "fallbackCron": "7 13 * * *"
+    },
+    {
+      "kstDate": "2026-07-17",
+      "selectedSlot": 0,
+      "primaryKst": "08:17",
+      "primaryWindowKst": "08:17~+30분",
+      "fallbackKst": "08:27",
+      "fallbackWindowKst": "08:27~+45분",
+      "primaryCron": "17 23 * * *",
+      "fallbackCron": "27 23 * * *"
+    },
+    {
+      "kstDate": "2026-07-18",
+      "selectedSlot": 1,
+      "primaryKst": "10:43",
+      "primaryWindowKst": "10:43~+30분",
+      "fallbackKst": "10:57",
+      "fallbackWindowKst": "10:57~+45분",
+      "primaryCron": "43 1 * * *",
+      "fallbackCron": "57 1 * * *"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Search Index Readiness",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "f157b3b820d75a7316c3385d5d11184496a756cc",
+      "created_at": "2026-07-05T02:16:56Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28726737273"
+    },
+    {
+      "name": "pages build and deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "ce135d5f891f145e10c4875a9d9249ab8779150e",
+      "created_at": "2026-07-05T02:16:55Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28726737040"
+    },
+    {
+      "name": "pages build and deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "ce135d5f891f145e10c4875a9d9249ab8779150e",
+      "created_at": "2026-07-05T02:16:01Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28726718701"
+    },
+    {
+      "name": "pages build and deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "90d48fe725c5d793df619ceb5d6acb6f387d99d6",
+      "created_at": "2026-07-05T02:01:35Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28726378150"
+    },
+    {
+      "name": "pages build and deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "bbc22394f305e87e332f37cc96d97b6d5756c96a",
+      "created_at": "2026-07-05T01:38:33Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28725894606"
+    },
+    {
+      "name": "pages build and deployment",
+      "event": "dynamic",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "b250bb1b2b35bd801a6c8d8bb9bac9c4a6f548a5",
+      "created_at": "2026-07-05T01:16:06Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28725420462"
+    },
+    {
+      "name": "Hosted Template Blog Fallback",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "350881b221e238065cdb449a404e468df7bfe115",
+      "created_at": "2026-07-05T01:12:28Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28725343212"
+    },
+    {
+      "name": "Continuous Share Blog Publishing",
+      "event": "schedule",
+      "status": "queued",
+      "conclusion": null,
+      "head_sha": "350881b221e238065cdb449a404e468df7bfe115",
+      "created_at": "2026-07-05T00:11:52Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/28724027738"
+    }
+  ],
+  "publishedPosts": [
+    {
+      "title": "주소만 있어도 공유지분 상담을 시작할 수 있습니다",
+      "slug": "blog/address-only-share-consultation",
+      "publishedAt": "2026-07-04T12:33:41.890Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/"
+    },
+    {
+      "title": "공유자 연락이 안 될 때 지분 매입 가능성",
+      "slug": "blog/unreachable-co-owner-share-options",
+      "publishedAt": "2026-07-03T11:47:14.289Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/"
+    },
+    {
+      "title": "공유지분 팔고 싶을 때 먼저 확인할 7가지",
+      "slug": "blog/sell-co-owned-share-checklist",
+      "publishedAt": "2026-07-02T01:59:04.036Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/"
+    },
+    {
+      "title": "상속지분 매도 전 등기부에서 봐야 할 항목",
+      "slug": "blog/inherited-share-sale-records",
+      "publishedAt": "2026-07-01T20:10:04.623Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/"
+    },
+    {
+      "title": "사건번호만 있는 지분경매 상담 검토 순서",
+      "slug": "blog/auction-case-number-share-review",
+      "publishedAt": "2026-07-01T09:59:13.007Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/"
+    }
+  ],
+  "nextQueuedPosts": [
+    {
+      "title": "사건번호만 있는 지분 상담 접수 기준",
+      "keyword": "사건번호만 있는 지분 상담",
+      "category": "지분경매 검토",
+      "priority": 2,
+      "slug": "blog/case-number-only-share-consultation"
+    },
+    {
+      "title": "공유 아파트 지분 매도 전 확인할 자료",
+      "keyword": "공유 아파트 지분 매도",
+      "category": "주거 지분",
+      "priority": 2,
+      "slug": "blog/co-owned-apartment-share-sale-documents"
+    },
+    {
+      "title": "토지 공유지분 매도 상담 전 확인 항목",
+      "keyword": "토지 공유지분 매도",
+      "category": "토지지분",
+      "priority": 2,
+      "slug": "blog/co-owned-land-share-sale-documents"
+    },
+    {
+      "title": "공유자 갈등 중 지분 매도 상담 기준",
+      "keyword": "공유자 갈등 지분 매도",
+      "category": "공유자 문제",
+      "priority": 2,
+      "slug": "blog/co-owner-dispute-share-sale"
+    },
+    {
+      "title": "공유자가 매도에 반대할 때 지분 검토 항목",
+      "keyword": "공유자가 매도 반대할 때",
+      "category": "공유자 문제",
+      "priority": 2,
+      "slug": "blog/co-owner-refuses-sale-share-review"
+    },
+    {
+      "title": "상가 공유지분 매도와 임차인 점유 확인",
+      "keyword": "상가 지분매입",
+      "category": "상가지분",
+      "priority": 2,
+      "slug": "blog/commercial-share-tenant-review"
+    },
+    {
+      "title": "경기 공유지분 매입 상담 준비자료",
+      "keyword": "경기 공유지분 매입",
+      "category": "지역별 지분매입",
+      "priority": 2,
+      "slug": "blog/gyeonggi-share-purchase-documents"
+    },
+    {
+      "title": "상속 아파트 지분 매도 전 등기 확인 항목",
+      "keyword": "상속 아파트 지분 매도",
+      "category": "상속지분",
+      "priority": 2,
+      "slug": "blog/inherited-apartment-share-sale"
+    },
+    {
+      "title": "토지 공유지분 매입 검토 기준",
+      "keyword": "토지 지분매입",
+      "category": "토지지분",
+      "priority": 2,
+      "slug": "blog/land-share-acquisition-review"
+    },
+    {
+      "title": "2분의 1 지분 매도 상담 준비자료",
+      "keyword": "1/2 지분 매도",
+      "category": "지분율",
+      "priority": 2,
+      "slug": "blog/one-half-share-sale-review"
+    },
+    {
+      "title": "공유물분할청구 전후 지분 매도 검토 기준",
+      "keyword": "공유물분할청구 지분 매도",
+      "category": "분할청구",
+      "priority": 2,
+      "slug": "blog/partition-claim-share-sale-guide"
+    },
+    {
+      "title": "공유자 우선매수권 관련 지분 검토 기준",
+      "keyword": "공유자 우선매수권",
+      "category": "우선매수권",
+      "priority": 2,
+      "slug": "blog/preemption-right-share-auction"
+    }
+  ]
+}

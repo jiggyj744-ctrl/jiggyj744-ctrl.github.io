@@ -13,7 +13,7 @@ on:
     - cron: "23 4 * * *"
     - cron: "49 6 * * *"
     - cron: "21 9 * * *"
-    - cron: "7 12 * * *"
+    - cron: "7 13 * * *"
 
 permissions:
   contents: write
@@ -35,49 +35,18 @@ jobs:
       PUBLISH_JITTER_MAX_SECONDS: ${{ github.event_name == 'schedule' && '2700' || '0' }}
       ALLOW_TEMPLATE_ON_PROXY_FAILURE: "1"
     steps:
-      - name: Select fallback catch-up slot
-        id: fallback_slot
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "should_publish=1" >> "$GITHUB_OUTPUT"
-            echo "reason=manual" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          case "${{ github.event.schedule }}" in
-            "27 23 * * *") current_slot=0 ;;
-            "57 1 * * *") current_slot=1 ;;
-            "23 4 * * *") current_slot=2 ;;
-            "49 6 * * *") current_slot=3 ;;
-            "21 9 * * *") current_slot=4 ;;
-            "7 12 * * *") current_slot=5 ;;
-            *) current_slot=-1 ;;
-          esac
-
-          kst_date="$(TZ=Asia/Seoul date +%F)"
-          checksum="$(printf '%s' "$kst_date" | cksum)"
-          checksum="${checksum%% *}"
-          selected_slot=$((checksum % 5))
-
-          if [ "$current_slot" -ge "$selected_slot" ]; then
-            echo "should_publish=1" >> "$GITHUB_OUTPUT"
-            echo "reason=catchup-slot-$current_slot-selected-$selected_slot" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_publish=0" >> "$GITHUB_OUTPUT"
-            echo "reason=wait-slot-$current_slot-selected-$selected_slot" >> "$GITHUB_OUTPUT"
-          fi
-          echo "KST date=$kst_date current_slot=$current_slot selected_slot=$selected_slot"
-
       - uses: actions/checkout@v4
-        if: steps.fallback_slot.outputs.should_publish == '1'
         with:
           ref: main
           fetch-depth: 0
       - uses: actions/setup-node@v4
-        if: steps.fallback_slot.outputs.should_publish == '1'
         with:
           node-version: 22
+      - name: Select fallback catch-up slot
+        id: fallback_slot
+        env:
+          GITHUB_EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: node tools/select_publish_slot.mjs --workflow fallback
       - name: Run template fallback publisher
         if: steps.fallback_slot.outputs.should_publish == '1'
         shell: bash

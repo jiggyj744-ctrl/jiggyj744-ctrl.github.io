@@ -38,39 +38,17 @@ jobs:
       should_publish: ${{ steps.publish_slot.outputs.should_publish }}
       reason: ${{ steps.publish_slot.outputs.reason }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Select daily publish slot
         id: publish_slot
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "should_publish=1" >> "$GITHUB_OUTPUT"
-            echo "reason=manual" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          case "${{ github.event.schedule }}" in
-            "17 23 * * *") current_slot=0 ;;
-            "43 1 * * *") current_slot=1 ;;
-            "11 4 * * *") current_slot=2 ;;
-            "37 6 * * *") current_slot=3 ;;
-            "9 9 * * *") current_slot=4 ;;
-            "51 12 * * *") current_slot=5 ;;
-            *) current_slot=-1 ;;
-          esac
-
-          kst_date="$(TZ=Asia/Seoul date +%F)"
-          checksum="$(printf '%s' "$kst_date" | cksum)"
-          checksum="${checksum%% *}"
-          selected_slot=$((checksum % 6))
-
-          if [ "$current_slot" = "$selected_slot" ]; then
-            echo "should_publish=1" >> "$GITHUB_OUTPUT"
-            echo "reason=selected-slot-$selected_slot" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_publish=0" >> "$GITHUB_OUTPUT"
-            echo "reason=skip-slot-$current_slot-selected-$selected_slot" >> "$GITHUB_OUTPUT"
-          fi
-          echo "KST date=$kst_date current_slot=$current_slot selected_slot=$selected_slot"
+        env:
+          GITHUB_EVENT_SCHEDULE: ${{ github.event.schedule }}
+        run: node tools/select_publish_slot.mjs --workflow primary
 
   publish:
     needs: select
