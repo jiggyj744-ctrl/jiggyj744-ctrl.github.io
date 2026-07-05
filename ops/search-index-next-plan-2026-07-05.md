@@ -21,6 +21,7 @@
 5. Google Search Console에 `sitemap.xml` 제출
 6. 최신 글과 핵심 랜딩 10개 URL을 수동 색인 요청 대상에 등록
 7. 자동발행 workflow 다음 실행 예정 시간과 실패 여부 확인
+8. `node tools/build_indexing_submission_pack.mjs`로 제출 URL, 라이브 상태, RSS 반영 상태를 한 번에 생성
 
 ## 우선 색인 요청 URL
 1. `https://jiggyj744-ctrl.github.io/`
@@ -75,6 +76,12 @@
 6. 자동발행 workflow pending/queued 장기 체류 여부 확인
 7. Search Advisor 수집 결과 확인
 8. Google Search Console 색인 상태 확인
+9. `Search Index Readiness` workflow daily run 성공 여부 확인
+
+## 자동 생성 산출물
+- `ops/search-index-submission-urls-YYYY-MM-DD.txt`: 네이버/구글에 순서대로 넣을 핵심 URL 목록
+- `ops/search-index-submission-pack-YYYY-MM-DD.json`: sitemap, RSS, 라이브 URL 상태 JSON
+- `ops/search-index-submission-report-YYYY-MM-DD.md`: 콘솔 제출용 요약 보고서
 
 ## 성공 기준
 - 네이버 소유확인 완료

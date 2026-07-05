@@ -1,0 +1,37 @@
+name: Search Index Readiness
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "33 22 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: search-index-readiness
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build indexing submission pack
+        run: node tools/build_indexing_submission_pack.mjs
+      - name: Verify live site
+        run: node tools/verify_live.mjs
+      - name: Upload indexing pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: search-index-submission-pack
+          path: |
+            ops/search-index-submission-pack-*.json
+            ops/search-index-submission-report-*.md
+            ops/search-index-submission-urls-*.txt
