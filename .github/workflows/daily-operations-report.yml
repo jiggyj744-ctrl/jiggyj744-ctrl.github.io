@@ -3,7 +3,7 @@ name: Daily Share Site Operations Report
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 13 * * *"
+    - cron: "5 14 * * *"
 
 permissions:
   contents: write
