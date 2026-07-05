@@ -38,14 +38,14 @@
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Search Index Readiness | push | completed | success | 2026-07-05T02:16:56Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T02:16:55Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T02:16:01Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T02:01:35Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T01:38:33Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T01:16:06Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-07-05T01:12:28Z |
-| Continuous Share Blog Publishing | schedule | queued | - | 2026-07-05T00:11:52Z |
+| pages build and deployment | dynamic | completed | success | 2026-07-05T05:59:57Z |
+| Search Index Readiness | push | completed | success | 2026-07-05T05:58:30Z |
+| pages build and deployment | dynamic | completed | failure | 2026-07-05T05:58:29Z |
+| Search Index Readiness | push | completed | success | 2026-07-05T05:56:57Z |
+| pages build and deployment | dynamic | completed | success | 2026-07-05T05:56:57Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-07-05T05:56:47Z |
+| pages build and deployment | dynamic | completed | success | 2026-07-05T05:54:59Z |
+| pages build and deployment | dynamic | completed | success | 2026-07-05T05:53:06Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
