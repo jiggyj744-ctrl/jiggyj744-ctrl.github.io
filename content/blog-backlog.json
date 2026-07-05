@@ -305,7 +305,12 @@
       "category": "지분경매 검토",
       "priority": 2,
       "slug": "blog/case-number-only-share-consultation",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-05",
+      "publishedAt": "2026-07-05T09:56:17.621Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+      "description": "사건번호만 있는 지분 상담 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-auction.webp"
     },
     {
       "keyword": "지분율 모를 때 상담",
