@@ -3,9 +3,9 @@ Description=Jauction share blog publisher watchdog
 
 [Timer]
 OnBootSec=10m
-OnUnitActiveSec=30m
+OnUnitInactiveSec=20m
 Persistent=true
-RandomizedDelaySec=20m
+RandomizedDelaySec=10m
 AccuracySec=1m
 Unit=jauction-share-blog-publisher.service
 

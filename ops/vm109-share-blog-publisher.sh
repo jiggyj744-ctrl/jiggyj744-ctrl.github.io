@@ -13,6 +13,26 @@ LLM_PROXY_API_KEY="${LLM_PROXY_API_KEY:-}"
 PUBLISH_JITTER_MAX_SECONDS="${PUBLISH_JITTER_MAX_SECONDS:-0}"
 ALLOW_TEMPLATE_ON_PROXY_FAILURE="${ALLOW_TEMPLATE_ON_PROXY_FAILURE:-0}"
 PUBLISH_SCOPE="${PUBLISH_SCOPE:-blog}"
+RESPECT_PUBLISH_SLOT="${RESPECT_PUBLISH_SLOT:-0}"
+GIT_RETRY_ATTEMPTS="${GIT_RETRY_ATTEMPTS:-5}"
+GIT_RETRY_DELAY_SECONDS="${GIT_RETRY_DELAY_SECONDS:-20}"
+
+retry_command() {
+  local attempt=1
+  local max_attempts="$1"
+  local delay_seconds="$2"
+  shift 2
+  until "$@"; do
+    local exit_code=$?
+    if [ "$attempt" -ge "$max_attempts" ]; then
+      echo "command failed after ${attempt} attempt(s): $*" >&2
+      return "$exit_code"
+    fi
+    echo "command failed attempt ${attempt}/${max_attempts}: $*" >&2
+    sleep "$delay_seconds"
+    attempt=$((attempt + 1))
+  done
+}
 
 use_template_generation() {
   GENERATION_MODE="template"
@@ -44,9 +64,9 @@ if [[ "$PUBLISH_JITTER_MAX_SECONDS" =~ ^[0-9]+$ ]] && [ "$PUBLISH_JITTER_MAX_SEC
   sleep "$jitter"
 fi
 
-git fetch origin main
+retry_command "$GIT_RETRY_ATTEMPTS" "$GIT_RETRY_DELAY_SECONDS" git fetch origin main
 git checkout main
-git pull --ff-only origin main
+retry_command "$GIT_RETRY_ATTEMPTS" "$GIT_RETRY_DELAY_SECONDS" git pull --ff-only origin main
 
 if [ "${FORCE_PUBLISH:-0}" != "1" ]; then
   SHOULD_CONTINUE="$(node --input-type=module <<'NODE'
@@ -78,6 +98,14 @@ console.log(alreadyPublished ? "0" : "1");
 NODE
 )"
   if [ "$SHOULD_CONTINUE" != "1" ]; then
+    exit 0
+  fi
+fi
+
+if [ "$RESPECT_PUBLISH_SLOT" = "1" ] && [ "${FORCE_PUBLISH:-0}" != "1" ]; then
+  SHOULD_RUN_SLOT="$(node tools/runtime_publish_gate.mjs)"
+  if [ "$SHOULD_RUN_SLOT" != "1" ]; then
+    echo "runtime publish slot not open yet"
     exit 0
   fi
 fi
@@ -151,7 +179,7 @@ if [ -n "$(git status --porcelain)" ]; then
   git config user.email "${GIT_AUTHOR_EMAIL:-jauction-publisher@users.noreply.github.com}"
   git add .
   git commit -m "Publish scheduled share acquisition blog"
-  git push origin main
+  retry_command "$GIT_RETRY_ATTEMPTS" "$GIT_RETRY_DELAY_SECONDS" git push origin main
 else
   echo "No generated changes"
 fi

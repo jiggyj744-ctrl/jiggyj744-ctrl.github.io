@@ -1,14 +1,34 @@
 [Unit]
 Description=Jauction share blog publisher
-Wants=network-online.target docker.service
-After=network-online.target docker.service
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/srv/nvme/services/jiggyj744-ctrl.github.io
+ConditionPathIsMountPoint=/srv/nvme/services
 
 [Service]
 Type=oneshot
-EnvironmentFile=/etc/jauction-share-blog-publisher.env
-WorkingDirectory=/srv/jiggyj744-ctrl.github.io
-ExecStart=/srv/jiggyj744-ctrl.github.io/ops/vm109-share-blog-publisher.sh
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+Environment=JAUCTION_REPO_DIR=/srv/nvme/services/jiggyj744-ctrl.github.io
+Environment=JAUCTION_PUBLISH_LOCK=/srv/nvme/services/jiggyj744-ctrl.github.io/.runtime/jauction-share-blog-publisher.lock
+Environment=JAUCTION_PUBLISH_LOG_DIR=/srv/nvme/services/jiggyj744-ctrl.github.io/.runtime/logs
+Environment=SITE_BASE=https://jiggyj744-ctrl.github.io
+Environment=GENERATION_MODE=proxy
+Environment=PUBLISH_SCOPE=blog
+Environment=PUBLISH_LIMIT=1
+Environment=PUBLISH_JITTER_MAX_SECONDS=1200
+Environment=ALLOW_TEMPLATE_ON_PROXY_FAILURE=1
+Environment=RESPECT_PUBLISH_SLOT=1
+Environment=GIT_RETRY_ATTEMPTS=5
+Environment=GIT_RETRY_DELAY_SECONDS=20
+EnvironmentFile=-/etc/jauction-share-blog-publisher.env
+ExecCondition=/bin/bash -lc 'command -v git >/dev/null && command -v node >/dev/null'
+WorkingDirectory=/srv/nvme/services/jiggyj744-ctrl.github.io
+ExecStart=/bin/bash /srv/nvme/services/jiggyj744-ctrl.github.io/ops/vm109-share-blog-publisher.sh
 TimeoutStartSec=1800
+Restart=on-failure
+RestartSec=5m
+StartLimitIntervalSec=1h
+StartLimitBurst=3
 
 [Install]
 WantedBy=multi-user.target
