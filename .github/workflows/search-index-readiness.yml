@@ -16,6 +16,7 @@ on:
       - "sitemap.xml"
       - "tools/**"
       - "index.html"
+      - "ops/**"
   workflow_dispatch:
   schedule:
     - cron: "33 22 * * *"
