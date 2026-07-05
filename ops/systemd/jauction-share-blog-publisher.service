@@ -4,6 +4,8 @@ Wants=network-online.target
 After=network-online.target
 RequiresMountsFor=/srv/nvme/services/jiggyj744-ctrl.github.io
 ConditionPathIsMountPoint=/srv/nvme/services
+StartLimitIntervalSec=1h
+StartLimitBurst=3
 
 [Service]
 Type=oneshot
@@ -27,8 +29,6 @@ ExecStart=/bin/bash /srv/nvme/services/jiggyj744-ctrl.github.io/ops/vm109-share-
 TimeoutStartSec=1800
 Restart=on-failure
 RestartSec=5m
-StartLimitIntervalSec=1h
-StartLimitBurst=3
 
 [Install]
 WantedBy=multi-user.target

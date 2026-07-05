@@ -55,15 +55,6 @@ fi
 cd "$REPO_DIR"
 export SITE_BASE GENERATION_MODE LLM_PROXY_BASE_URL LLM_PROXY_MODEL LLM_PROXY_API_KEY PUBLISH_SCOPE
 
-if [[ "$PUBLISH_JITTER_MAX_SECONDS" =~ ^[0-9]+$ ]] && [ "$PUBLISH_JITTER_MAX_SECONDS" -gt 0 ]; then
-  seed="$(date +%s%N)-$$-$RANDOM"
-  checksum="$(printf '%s' "$seed" | cksum)"
-  checksum="${checksum%% *}"
-  jitter=$((checksum % (PUBLISH_JITTER_MAX_SECONDS + 1)))
-  echo "publish jitter sleep: ${jitter}s"
-  sleep "$jitter"
-fi
-
 retry_command "$GIT_RETRY_ATTEMPTS" "$GIT_RETRY_DELAY_SECONDS" git fetch origin main
 git checkout main
 retry_command "$GIT_RETRY_ATTEMPTS" "$GIT_RETRY_DELAY_SECONDS" git pull --ff-only origin main
@@ -108,6 +99,15 @@ if [ "$RESPECT_PUBLISH_SLOT" = "1" ] && [ "${FORCE_PUBLISH:-0}" != "1" ]; then
     echo "runtime publish slot not open yet"
     exit 0
   fi
+fi
+
+if [[ "$PUBLISH_JITTER_MAX_SECONDS" =~ ^[0-9]+$ ]] && [ "$PUBLISH_JITTER_MAX_SECONDS" -gt 0 ]; then
+  seed="$(date +%s%N)-$$-$RANDOM"
+  checksum="$(printf '%s' "$seed" | cksum)"
+  checksum="${checksum%% *}"
+  jitter=$((checksum % (PUBLISH_JITTER_MAX_SECONDS + 1)))
+  echo "publish jitter sleep: ${jitter}s"
+  sleep "$jitter"
 fi
 
 if [ "$GENERATION_MODE" != "template" ]; then
