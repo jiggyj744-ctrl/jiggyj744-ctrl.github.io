@@ -38,14 +38,14 @@
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
+| Search Index Readiness | push | completed | success | 2026-07-05T06:05:26Z |
+| pages build and deployment | dynamic | completed | success | 2026-07-05T06:05:26Z |
 | pages build and deployment | dynamic | completed | success | 2026-07-05T05:59:57Z |
 | Search Index Readiness | push | completed | success | 2026-07-05T05:58:30Z |
 | pages build and deployment | dynamic | completed | failure | 2026-07-05T05:58:29Z |
 | Search Index Readiness | push | completed | success | 2026-07-05T05:56:57Z |
 | pages build and deployment | dynamic | completed | success | 2026-07-05T05:56:57Z |
 | Hosted Template Blog Fallback | schedule | completed | success | 2026-07-05T05:56:47Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T05:54:59Z |
-| pages build and deployment | dynamic | completed | success | 2026-07-05T05:53:06Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |

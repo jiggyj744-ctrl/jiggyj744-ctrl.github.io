@@ -5,7 +5,7 @@
 - 실제 배치 위치는 `/srv/nvme/services/jiggyj744-ctrl.github.io`이며, CT104 내부에서 `nvme-runtime/services` mount로 확인했다.
 - systemd timer `jauction-share-blog-publisher.timer`를 활성화했다.
 - 서버 재시작 후에도 timer가 다시 실행되며, 선택된 KST 발행 슬롯 전에는 발행하지 않고 종료한다.
-- CT104 단독 발행 push는 아직 GitHub credential이 없어 차단된다.
+- CT104 단독 발행은 proxy 인증까지 통과하지만, GitHub push credential이 없어 생성 전 차단된다.
 
 ## 반영한 내구성 보강
 - `.runtime/` 로그/락 디렉터리를 Git 추적에서 제외했다.
@@ -20,14 +20,16 @@
 - 호스트: `cliapi-runtime`
 - 런타임 repo: `/srv/nvme/services/jiggyj744-ctrl.github.io`
 - Git 상태: `main...origin/main`
-- 런타임 커밋: `061ece3 Fix runtime publisher scheduling safety`
+- 런타임 커밋: `6b0dab9 Refresh autopublish operations report`
 - Node: `v18.19.1`
 - timer: enabled / active
-- 다음 timer: `2026-07-05 15:16:44 KST`
+- 다음 timer 확인: `2026-07-05 15:22:23 KST`
 - 수동 실행 결과: `before-selected-slot`로 정상 종료
+- proxy base URL: `http://192.168.0.46:8302/v1`
+- proxy 인증 확인: `/v1/models`에서 `gemini-pro`, `gemini-flash` 모델 응답 확인
 
 ## 현재 차단 항목
-- `/etc/jauction-share-blog-publisher.env`의 `LLM_PROXY_API_KEY`가 비어 있다.
+- `/etc/jauction-share-blog-publisher.env`의 `LLM_PROXY_API_KEY`는 CT109 proxy key로 설정했다. 실제 키는 Git에 저장하지 않는다.
 - `GIT_TERMINAL_PROMPT=0 git push --dry-run origin main` 결과 GitHub username을 읽을 수 없어 실패했다.
 - 따라서 CT104는 GitHub credential 설정 전까지 글 생성 단계로 들어가지 않고 안전하게 종료한다.
 - GitHub Pages repo로 직접 push하려면 HTTPS credential helper 또는 SSH deploy key 설정이 필요하다.
