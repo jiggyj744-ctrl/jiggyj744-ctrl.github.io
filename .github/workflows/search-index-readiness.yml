@@ -1,6 +1,21 @@
 name: Search Index Readiness
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/search-index-readiness.yml"
+      - "assets/**"
+      - "blog/**"
+      - "guide/**"
+      - "ops/search-console-status.json"
+      - "robots.txt"
+      - "scripts/**"
+      - "services/**"
+      - "sitemap.xml"
+      - "tools/**"
+      - "index.html"
   workflow_dispatch:
   schedule:
     - cron: "33 22 * * *"
