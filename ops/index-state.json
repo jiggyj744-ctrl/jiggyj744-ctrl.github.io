@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-06T16:36:59.987Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/co-owned-land-share-sale-documents"
+      ]
+    },
+    {
       "date": "2026-07-06T01:26:46.737Z",
       "model": "template-cost-safe",
       "count": 1,

@@ -137,7 +137,12 @@
       "category": "토지지분",
       "priority": 2,
       "slug": "blog/co-owned-land-share-sale-documents",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-06",
+      "publishedAt": "2026-07-06T16:36:59.982Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+      "description": "토지 공유지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-land-share.webp"
     },
     {
       "keyword": "소액 지분 매도",
