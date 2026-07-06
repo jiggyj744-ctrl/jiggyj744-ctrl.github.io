@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-06T01:26:46.737Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/co-owned-apartment-share-sale-documents"
+      ]
+    },
+    {
       "date": "2026-07-05T09:56:17.625Z",
       "model": "template-cost-safe",
       "count": 1,
