@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-06",
+  "updated": "2026-07-08",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -190,7 +190,12 @@
       "category": "공유자 문제",
       "priority": 2,
       "slug": "blog/co-owner-dispute-share-sale",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-08",
+      "publishedAt": "2026-07-08T12:01:11.990Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+      "description": "공유자 갈등 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-co-owner-issue.webp"
     },
     {
       "keyword": "공유자가 매도 반대할 때",
