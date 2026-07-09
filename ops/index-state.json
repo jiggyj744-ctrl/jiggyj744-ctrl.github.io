@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-09T16:10:08.880Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/co-owner-refuses-sale-share-review"
+      ]
+    },
+    {
       "date": "2026-07-08T12:01:11.995Z",
       "model": "template-cost-safe",
       "count": 1,
