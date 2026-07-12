@@ -1,0 +1,352 @@
+{
+  "generatedAt": "2026-07-12T15:03:01.202Z",
+  "kstDate": "2026-07-13",
+  "site": "https://jiggyj744-ctrl.github.io",
+  "consoleSubmissions": {
+    "naver": {
+      "property": "https://jiggyj744-ctrl.github.io",
+      "sitemap": "https://jiggyj744-ctrl.github.io/sitemap.xml",
+      "feed": "https://jiggyj744-ctrl.github.io/feed.xml",
+      "note": "Search Advisor에서 sitemap.xml 제출 후 핵심 URL을 웹페이지 수집 요청에 순서대로 넣는다."
+    },
+    "google": {
+      "property": "https://jiggyj744-ctrl.github.io",
+      "sitemap": "https://jiggyj744-ctrl.github.io/sitemap.xml",
+      "note": "Search Console URL-prefix 속성에서 sitemap.xml 제출 후 URL 검사로 핵심 URL 색인 요청을 진행한다."
+    }
+  },
+  "submissionUrls": [
+    "https://jiggyj744-ctrl.github.io/",
+    "https://jiggyj744-ctrl.github.io/blog/",
+    "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+    "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/",
+    "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/",
+    "https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/",
+    "https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/",
+    "https://jiggyj744-ctrl.github.io/guide/inherited-share-sale/",
+    "https://jiggyj744-ctrl.github.io/services/share-purchase/",
+    "https://jiggyj744-ctrl.github.io/services/share-auction/",
+    "https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-purchase-documents/",
+    "https://jiggyj744-ctrl.github.io/blog/commercial-share-tenant-review/",
+    "https://jiggyj744-ctrl.github.io/blog/co-owner-refuses-sale-share-review/",
+    "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+    "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+    "https://jiggyj744-ctrl.github.io/blog/co-owned-apartment-share-sale-documents/",
+    "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+    "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
+    "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/"
+  ],
+  "sitemap": {
+    "count": 40,
+    "latest": [
+      "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+      "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+      "https://jiggyj744-ctrl.github.io/blog/co-owned-apartment-share-sale-documents/",
+      "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+      "https://jiggyj744-ctrl.github.io/blog/category/land-share/",
+      "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+      "https://jiggyj744-ctrl.github.io/blog/co-owner-refuses-sale-share-review/",
+      "https://jiggyj744-ctrl.github.io/blog/commercial-share-tenant-review/",
+      "https://jiggyj744-ctrl.github.io/blog/category/commercial-share/",
+      "https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-purchase-documents/"
+    ]
+  },
+  "feed": {
+    "count": 12,
+    "items": [
+      {
+        "title": "경기 공유지분 매입 상담 준비자료",
+        "link": "https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-purchase-documents/",
+        "pubDate": "Sun, 12 Jul 2026 09:22:02 GMT"
+      },
+      {
+        "title": "상가 공유지분 매도와 임차인 점유 확인",
+        "link": "https://jiggyj744-ctrl.github.io/blog/commercial-share-tenant-review/",
+        "pubDate": "Sat, 11 Jul 2026 00:59:48 GMT"
+      },
+      {
+        "title": "공유자가 매도에 반대할 때 지분 검토 항목",
+        "link": "https://jiggyj744-ctrl.github.io/blog/co-owner-refuses-sale-share-review/",
+        "pubDate": "Thu, 09 Jul 2026 16:10:08 GMT"
+      },
+      {
+        "title": "공유자 갈등 중 지분 매도 상담 기준",
+        "link": "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+        "pubDate": "Wed, 08 Jul 2026 12:01:11 GMT"
+      },
+      {
+        "title": "토지 공유지분 매도 상담 전 확인 항목",
+        "link": "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+        "pubDate": "Mon, 06 Jul 2026 16:36:59 GMT"
+      },
+      {
+        "title": "공유 아파트 지분 매도 전 확인할 자료",
+        "link": "https://jiggyj744-ctrl.github.io/blog/co-owned-apartment-share-sale-documents/",
+        "pubDate": "Mon, 06 Jul 2026 01:26:46 GMT"
+      },
+      {
+        "title": "사건번호만 있는 지분 상담 접수 기준",
+        "link": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+        "pubDate": "Sun, 05 Jul 2026 09:56:17 GMT"
+      },
+      {
+        "title": "주소만 있어도 공유지분 상담을 시작할 수 있습니다",
+        "link": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+        "pubDate": "Sat, 04 Jul 2026 12:33:41 GMT"
+      },
+      {
+        "title": "공유자 연락이 안 될 때 지분 매입 가능성",
+        "link": "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/",
+        "pubDate": "Fri, 03 Jul 2026 11:47:14 GMT"
+      },
+      {
+        "title": "공유지분 팔고 싶을 때 먼저 확인할 7가지",
+        "link": "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/",
+        "pubDate": "Thu, 02 Jul 2026 01:59:04 GMT"
+      },
+      {
+        "title": "상속지분 매도 전 등기부에서 봐야 할 항목",
+        "link": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
+        "pubDate": "Wed, 01 Jul 2026 20:10:04 GMT"
+      },
+      {
+        "title": "사건번호만 있는 지분경매 상담 검토 순서",
+        "link": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/",
+        "pubDate": "Wed, 01 Jul 2026 09:59:13 GMT"
+      }
+    ]
+  },
+  "liveChecks": [
+    {
+      "url": "https://jiggyj744-ctrl.github.io/sitemap.xml",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/sitemap.xml",
+      "bytes": 7860,
+      "title": "",
+      "canonical": "",
+      "naverMeta": false,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/feed.xml",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/feed.xml",
+      "bytes": 6658,
+      "title": "Jauction 지분매입 블로그",
+      "canonical": "",
+      "naverMeta": false,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/robots.txt",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/robots.txt",
+      "bytes": 255,
+      "title": "",
+      "canonical": "",
+      "naverMeta": false,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/naver1d7f4296c8d516b9f9a69a1b4e6c0904.html",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/naver1d7f4296c8d516b9f9a69a1b4e6c0904.html",
+      "bytes": 68,
+      "title": "",
+      "canonical": "",
+      "naverMeta": false,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/",
+      "bytes": 21527,
+      "title": "지분경매·공유물 지분 매입 상담 | 공유지분 검토 후 매입",
+      "canonical": "https://jiggyj744-ctrl.github.io/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/",
+      "bytes": 15233,
+      "title": "지분매입 블로그 | 공유지분 매도·검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+      "bytes": 14515,
+      "title": "주소만 있어도 공유지분 상담을 시작할 수 있습니다 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/address-only-share-consultation/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/",
+      "bytes": 14481,
+      "title": "공유자 연락이 안 될 때 지분 매입 가능성 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/unreachable-co-owner-share-options/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/",
+      "bytes": 14384,
+      "title": "공유지분 팔고 싶을 때 먼저 확인할 7가지 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/sell-co-owned-share-checklist/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/",
+      "bytes": 8658,
+      "title": "공유지분 매도 절차 | 지분 팔기 전 무료 검토",
+      "canonical": "https://jiggyj744-ctrl.github.io/guide/sell-co-owned-share/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/",
+      "bytes": 8369,
+      "title": "사건번호 지분 검토 | 지분경매 무료 1차 확인",
+      "canonical": "https://jiggyj744-ctrl.github.io/guide/auction-case-number-review/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/guide/inherited-share-sale/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/guide/inherited-share-sale/",
+      "bytes": 8558,
+      "title": "상속지분 매도 | 주소·사건번호 기반 무료 검토",
+      "canonical": "https://jiggyj744-ctrl.github.io/guide/inherited-share-sale/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/services/share-purchase/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/services/share-purchase/",
+      "bytes": 9524,
+      "title": "공유물 지분 매입 | Jauction 지분매입 상담센터",
+      "canonical": "https://jiggyj744-ctrl.github.io/services/share-purchase/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/services/share-auction/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/services/share-auction/",
+      "bytes": 9382,
+      "title": "지분경매 사건자료 검토 | Jauction 지분매입 상담센터",
+      "canonical": "https://jiggyj744-ctrl.github.io/services/share-auction/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-purchase-documents/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-purchase-documents/",
+      "bytes": 14389,
+      "title": "경기 공유지분 매입 상담 준비자료 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-purchase-documents/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/commercial-share-tenant-review/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/commercial-share-tenant-review/",
+      "bytes": 14367,
+      "title": "상가 공유지분 매도와 임차인 점유 확인 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/commercial-share-tenant-review/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/co-owner-refuses-sale-share-review/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/co-owner-refuses-sale-share-review/",
+      "bytes": 14490,
+      "title": "공유자가 매도에 반대할 때 지분 검토 항목 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/co-owner-refuses-sale-share-review/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+      "bytes": 14401,
+      "title": "공유자 갈등 중 지분 매도 상담 기준 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/co-owner-dispute-share-sale/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+      "bytes": 14393,
+      "title": "토지 공유지분 매도 상담 전 확인 항목 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/co-owned-land-share-sale-documents/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/co-owned-apartment-share-sale-documents/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/co-owned-apartment-share-sale-documents/",
+      "bytes": 14439,
+      "title": "공유 아파트 지분 매도 전 확인할 자료 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/co-owned-apartment-share-sale-documents/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+      "bytes": 14479,
+      "title": "사건번호만 있는 지분 상담 접수 기준 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/case-number-only-share-consultation/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
+      "bytes": 14403,
+      "title": "상속지분 매도 전 등기부에서 봐야 할 항목 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/inherited-share-sale-records/",
+      "naverMeta": true,
+      "hasNoindex": false
+    },
+    {
+      "url": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/",
+      "status": 200,
+      "finalUrl": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/",
+      "bytes": 14437,
+      "title": "사건번호만 있는 지분경매 상담 검토 순서 | 지분매입 검토 노트",
+      "canonical": "https://jiggyj744-ctrl.github.io/blog/auction-case-number-share-review/",
+      "naverMeta": true,
+      "hasNoindex": false
+    }
+  ],
+  "failures": []
+}
