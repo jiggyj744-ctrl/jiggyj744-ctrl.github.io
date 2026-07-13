@@ -1,0 +1,215 @@
+{
+  "generatedAt": "2026-07-13T16:38:43.991Z",
+  "checkOnly": true,
+  "minRelated": 4,
+  "results": [
+    {
+      "slug": "blog/address-only-share-consultation",
+      "title": "주소만 있어도 공유지분 상담을 시작할 수 있습니다",
+      "htmlPath": "blog/address-only-share-consultation/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/auction-case-number-share-review",
+      "title": "사건번호만 있는 지분경매 상담 검토 순서",
+      "htmlPath": "blog/auction-case-number-share-review/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/",
+        "/blog/address-only-share-consultation/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/case-number-only-share-consultation",
+      "title": "사건번호만 있는 지분 상담 접수 기준",
+      "htmlPath": "blog/case-number-only-share-consultation/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/auction-case-number-share-review/",
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/co-owned-apartment-share-sale-documents",
+      "title": "공유 아파트 지분 매도 전 확인할 자료",
+      "htmlPath": "blog/co-owned-apartment-share-sale-documents/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/co-owned-land-share-sale-documents",
+      "title": "토지 공유지분 매도 상담 전 확인 항목",
+      "htmlPath": "blog/co-owned-land-share-sale-documents/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/co-owner-dispute-share-sale",
+      "title": "공유자 갈등 중 지분 매도 상담 기준",
+      "htmlPath": "blog/co-owner-dispute-share-sale/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/unreachable-co-owner-share-options/",
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/co-owner-refuses-sale-share-review",
+      "title": "공유자가 매도에 반대할 때 지분 검토 항목",
+      "htmlPath": "blog/co-owner-refuses-sale-share-review/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/unreachable-co-owner-share-options/",
+        "/blog/co-owner-dispute-share-sale/",
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/commercial-share-tenant-review",
+      "title": "상가 공유지분 매도와 임차인 점유 확인",
+      "htmlPath": "blog/commercial-share-tenant-review/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/gyeonggi-share-purchase-documents",
+      "title": "경기 공유지분 매입 상담 준비자료",
+      "htmlPath": "blog/gyeonggi-share-purchase-documents/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/inherited-apartment-share-sale",
+      "title": "상속 아파트 지분 매도 전 등기 확인 항목",
+      "htmlPath": "blog/inherited-apartment-share-sale/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/inherited-share-sale-records/",
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/unreachable-co-owner-share-options/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/inherited-share-sale-records",
+      "title": "상속지분 매도 전 등기부에서 봐야 할 항목",
+      "htmlPath": "blog/inherited-share-sale-records/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/unreachable-co-owner-share-options/",
+        "/blog/address-only-share-consultation/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/sell-co-owned-share-checklist",
+      "title": "공유지분 팔고 싶을 때 먼저 확인할 7가지",
+      "htmlPath": "blog/sell-co-owned-share-checklist/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/unreachable-co-owner-share-options/",
+        "/blog/address-only-share-consultation/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    },
+    {
+      "slug": "blog/unreachable-co-owner-share-options",
+      "title": "공유자 연락이 안 될 때 지분 매입 가능성",
+      "htmlPath": "blog/unreachable-co-owner-share-options/index.html",
+      "relatedCount": 4,
+      "expectedRelatedCount": 4,
+      "relatedLinks": [
+        "/blog/sell-co-owned-share-checklist/",
+        "/blog/auction-case-number-share-review/",
+        "/blog/inherited-share-sale-records/",
+        "/blog/address-only-share-consultation/"
+      ],
+      "hasConsult": true,
+      "hasBlogHub": true,
+      "ok": true
+    }
+  ]
+}
