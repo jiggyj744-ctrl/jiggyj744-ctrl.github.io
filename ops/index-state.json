@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-13T12:49:35.352Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/inherited-apartment-share-sale"
+      ]
+    },
+    {
       "date": "2026-07-12T09:22:02.042Z",
       "model": "template-cost-safe",
       "count": 1,
