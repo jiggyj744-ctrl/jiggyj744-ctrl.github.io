@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-14T04:54:58.005Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/land-share-acquisition-review"
+      ]
+    },
+    {
       "date": "2026-07-13T12:49:35.352Z",
       "model": "template-cost-safe",
       "count": 1,
