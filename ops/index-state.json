@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-15T07:01:21.321Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/one-half-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-07-14T04:54:58.005Z",
       "model": "template-cost-safe",
       "count": 1,
