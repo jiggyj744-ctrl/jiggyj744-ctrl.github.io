@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-17T00:59:25.369Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/partition-claim-share-sale-guide"
+      ]
+    },
+    {
       "date": "2026-07-15T07:01:21.321Z",
       "model": "template-cost-safe",
       "count": 1,
