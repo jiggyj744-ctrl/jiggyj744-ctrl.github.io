@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-18T05:19:54.987Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/preemption-right-share-auction"
+      ]
+    },
+    {
       "date": "2026-07-17T00:59:25.369Z",
       "model": "template-cost-safe",
       "count": 1,
