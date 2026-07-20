@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-20T12:37:06.797Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/seoul-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-07-19T07:13:18.733Z",
       "model": "template-cost-safe",
       "count": 1,
