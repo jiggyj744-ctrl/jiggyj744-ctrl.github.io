@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-20",
+  "updated": "2026-07-21",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -222,7 +222,12 @@
       "category": "상속지분",
       "priority": 2,
       "slug": "blog/siblings-inherited-share-sale",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-21",
+      "publishedAt": "2026-07-21T10:02:34.092Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/siblings-inherited-share-sale/",
+      "description": "형제 공동명의 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-inherited-share.webp"
     },
     {
       "keyword": "공유자 갈등 지분 매도",
