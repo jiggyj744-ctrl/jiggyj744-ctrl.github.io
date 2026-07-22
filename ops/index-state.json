@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-22T06:46:56.570Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/small-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-07-21T10:02:34.098Z",
       "model": "template-cost-safe",
       "count": 1,

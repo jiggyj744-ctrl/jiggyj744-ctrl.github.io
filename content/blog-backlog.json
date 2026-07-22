@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-07-21",
+  "updated": "2026-07-22",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -180,7 +180,12 @@
       "category": "소액지분",
       "priority": 2,
       "slug": "blog/small-share-sale-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-07-22",
+      "publishedAt": "2026-07-22T06:46:56.564Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/small-share-sale-review/",
+      "description": "소액 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "1/2 지분 매도",
