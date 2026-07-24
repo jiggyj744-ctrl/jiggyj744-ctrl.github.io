@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-24T15:31:18.173Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/commercial-building-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-07-24T01:13:51.311Z",
       "model": "template-cost-safe",
       "count": 1,
