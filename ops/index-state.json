@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-07-24T01:13:51.311Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/busan-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-07-23T05:59:45.883Z",
       "model": "template-cost-safe",
       "count": 1,
