@@ -38,14 +38,14 @@
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-08-13T15:02:38Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-08-13T14:23:44Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-08-13T14:08:36Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-08-13T10:29:27Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-08-13T10:17:20Z |
-| Hosted Template Blog Fallback | schedule | completed | failure | 2026-08-13T08:06:32Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-08-13T08:02:50Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-08-13T05:51:48Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-08-14T14:57:13Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-08-14T14:16:59Z |
+| Continuous Share Blog Publishing | schedule | pending | - | 2026-08-14T14:02:57Z |
+| Hosted Template Blog Fallback | schedule | completed | failure | 2026-08-14T10:18:22Z |
+| Continuous Share Blog Publishing | schedule | queued | - | 2026-08-14T10:12:33Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-08-14T08:02:36Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-08-14T07:59:02Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-08-14T05:49:43Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
