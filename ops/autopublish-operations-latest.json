@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-05T16:42:12.951Z",
-  "kstDate": "2026-09-06",
+  "generatedAt": "2026-09-06T16:48:35.315Z",
+  "kstDate": "2026-09-07",
   "site": "https://jiggyj744-ctrl.github.io",
   "summary": {
     "publishedBlogPosts": 24,
@@ -21,16 +21,6 @@
     "duplicateGuard": "ops/index-state.json의 KST 날짜별 blog/* 발행 여부 확인"
   },
   "schedulePreview": [
-    {
-      "kstDate": "2026-09-06",
-      "selectedSlot": 2,
-      "primaryKst": "13:11",
-      "primaryWindowKst": "13:11~+30분",
-      "fallbackKst": "13:23",
-      "fallbackWindowKst": "13:23~+45분",
-      "primaryCron": "11 4 * * *",
-      "fallbackCron": "23 4 * * *"
-    },
     {
       "kstDate": "2026-09-07",
       "selectedSlot": 1,
@@ -160,6 +150,16 @@
       "fallbackWindowKst": "13:23~+45분",
       "primaryCron": "11 4 * * *",
       "fallbackCron": "23 4 * * *"
+    },
+    {
+      "kstDate": "2026-09-20",
+      "selectedSlot": 4,
+      "primaryKst": "18:09",
+      "primaryWindowKst": "18:09~+30분",
+      "fallbackKst": "18:21",
+      "fallbackWindowKst": "18:21~+45분",
+      "primaryCron": "9 9 * * *",
+      "fallbackCron": "21 9 * * *"
     }
   ],
   "actions": [
@@ -168,72 +168,72 @@
       "event": "schedule",
       "status": "in_progress",
       "conclusion": null,
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T16:42:02Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33978674199"
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T16:48:28Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34046623116"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T15:52:22Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33976112254"
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T16:05:51Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34044355842"
     },
     {
       "name": "Continuous Share Blog Publishing",
       "event": "schedule",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T15:35:05Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33975248698"
+      "status": "pending",
+      "conclusion": null,
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T15:48:34Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34043466936"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T12:45:10Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33966931146"
-    },
-    {
-      "name": "Continuous Share Blog Publishing",
-      "event": "schedule",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T12:36:14Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33966510704"
-    },
-    {
-      "name": "Hosted Template Blog Fallback",
-      "event": "schedule",
-      "status": "completed",
-      "conclusion": "failure",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T10:56:00Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33961958159"
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T12:54:18Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34034483214"
     },
     {
       "name": "Continuous Share Blog Publishing",
       "event": "schedule",
       "status": "completed",
       "conclusion": "cancelled",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T10:53:36Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33961853857"
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T12:49:21Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34034241119"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "f824f05837001524f34f4658bd77c393440b90cd",
-      "created_at": "2026-09-05T08:24:54Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/33955190267"
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T11:22:10Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34030047391"
+    },
+    {
+      "name": "Continuous Share Blog Publishing",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T11:18:06Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34029843008"
+    },
+    {
+      "name": "Hosted Template Blog Fallback",
+      "event": "schedule",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "8312d9e26ee2cdc54dce788ec3c7c3ed4ff8e73b",
+      "created_at": "2026-09-06T08:43:37Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/34022660609"
     }
   ],
   "publishedPosts": [
