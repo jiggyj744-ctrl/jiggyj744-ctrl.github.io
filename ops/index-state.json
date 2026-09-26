@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-09-26T08:48:00.110Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/detached-house-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-07-24T15:31:18.173Z",
       "model": "template-cost-safe",
       "count": 1,

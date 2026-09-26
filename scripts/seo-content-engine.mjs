@@ -556,7 +556,7 @@ function renderBlogPost(post) {
 function renderBlogIndex(posts) {
   const sortedPosts = [...posts].sort((a, b) => new Date(b.publishedAt || b.lastPublished || 0) - new Date(a.publishedAt || a.lastPublished || 0));
   const featured = sortedPosts[0];
-  const cards = sortedPosts.slice(1, 24);
+  const cards = sortedPosts.slice(1);
   const title = "지분매입 블로그 | 공유지분 매도·검토 노트";
   const description = "공유지분 매도, 지분경매, 상속지분, 공유물분할청구 상황별 검토 노트를 모아 둔 블로그입니다.";
   const url = siteBase + "/blog/";
@@ -764,7 +764,7 @@ function updateBlogCategoryPages(posts) {
 }
 function updateFeed(posts) {
   const sortedPosts = [...posts].sort((a, b) => new Date(b.publishedAt || b.lastPublished || 0) - new Date(a.publishedAt || a.lastPublished || 0));
-  const items = sortedPosts.slice(0, 30).map((post) => "  <item>\n    <title>" + escapeXml(post.title || post.keyword) + "</title>\n    <link>" + siteBase + "/" + cleanSlug(post.slug) + "/</link>\n    <guid>" + siteBase + "/" + cleanSlug(post.slug) + "/</guid>\n    <pubDate>" + new Date(post.publishedAt || post.lastPublished || new Date().toISOString()).toUTCString() + "</pubDate>\n    <description>" + escapeXml(post.description || post.keyword + " 검토 노트") + "</description>\n  </item>").join("\n");
+  const items = sortedPosts.slice(0, 100).map((post) => "  <item>\n    <title>" + escapeXml(post.title || post.keyword) + "</title>\n    <link>" + siteBase + "/" + cleanSlug(post.slug) + "/</link>\n    <guid>" + siteBase + "/" + cleanSlug(post.slug) + "/</guid>\n    <pubDate>" + new Date(post.publishedAt || post.lastPublished || new Date().toISOString()).toUTCString() + "</pubDate>\n    <description>" + escapeXml(post.description || post.keyword + " 검토 노트") + "</description>\n  </item>").join("\n");
   fs.writeFileSync("feed.xml", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">\n<channel>\n  <title>Jauction 지분매입 블로그</title>\n  <link>" + siteBase + "/blog/</link>\n  <description>공유지분 매도와 지분경매 검토 노트 피드</description>\n  <language>ko-KR</language>\n  <lastBuildDate>" + new Date().toUTCString() + "</lastBuildDate>\n" + items + "\n</channel>\n</rss>\n", "utf8");
 }
 function syncSitemapForBlogSurfaces(posts) {
