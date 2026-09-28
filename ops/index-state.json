@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-09-28T02:06:19.126Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/forest-land-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-09-27T13:09:54.393Z",
       "model": "template-cost-safe",
       "count": 1,
