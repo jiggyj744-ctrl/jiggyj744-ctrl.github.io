@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-09-29T18:35:33.429Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/incheon-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-09-28T02:06:19.126Z",
       "model": "template-cost-safe",
       "count": 1,
