@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-09-29",
+  "updated": "2026-09-30",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -434,7 +434,12 @@
       "category": "공동명의",
       "priority": 3,
       "slug": "blog/joint-name-property-share-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-09-30",
+      "publishedAt": "2026-09-30T18:37:49.615Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/joint-name-property-share-review/",
+      "description": "공동명의 부동산 지분 정리 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "부모님 부동산 지분 매도",

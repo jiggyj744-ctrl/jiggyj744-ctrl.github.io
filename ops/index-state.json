@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-09-30T18:37:49.620Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/joint-name-property-share-review"
+      ]
+    },
+    {
       "date": "2026-09-29T18:35:33.429Z",
       "model": "template-cost-safe",
       "count": 1,
