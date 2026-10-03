@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-02",
+  "updated": "2026-10-03",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -211,7 +211,12 @@
       "category": "지분율",
       "priority": 3,
       "slug": "blog/one-eighth-share-sale-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-03",
+      "publishedAt": "2026-10-03T07:33:45.537Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/one-eighth-share-sale-review/",
+      "description": "1/8 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "상속 아파트 지분 매도",

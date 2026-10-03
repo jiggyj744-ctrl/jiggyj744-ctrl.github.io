@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-03T07:33:45.544Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/one-eighth-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-10-02T10:47:37.470Z",
       "model": "template-cost-safe",
       "count": 1,
