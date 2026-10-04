@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-03",
+  "updated": "2026-10-04",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -457,7 +457,12 @@
       "category": "상속지분",
       "priority": 3,
       "slug": "blog/parents-property-inherited-share-sale",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-04",
+      "publishedAt": "2026-10-04T15:04:21.345Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/parents-property-inherited-share-sale/",
+      "description": "부모님 부동산 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-inherited-share.webp"
     },
     {
       "keyword": "지분경매 사건자료 상담",

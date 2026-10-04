@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-04T15:04:21.350Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/parents-property-inherited-share-sale"
+      ]
+    },
+    {
       "date": "2026-10-03T07:33:45.544Z",
       "model": "template-cost-safe",
       "count": 1,
