@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-04",
+  "updated": "2026-10-06",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -436,7 +436,12 @@
       "category": "분할청구",
       "priority": 3,
       "slug": "blog/partition-claim-notice-share-sale",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-06",
+      "publishedAt": "2026-10-06T03:33:19.980Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/partition-claim-notice-share-sale/",
+      "description": "공유물분할청구 통보 지분 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "공동명의 부동산 지분 정리",
