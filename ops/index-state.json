@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-09T08:54:59.324Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/share-ratio-review-difference"
+      ]
+    },
+    {
       "date": "2026-10-08T12:00:12.003Z",
       "model": "template-cost-safe",
       "count": 1,
