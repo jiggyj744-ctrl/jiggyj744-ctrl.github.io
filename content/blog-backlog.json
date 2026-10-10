@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-09",
+  "updated": "2026-10-10",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -438,7 +438,12 @@
       "category": "상담 준비",
       "priority": 3,
       "slug": "blog/unknown-share-ratio-consultation",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-10",
+      "publishedAt": "2026-10-10T08:19:56.478Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/unknown-share-ratio-consultation/",
+      "description": "지분율 모를 때 상담 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "공유물분할청구 통보 지분",

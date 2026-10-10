@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-10T08:19:56.485Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/unknown-share-ratio-consultation"
+      ]
+    },
+    {
       "date": "2026-10-09T08:54:59.324Z",
       "model": "template-cost-safe",
       "count": 1,
