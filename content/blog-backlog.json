@@ -349,7 +349,12 @@
       "category": "주거 지분",
       "priority": 3,
       "slug": "blog/villa-share-sale-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-11",
+      "publishedAt": "2026-10-11T18:18:26.373Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/villa-share-sale-review/",
+      "description": "빌라 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "단독주택 지분 매도",

@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-11T18:18:26.380Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/villa-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-10-11T11:09:22.329Z",
       "model": "template-cost-safe",
       "count": 1,
