@@ -1,11 +1,11 @@
-# 지분매입 자동발행 운영 리포트 - 2026-10-11
+# 지분매입 자동발행 운영 리포트 - 2026-10-12
 
 ## 요약
-- 발행된 블로그 글: 37
-- 대기 중인 블로그 글: 21
-- 오늘 KST 발행 여부: N
-- 오늘 발행 횟수: 0
-- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/unknown-share-ratio-consultation/
+- 발행된 블로그 글: 39
+- 대기 중인 블로그 글: 19
+- 오늘 KST 발행 여부: Y
+- 오늘 발행 횟수: 1
+- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/villa-share-sale-review/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
 - 블로그 내부링크 실패: 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-10-11 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-10-12 | 5 | 21:51~+30분 | 22:07~+45분 |
 | 2026-10-13 | 0 | 08:17~+30분 | 08:27~+45분 |
 | 2026-10-14 | 3 | 15:37~+30분 | 15:49~+45분 |
@@ -34,22 +33,25 @@
 | 2026-10-22 | 0 | 08:17~+30분 | 08:27~+45분 |
 | 2026-10-23 | 5 | 21:51~+30분 | 22:07~+45분 |
 | 2026-10-24 | 4 | 18:09~+30분 | 18:21~+45분 |
+| 2026-10-25 | 3 | 15:37~+30분 | 15:49~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-10T18:22:54Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-10T17:43:12Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-10T17:28:23Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-10T15:24:33Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-10T15:14:20Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-10T13:05:03Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-10T12:59:43Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-10T10:41:15Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-11T18:43:34Z |
+| pages build and deployment | dynamic | completed | success | 2026-10-11T18:18:28Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-11T17:56:41Z |
+| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-11T17:48:06Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-11T15:45:22Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-11T15:34:03Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-11T13:33:48Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-11T13:27:13Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
 | --- | --- |
+| 2026-10-11T18:18:26.373Z | [빌라 공유지분 매도 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/villa-share-sale-review/) |
+| 2026-10-11T11:09:22.321Z | [나대지 공유지분 매도 상담 전 확인자료](https://jiggyj744-ctrl.github.io/blog/vacant-land-share-review/) |
 | 2026-10-10T08:19:56.478Z | [지분율을 모를 때 공유지분 상담 접수 방법](https://jiggyj744-ctrl.github.io/blog/unknown-share-ratio-consultation/) |
 | 2026-10-09T08:54:59.317Z | [지분율 1/2과 1/8 매입 검토 차이](https://jiggyj744-ctrl.github.io/blog/share-ratio-review-difference/) |
 | 2026-10-08T12:00:11.996Z | [지분경매 사건자료 상담 전 확인할 항목](https://jiggyj744-ctrl.github.io/blog/share-auction-case-documents/) |
@@ -91,8 +93,6 @@
 ## 다음 발행 대기 글
 | 우선순위 | 카테고리 | 키워드 | Slug |
 | --- | --- | --- | --- |
-| 3 | 토지지분 | 나대지 공유지분 매도 | blog/vacant-land-share-review |
-| 3 | 주거 지분 | 빌라 지분 매도 | blog/villa-share-sale-review |
 | 4 | 지역별 지분매입 | 부천 공유지분 매입 | blog/bucheon-share-purchase-documents |
 | 4 | 지역별 지분매입 | 대구 공유지분 매입 | blog/daegu-share-purchase-documents |
 | 4 | 지역별 지분매입 | 대전 공유지분 매입 | blog/daejeon-share-purchase-documents |
@@ -103,6 +103,8 @@
 | 4 | 주거 지분 | 오피스텔 지분 매도 | blog/officetel-share-sale-review |
 | 4 | 특수 토지지분 | 도로 지분 매도 | blog/road-share-sale-review |
 | 4 | 지역별 지분매입 | 성남 공유지분 매입 | blog/seongnam-share-purchase-documents |
+| 4 | 지분경매 검토 | 지분경매 낙찰 후 지분 검토 | blog/share-auction-after-award-review |
+| 4 | 지역별 지분매입 | 수원 공유지분 매입 | blog/suwon-share-purchase-documents |
 
 ## 운영 판정
 기술 검증은 색인 readiness, 내부링크 검사, 라이브 검증을 통과해야 한다. 실제 색인 반영 여부는 Google Search Console과 Naver Search Advisor의 로그인 콘솔 결과로만 확정한다.
