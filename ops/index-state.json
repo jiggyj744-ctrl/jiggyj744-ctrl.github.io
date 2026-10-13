@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-13T03:46:59.633Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/bucheon-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-11T18:18:26.380Z",
       "model": "template-cost-safe",
       "count": 1,
