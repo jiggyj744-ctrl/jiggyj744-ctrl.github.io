@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-14T12:57:25.144Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/daegu-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-13T03:46:59.633Z",
       "model": "template-cost-safe",
       "count": 1,
