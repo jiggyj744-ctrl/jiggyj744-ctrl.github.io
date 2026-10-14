@@ -1,11 +1,11 @@
-# 지분매입 자동발행 운영 리포트 - 2026-10-14
+# 지분매입 자동발행 운영 리포트 - 2026-10-15
 
 ## 요약
-- 발행된 블로그 글: 40
-- 대기 중인 블로그 글: 39
+- 발행된 블로그 글: 41
+- 대기 중인 블로그 글: 38
 - 오늘 KST 발행 여부: N
 - 오늘 발행 횟수: 0
-- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/bucheon-share-purchase-documents/
+- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/daegu-share-purchase-documents/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
 - 블로그 내부링크 실패: 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-10-14 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-10-15 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-10-16 | 1 | 10:43~+30분 | 10:57~+45분 |
 | 2026-10-17 | 2 | 13:11~+30분 | 13:23~+45분 |
@@ -34,22 +33,24 @@
 | 2026-10-25 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-10-26 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-10-27 | 1 | 10:43~+30분 | 10:57~+45분 |
+| 2026-10-28 | 4 | 18:09~+30분 | 18:21~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-13T20:08:42Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-13T19:47:59Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-13T19:33:18Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-13T16:58:26Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-13T16:53:35Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-13T14:36:13Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-13T14:31:46Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-13T11:56:04Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-14T18:26:05Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-14T17:53:14Z |
+| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-14T17:37:07Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-14T14:32:15Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-14T14:27:05Z |
+| pages build and deployment | dynamic | completed | success | 2026-10-14T12:57:27Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-14T12:26:49Z |
+| Continuous Share Blog Publishing | schedule | queued | - | 2026-10-14T12:18:31Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
 | --- | --- |
+| 2026-10-14T12:57:25.138Z | [대구 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/daegu-share-purchase-documents/) |
 | 2026-10-13T03:46:59.626Z | [부천 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/bucheon-share-purchase-documents/) |
 | 2026-10-11T18:18:26.373Z | [빌라 공유지분 매도 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/villa-share-sale-review/) |
 | 2026-10-11T11:09:22.321Z | [나대지 공유지분 매도 상담 전 확인자료](https://jiggyj744-ctrl.github.io/blog/vacant-land-share-review/) |
@@ -94,7 +95,6 @@
 ## 다음 발행 대기 글
 | 우선순위 | 카테고리 | 키워드 | Slug |
 | --- | --- | --- | --- |
-| 4 | 지역별 지분매입 | 대구 공유지분 매입 | blog/daegu-share-purchase-documents |
 | 4 | 지역별 지분매입 | 대전 공유지분 매입 | blog/daejeon-share-purchase-documents |
 | 4 | 지역별 지분매입 | 고양 공유지분 매입 | blog/goyang-share-purchase-documents |
 | 4 | 지역별 지분매입 | 광주 공유지분 매입 | blog/gwangju-share-purchase-documents |
@@ -106,6 +106,7 @@
 | 4 | 지분경매 검토 | 지분경매 낙찰 후 지분 검토 | blog/share-auction-after-award-review |
 | 4 | 지역별 지분매입 | 수원 공유지분 매입 | blog/suwon-share-purchase-documents |
 | 4 | 지역별 지분매입 | 울산 공유지분 매입 | blog/ulsan-share-purchase-documents |
+| 4 | 지역별 지분매입 | 용인 공유지분 매입 | blog/yongin-share-purchase-documents |
 
 ## 운영 판정
 기술 검증은 색인 readiness, 내부링크 검사, 라이브 검증을 통과해야 한다. 실제 색인 반영 여부는 Google Search Console과 Naver Search Advisor의 로그인 콘솔 결과로만 확정한다.
