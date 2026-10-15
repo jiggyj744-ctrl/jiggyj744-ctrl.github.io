@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-15T14:36:24.305Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/daejeon-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-14T12:57:25.144Z",
       "model": "template-cost-safe",
       "count": 1,
