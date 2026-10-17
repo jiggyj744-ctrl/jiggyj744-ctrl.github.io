@@ -1,11 +1,11 @@
-# 지분매입 자동발행 운영 리포트 - 2026-10-17
+# 지분매입 자동발행 운영 리포트 - 2026-10-18
 
 ## 요약
-- 발행된 블로그 글: 43
-- 대기 중인 블로그 글: 36
-- 오늘 KST 발행 여부: N
-- 오늘 발행 횟수: 0
-- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/goyang-share-purchase-documents/
+- 발행된 블로그 글: 45
+- 대기 중인 블로그 글: 34
+- 오늘 KST 발행 여부: Y
+- 오늘 발행 횟수: 1
+- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/hwaseong-share-purchase-documents/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
 - 블로그 내부링크 실패: 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-10-17 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-10-18 | 5 | 21:51~+30분 | 22:07~+45분 |
 | 2026-10-19 | 0 | 08:17~+30분 | 08:27~+45분 |
 | 2026-10-20 | 2 | 13:11~+30분 | 13:23~+45분 |
@@ -34,22 +33,25 @@
 | 2026-10-28 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-10-29 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-10-30 | 1 | 10:43~+30분 | 10:57~+45분 |
+| 2026-10-31 | 2 | 13:11~+30분 | 13:23~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-16T17:54:21Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-16T17:15:05Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-10-16T16:59:10Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-16T13:59:31Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-10-16T13:53:46Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-16T11:55:45Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-16T11:51:10Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-16T09:06:14Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-17T16:55:59Z |
+| pages build and deployment | dynamic | completed | success | 2026-10-17T16:52:03Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-17T16:14:45Z |
+| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-17T15:57:45Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-17T12:59:54Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-17T12:54:00Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-17T11:11:37Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-17T11:07:52Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
 | --- | --- |
+| 2026-10-17T16:52:00.980Z | [화성 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/hwaseong-share-purchase-documents/) |
+| 2026-10-17T08:55:29.257Z | [광주 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/gwangju-share-purchase-documents/) |
 | 2026-10-16T07:00:25.870Z | [고양 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/goyang-share-purchase-documents/) |
 | 2026-10-15T14:36:24.295Z | [대전 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/daejeon-share-purchase-documents/) |
 | 2026-10-14T12:57:25.138Z | [대구 공유지분 매입 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/daegu-share-purchase-documents/) |
@@ -97,8 +99,6 @@
 ## 다음 발행 대기 글
 | 우선순위 | 카테고리 | 키워드 | Slug |
 | --- | --- | --- | --- |
-| 4 | 지역별 지분매입 | 광주 공유지분 매입 | blog/gwangju-share-purchase-documents |
-| 4 | 지역별 지분매입 | 화성 공유지분 매입 | blog/hwaseong-share-purchase-documents |
 | 4 | 특수 토지지분 | 맹지 지분 매도 | blog/landlocked-share-sale-review |
 | 4 | 주거 지분 | 오피스텔 지분 매도 | blog/officetel-share-sale-review |
 | 4 | 특수 토지지분 | 도로 지분 매도 | blog/road-share-sale-review |
@@ -109,6 +109,8 @@
 | 4 | 지역별 지분매입 | 용인 공유지분 매입 | blog/yongin-share-purchase-documents |
 | 5 | 지역별 지분매입 | 천안 공유지분 매입 | blog/cheonan-share-purchase-documents |
 | 5 | 지역별 지분매입 | 청주 공유지분 매입 | blog/cheongju-share-purchase-documents |
+| 5 | 지역별 지분매입 | 김포 공유지분 매입 | blog/gimpo-share-purchase-documents |
+| 5 | 지역별 지분매입 | 제주 공유지분 매입 | blog/jeju-share-purchase-documents |
 
 ## 운영 판정
 기술 검증은 색인 readiness, 내부링크 검사, 라이브 검증을 통과해야 한다. 실제 색인 반영 여부는 Google Search Console과 Naver Search Advisor의 로그인 콘솔 결과로만 확정한다.
