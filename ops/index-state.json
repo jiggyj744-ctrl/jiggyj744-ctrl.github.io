@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-17T16:52:00.987Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/hwaseong-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-17T08:55:29.265Z",
       "model": "template-cost-safe",
       "count": 1,
