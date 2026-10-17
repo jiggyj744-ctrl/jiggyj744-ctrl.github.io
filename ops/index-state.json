@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-17T08:55:29.265Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/gwangju-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-16T07:00:25.878Z",
       "model": "template-cost-safe",
       "count": 1,
