@@ -1,10 +1,10 @@
-# 지분매입 자동발행 운영 리포트 - 2026-10-18
+# 지분매입 자동발행 운영 리포트 - 2026-10-19
 
 ## 요약
 - 발행된 블로그 글: 45
 - 대기 중인 블로그 글: 34
-- 오늘 KST 발행 여부: Y
-- 오늘 발행 횟수: 1
+- 오늘 KST 발행 여부: N
+- 오늘 발행 횟수: 0
 - 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/hwaseong-share-purchase-documents/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-10-18 | 5 | 21:51~+30분 | 22:07~+45분 |
 | 2026-10-19 | 0 | 08:17~+30분 | 08:27~+45분 |
 | 2026-10-20 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-10-21 | 1 | 10:43~+30분 | 10:57~+45분 |
@@ -34,18 +33,19 @@
 | 2026-10-29 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-10-30 | 1 | 10:43~+30분 | 10:57~+45분 |
 | 2026-10-31 | 2 | 13:11~+30분 | 13:23~+45분 |
+| 2026-11-01 | 0 | 08:17~+30분 | 08:27~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-17T16:55:59Z |
-| pages build and deployment | dynamic | completed | success | 2026-10-17T16:52:03Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-17T16:14:45Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-17T15:57:45Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-17T12:59:54Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-17T12:54:00Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-17T11:11:37Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-17T11:07:52Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-18T17:11:50Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-18T16:25:06Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-10-18T16:08:53Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-18T13:20:14Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-10-18T13:09:55Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-18T11:45:25Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-10-18T11:38:30Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-18T08:55:35Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
