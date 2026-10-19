@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-19T01:30:40.755Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/landlocked-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-10-17T16:52:00.987Z",
       "model": "template-cost-safe",
       "count": 1,

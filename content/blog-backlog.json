@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-17",
+  "updated": "2026-10-19",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -341,7 +341,12 @@
       "category": "특수 토지지분",
       "priority": 4,
       "slug": "blog/landlocked-share-sale-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-19",
+      "publishedAt": "2026-10-19T01:30:40.743Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/landlocked-share-sale-review/",
+      "description": "맹지 지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-land-share.webp"
     },
     {
       "keyword": "빌라 지분 매도",
