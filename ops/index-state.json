@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-20T10:00:25.124Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/officetel-share-sale-review"
+      ]
+    },
+    {
       "date": "2026-10-19T01:30:40.755Z",
       "model": "template-cost-safe",
       "count": 1,
