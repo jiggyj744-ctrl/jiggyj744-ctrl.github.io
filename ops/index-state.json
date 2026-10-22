@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-22T01:47:26.258Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/seongnam-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-21T07:17:56.790Z",
       "model": "template-cost-safe",
       "count": 1,
