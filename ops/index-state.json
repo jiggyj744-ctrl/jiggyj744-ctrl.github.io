@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-24T13:27:31.390Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/share-auction-after-award-review"
+      ]
+    },
+    {
       "date": "2026-10-22T01:47:26.258Z",
       "model": "template-cost-safe",
       "count": 1,
