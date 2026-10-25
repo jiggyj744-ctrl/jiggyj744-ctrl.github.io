@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-25T12:33:52.470Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/suwon-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-24T13:27:31.390Z",
       "model": "template-cost-safe",
       "count": 1,
