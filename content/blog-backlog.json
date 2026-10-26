@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-25",
+  "updated": "2026-10-26",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -606,7 +606,12 @@
       "category": "지역별 지분매입",
       "priority": 4,
       "slug": "blog/ulsan-share-purchase-documents",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-26",
+      "publishedAt": "2026-10-26T10:43:56.853Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/ulsan-share-purchase-documents/",
+      "description": "울산 공유지분 매입 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "수원 공유지분 매입",

@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-26T10:43:56.861Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/ulsan-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-25T12:33:52.470Z",
       "model": "template-cost-safe",
       "count": 1,
