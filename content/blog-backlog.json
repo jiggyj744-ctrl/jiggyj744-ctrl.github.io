@@ -713,7 +713,12 @@
       "category": "지역별 지분매입",
       "priority": 5,
       "slug": "blog/cheonan-share-purchase-documents",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-10-27",
+      "publishedAt": "2026-10-27T15:58:31.790Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/cheonan-share-purchase-documents/",
+      "description": "천안 공유지분 매입 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "청주 공유지분 매입",
