@@ -1,10 +1,10 @@
-# 지분매입 자동발행 운영 리포트 - 2026-10-28
+# 지분매입 자동발행 운영 리포트 - 2026-10-29
 
 ## 요약
 - 발행된 블로그 글: 54
 - 대기 중인 블로그 글: 25
-- 오늘 KST 발행 여부: Y
-- 오늘 발행 횟수: 1
+- 오늘 KST 발행 여부: N
+- 오늘 발행 횟수: 0
 - 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/cheonan-share-purchase-documents/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-10-28 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-10-29 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-10-30 | 1 | 10:43~+30분 | 10:57~+45분 |
 | 2026-10-31 | 2 | 13:11~+30분 | 13:23~+45분 |
@@ -34,18 +33,19 @@
 | 2026-11-08 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-11-09 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-11-10 | 0 | 08:17~+30분 | 08:27~+45분 |
+| 2026-11-11 | 5 | 21:51~+30분 | 22:07~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-27T19:18:20Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-27T18:36:29Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-27T18:19:36Z |
-| pages build and deployment | dynamic | completed | success | 2026-10-27T15:58:35Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-27T15:23:23Z |
-| Continuous Share Blog Publishing | schedule | queued | - | 2026-10-27T15:16:55Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-27T12:42:35Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-10-27T12:37:25Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-10-28T19:24:21Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-28T18:43:19Z |
+| Continuous Share Blog Publishing | schedule | pending | - | 2026-10-28T18:30:25Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-28T16:06:31Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-10-28T15:54:55Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-28T13:34:02Z |
+| Continuous Share Blog Publishing | schedule | queued | - | 2026-10-28T13:28:04Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-10-28T10:40:17Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
