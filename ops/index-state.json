@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-30T08:11:39.624Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/gimpo-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-29T14:28:12.594Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "guide/partition-claim-share-sale"
-      ]
-    },
-    {
-      "date": "2026-07-01T08:24:56.556Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "guide/commercial-share-acquisition"
       ]
     }
   ]
