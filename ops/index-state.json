@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-10-31T11:00:16.945Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/jeju-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-30T08:11:39.624Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "guide/unreachable-co-owner-share"
-      ]
-    },
-    {
-      "date": "2026-07-01T08:30:07.532Z",
-      "model": "proxy",
-      "count": 1,
-      "pages": [
-        "guide/partition-claim-share-sale"
       ]
     }
   ]
