@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-01T02:53:11.508Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/namyangju-share-purchase-documents"
+      ]
+    },
+    {
       "date": "2026-10-31T11:00:16.945Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "areas/incheon-share-purchase"
-      ]
-    },
-    {
-      "date": "2026-07-01T09:18:55.854Z",
-      "model": "proxy",
-      "count": 1,
-      "pages": [
-        "guide/unreachable-co-owner-share"
       ]
     }
   ]
