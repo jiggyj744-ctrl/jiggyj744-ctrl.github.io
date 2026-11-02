@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-02T20:05:01.491Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/busan-auction-case-review"
+      ]
+    },
+    {
       "date": "2026-11-01T02:53:11.508Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/auction-case-number-share-review"
-      ]
-    },
-    {
-      "date": "2026-07-01T09:58:57.430Z",
-      "model": "proxy",
-      "count": 1,
-      "pages": [
-        "areas/incheon-share-purchase"
       ]
     }
   ]
