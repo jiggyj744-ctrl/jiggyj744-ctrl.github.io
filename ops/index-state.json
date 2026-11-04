@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-04T15:02:02.137Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/busan-inherited-share-review"
+      ]
+    },
+    {
       "date": "2026-11-02T20:05:01.491Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "areas/busan-share-purchase"
-      ]
-    },
-    {
-      "date": "2026-07-01T09:59:13.008Z",
-      "model": "proxy",
-      "count": 1,
-      "pages": [
-        "blog/auction-case-number-share-review"
       ]
     }
   ]
