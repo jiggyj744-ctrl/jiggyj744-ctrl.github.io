@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-04",
+  "updated": "2026-11-06",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -906,7 +906,12 @@
       "category": "지역별 지분매입",
       "priority": 6,
       "slug": "blog/busan-share-sale-consultation",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-11-06",
+      "publishedAt": "2026-11-06T09:01:24.141Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/busan-share-sale-consultation/",
+      "description": "부산 공유지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "부산 상속지분 매도",
@@ -933,6 +938,174 @@
       "url": "https://jiggyj744-ctrl.github.io/blog/busan-auction-case-review/",
       "description": "부산 지분경매 사건번호 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
       "thumbnail": "/assets/blog/thumb-share-auction.webp"
+    },
+    {
+      "keyword": "부산 토지 공유지분 매도",
+      "title": "부산 토지 공유지분 매도 검토 항목",
+      "category": "토지지분",
+      "priority": 7,
+      "slug": "blog/busan-land-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "부산 아파트 공유지분 매도",
+      "title": "부산 아파트 공유지분 매도 상담 기준",
+      "category": "주거 지분",
+      "priority": 7,
+      "slug": "blog/busan-apartment-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "부산 공유자 갈등 지분",
+      "title": "부산 공유자 갈등이 있는 지분 상담 항목",
+      "category": "공유자 문제",
+      "priority": 7,
+      "slug": "blog/busan-co-owner-issue-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 공유지분 매도",
+      "title": "대구 공유지분 매도 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 6,
+      "slug": "blog/daegu-share-sale-consultation",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 상속지분 매도",
+      "title": "대구 상속지분 매도 전 확인자료",
+      "category": "상속지분",
+      "priority": 6,
+      "slug": "blog/daegu-inherited-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 지분경매 사건번호",
+      "title": "대구 지분경매 사건번호 상담 항목",
+      "category": "지분경매 검토",
+      "priority": 6,
+      "slug": "blog/daegu-auction-case-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 토지 공유지분 매도",
+      "title": "대구 토지 공유지분 매도 검토 항목",
+      "category": "토지지분",
+      "priority": 7,
+      "slug": "blog/daegu-land-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 아파트 공유지분 매도",
+      "title": "대구 아파트 공유지분 매도 상담 기준",
+      "category": "주거 지분",
+      "priority": 7,
+      "slug": "blog/daegu-apartment-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대구 공유자 갈등 지분",
+      "title": "대구 공유자 갈등이 있는 지분 상담 항목",
+      "category": "공유자 문제",
+      "priority": 7,
+      "slug": "blog/daegu-co-owner-issue-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 공유지분 매도",
+      "title": "대전 공유지분 매도 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 6,
+      "slug": "blog/daejeon-share-sale-consultation",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 상속지분 매도",
+      "title": "대전 상속지분 매도 전 확인자료",
+      "category": "상속지분",
+      "priority": 6,
+      "slug": "blog/daejeon-inherited-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 지분경매 사건번호",
+      "title": "대전 지분경매 사건번호 상담 항목",
+      "category": "지분경매 검토",
+      "priority": 6,
+      "slug": "blog/daejeon-auction-case-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 토지 공유지분 매도",
+      "title": "대전 토지 공유지분 매도 검토 항목",
+      "category": "토지지분",
+      "priority": 7,
+      "slug": "blog/daejeon-land-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 아파트 공유지분 매도",
+      "title": "대전 아파트 공유지분 매도 상담 기준",
+      "category": "주거 지분",
+      "priority": 7,
+      "slug": "blog/daejeon-apartment-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "대전 공유자 갈등 지분",
+      "title": "대전 공유자 갈등이 있는 지분 상담 항목",
+      "category": "공유자 문제",
+      "priority": 7,
+      "slug": "blog/daejeon-co-owner-issue-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 공유지분 매도",
+      "title": "광주 공유지분 매도 상담 준비자료",
+      "category": "지역별 지분매입",
+      "priority": 6,
+      "slug": "blog/gwangju-share-sale-consultation",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 상속지분 매도",
+      "title": "광주 상속지분 매도 전 확인자료",
+      "category": "상속지분",
+      "priority": 6,
+      "slug": "blog/gwangju-inherited-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 지분경매 사건번호",
+      "title": "광주 지분경매 사건번호 상담 항목",
+      "category": "지분경매 검토",
+      "priority": 6,
+      "slug": "blog/gwangju-auction-case-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 토지 공유지분 매도",
+      "title": "광주 토지 공유지분 매도 검토 항목",
+      "category": "토지지분",
+      "priority": 7,
+      "slug": "blog/gwangju-land-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 아파트 공유지분 매도",
+      "title": "광주 아파트 공유지분 매도 상담 기준",
+      "category": "주거 지분",
+      "priority": 7,
+      "slug": "blog/gwangju-apartment-share-review",
+      "status": "queued"
+    },
+    {
+      "keyword": "광주 공유자 갈등 지분",
+      "title": "광주 공유자 갈등이 있는 지분 상담 항목",
+      "category": "공유자 문제",
+      "priority": 7,
+      "slug": "blog/gwangju-co-owner-issue-review",
+      "status": "queued"
     }
   ]
 }

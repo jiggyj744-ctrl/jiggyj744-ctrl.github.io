@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-06T09:01:24.149Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/busan-share-sale-consultation"
+      ]
+    },
+    {
       "date": "2026-11-04T15:02:02.137Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/inherited-share-sale-records"
-      ]
-    },
-    {
-      "date": "2026-07-01T20:09:46.895Z",
-      "model": "proxy",
-      "count": 1,
-      "pages": [
-        "areas/busan-share-purchase"
       ]
     }
   ]
