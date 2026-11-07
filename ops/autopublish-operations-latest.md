@@ -1,11 +1,11 @@
-# 지분매입 자동발행 운영 리포트 - 2026-11-07
+# 지분매입 자동발행 운영 리포트 - 2026-11-08
 
 ## 요약
-- 발행된 블로그 글: 61
-- 대기 중인 블로그 글: 39
+- 발행된 블로그 글: 62
+- 대기 중인 블로그 글: 38
 - 오늘 KST 발행 여부: N
 - 오늘 발행 횟수: 0
-- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/busan-share-sale-consultation/
+- 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/daegu-auction-case-review/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
 - 블로그 내부링크 실패: 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-11-07 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-11-08 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-11-09 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-11-10 | 0 | 08:17~+30분 | 08:27~+45분 |
@@ -34,22 +33,24 @@
 | 2026-11-18 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-11-19 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-11-20 | 1 | 10:43~+30분 | 10:57~+45분 |
+| 2026-11-21 | 2 | 13:11~+30분 | 13:23~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-06T20:18:59Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-06T19:53:56Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-11-06T19:42:31Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-06T16:47:37Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-06T16:42:05Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-06T14:38:11Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-06T14:33:51Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-06T12:14:58Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-07T18:35:41Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-07T17:58:18Z |
+| Continuous Share Blog Publishing | schedule | pending | - | 2026-11-07T17:51:58Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-07T15:41:49Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-07T15:36:33Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-07T13:35:33Z |
+| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-07T13:29:24Z |
+| pages build and deployment | dynamic | completed | success | 2026-11-07T11:54:14Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
 | --- | --- |
+| 2026-11-07T11:54:11.096Z | [대구 지분경매 사건번호 상담 항목](https://jiggyj744-ctrl.github.io/blog/daegu-auction-case-review/) |
 | 2026-11-06T09:01:24.141Z | [부산 공유지분 매도 상담 준비자료](https://jiggyj744-ctrl.github.io/blog/busan-share-sale-consultation/) |
 | 2026-11-04T15:02:02.130Z | [부산 상속지분 매도 전 확인자료](https://jiggyj744-ctrl.github.io/blog/busan-inherited-share-review/) |
 | 2026-11-02T20:05:01.482Z | [부산 지분경매 사건번호 상담 항목](https://jiggyj744-ctrl.github.io/blog/busan-auction-case-review/) |
@@ -115,7 +116,6 @@
 ## 다음 발행 대기 글
 | 우선순위 | 카테고리 | 키워드 | Slug |
 | --- | --- | --- | --- |
-| 6 | 지분경매 검토 | 대구 지분경매 사건번호 | blog/daegu-auction-case-review |
 | 6 | 상속지분 | 대구 상속지분 매도 | blog/daegu-inherited-share-review |
 | 6 | 지역별 지분매입 | 대구 공유지분 매도 | blog/daegu-share-sale-consultation |
 | 6 | 지분경매 검토 | 대전 지분경매 사건번호 | blog/daejeon-auction-case-review |
@@ -127,6 +127,7 @@
 | 6 | 지분경매 검토 | 경기 지분경매 사건번호 | blog/gyeonggi-auction-case-review |
 | 6 | 상속지분 | 경기 상속지분 매도 | blog/gyeonggi-inherited-share-review |
 | 6 | 지역별 지분매입 | 경기 공유지분 매도 | blog/gyeonggi-share-sale-consultation |
+| 6 | 지분경매 검토 | 인천 지분경매 사건번호 | blog/incheon-auction-case-review |
 
 ## 운영 판정
 기술 검증은 색인 readiness, 내부링크 검사, 라이브 검증을 통과해야 한다. 실제 색인 반영 여부는 Google Search Console과 Naver Search Advisor의 로그인 콘솔 결과로만 확정한다.
