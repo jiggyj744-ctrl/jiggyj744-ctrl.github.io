@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-07",
+  "updated": "2026-11-08",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -977,7 +977,12 @@
       "category": "상속지분",
       "priority": 6,
       "slug": "blog/daegu-inherited-share-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-11-08",
+      "publishedAt": "2026-11-08T14:20:03.993Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/daegu-inherited-share-review/",
+      "description": "대구 상속지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-inherited-share.webp"
     },
     {
       "keyword": "대구 지분경매 사건번호",

@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-08T14:20:04.000Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/daegu-inherited-share-review"
+      ]
+    },
+    {
       "date": "2026-11-07T11:54:11.104Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/unreachable-co-owner-share-options"
-      ]
-    },
-    {
-      "date": "2026-07-02T01:59:04.045Z",
-      "model": "proxy:gemini-pro",
-      "count": 1,
-      "pages": [
-        "blog/sell-co-owned-share-checklist"
       ]
     }
   ]
