@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-08T16:34:32.813Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/daegu-share-sale-consultation"
+      ]
+    },
+    {
       "date": "2026-11-08T14:20:04.000Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/address-only-share-consultation"
-      ]
-    },
-    {
-      "date": "2026-07-03T11:47:14.312Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/unreachable-co-owner-share-options"
       ]
     }
   ]
