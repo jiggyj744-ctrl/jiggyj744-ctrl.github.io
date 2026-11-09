@@ -1,10 +1,10 @@
-# 지분매입 자동발행 운영 리포트 - 2026-11-09
+# 지분매입 자동발행 운영 리포트 - 2026-11-10
 
 ## 요약
 - 발행된 블로그 글: 64
 - 대기 중인 블로그 글: 36
-- 오늘 KST 발행 여부: Y
-- 오늘 발행 횟수: 1
+- 오늘 KST 발행 여부: N
+- 오늘 발행 횟수: 0
 - 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/daegu-share-sale-consultation/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-11-09 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-11-10 | 0 | 08:17~+30분 | 08:27~+45분 |
 | 2026-11-11 | 5 | 21:51~+30분 | 22:07~+45분 |
 | 2026-11-12 | 2 | 13:11~+30분 | 13:23~+45분 |
@@ -34,18 +33,19 @@
 | 2026-11-20 | 1 | 10:43~+30분 | 10:57~+45분 |
 | 2026-11-21 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-11-22 | 3 | 15:37~+30분 | 15:49~+45분 |
+| 2026-11-23 | 4 | 18:09~+30분 | 18:21~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-08T18:43:45Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-08T18:16:34Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-11-08T18:05:37Z |
-| pages build and deployment | dynamic | completed | success | 2026-11-08T16:34:35Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-08T15:59:59Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-08T15:54:26Z |
-| pages build and deployment | dynamic | completed | success | 2026-11-08T14:20:06Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-08T13:53:27Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-09T23:19:40Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-09T22:55:24Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-09T22:43:15Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-09T19:51:51Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-09T19:43:09Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-09T16:53:52Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-09T16:48:48Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-09T13:03:19Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
