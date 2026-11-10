@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-09T23:19:50.117Z",
-  "kstDate": "2026-11-10",
+  "generatedAt": "2026-11-10T20:44:37.573Z",
+  "kstDate": "2026-11-11",
   "site": "https://jiggyj744-ctrl.github.io",
   "summary": {
-    "publishedBlogPosts": 64,
-    "queuedBlogPosts": 36,
+    "publishedBlogPosts": 65,
+    "queuedBlogPosts": 35,
     "publishedToday": false,
     "todayPublishCount": 0,
-    "latestPublishedUrl": "https://jiggyj744-ctrl.github.io/blog/daegu-share-sale-consultation/",
+    "latestPublishedUrl": "https://jiggyj744-ctrl.github.io/blog/daejeon-auction-case-review/",
     "consoleUrls": 20,
     "diagnosticsCritical": 0,
     "diagnosticsWarning": 0,
@@ -21,16 +21,6 @@
     "duplicateGuard": "ops/index-state.json의 KST 날짜별 blog/* 발행 여부 확인"
   },
   "schedulePreview": [
-    {
-      "kstDate": "2026-11-10",
-      "selectedSlot": 0,
-      "primaryKst": "08:17",
-      "primaryWindowKst": "08:17~+30분",
-      "fallbackKst": "08:27",
-      "fallbackWindowKst": "08:27~+45분",
-      "primaryCron": "17 23 * * *",
-      "fallbackCron": "27 23 * * *"
-    },
     {
       "kstDate": "2026-11-11",
       "selectedSlot": 5,
@@ -160,6 +150,16 @@
       "fallbackWindowKst": "18:21~+45분",
       "primaryCron": "9 9 * * *",
       "fallbackCron": "21 9 * * *"
+    },
+    {
+      "kstDate": "2026-11-24",
+      "selectedSlot": 5,
+      "primaryKst": "21:51",
+      "primaryWindowKst": "21:51~+30분",
+      "fallbackKst": "22:07",
+      "fallbackWindowKst": "22:07~+45분",
+      "primaryCron": "51 12 * * *",
+      "fallbackCron": "7 13 * * *"
     }
   ],
   "actions": [
@@ -168,75 +168,81 @@
       "event": "schedule",
       "status": "in_progress",
       "conclusion": null,
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T23:19:40Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42719540430"
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T20:44:25Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42898220200"
+    },
+    {
+      "name": "Hosted Template Blog Fallback",
+      "event": "schedule",
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T20:22:09Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42894589999"
+    },
+    {
+      "name": "Continuous Share Blog Publishing",
+      "event": "schedule",
+      "status": "pending",
+      "conclusion": null,
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T20:01:12Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42891061654"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T22:55:24Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42716117041"
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T17:05:04Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42861224139"
     },
     {
       "name": "Continuous Share Blog Publishing",
       "event": "schedule",
       "status": "completed",
-      "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T22:43:15Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42714369846"
+      "conclusion": "cancelled",
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T16:57:48Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42859944151"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T19:51:51Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42687404794"
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T15:14:56Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42842361134"
     },
     {
       "name": "Continuous Share Blog Publishing",
       "event": "schedule",
       "status": "completed",
-      "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T19:43:09Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42686023857"
+      "conclusion": "cancelled",
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T15:11:30Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42841766479"
     },
     {
       "name": "Hosted Template Blog Fallback",
       "event": "schedule",
       "status": "completed",
       "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T16:53:52Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42659332743"
-    },
-    {
-      "name": "Continuous Share Blog Publishing",
-      "event": "schedule",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T16:48:48Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42658518523"
-    },
-    {
-      "name": "Hosted Template Blog Fallback",
-      "event": "schedule",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "19ab4365dd70a962163498d5c7bfbd9f9ecc24c4",
-      "created_at": "2026-11-09T13:03:19Z",
-      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42622100814"
+      "head_sha": "37284674ffc1c82653718c3cba127d23350a07fd",
+      "created_at": "2026-11-10T12:47:13Z",
+      "html_url": "https://github.com/jiggyj744-ctrl/jiggyj744-ctrl.github.io/actions/runs/42818711716"
     }
   ],
   "publishedPosts": [
+    {
+      "title": "대전 지분경매 사건번호 상담 항목",
+      "slug": "blog/daejeon-auction-case-review",
+      "publishedAt": "2026-11-10T04:45:32.898Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/daejeon-auction-case-review/"
+    },
     {
       "title": "대구 공유지분 매도 상담 준비자료",
       "slug": "blog/daegu-share-sale-consultation",
@@ -624,13 +630,6 @@
   ],
   "nextQueuedPosts": [
     {
-      "title": "대전 지분경매 사건번호 상담 항목",
-      "keyword": "대전 지분경매 사건번호",
-      "category": "지분경매 검토",
-      "priority": 6,
-      "slug": "blog/daejeon-auction-case-review"
-    },
-    {
       "title": "대전 상속지분 매도 전 확인자료",
       "keyword": "대전 상속지분 매도",
       "category": "상속지분",
@@ -706,6 +705,13 @@
       "category": "지역별 지분매입",
       "priority": 6,
       "slug": "blog/incheon-share-sale-consultation"
+    },
+    {
+      "title": "서울 지분경매 사건번호 상담 항목",
+      "keyword": "서울 지분경매 사건번호",
+      "category": "지분경매 검토",
+      "priority": 6,
+      "slug": "blog/seoul-auction-case-review"
     }
   ]
 }
