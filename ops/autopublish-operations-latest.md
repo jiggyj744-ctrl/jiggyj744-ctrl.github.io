@@ -1,4 +1,4 @@
-# 지분매입 자동발행 운영 리포트 - 2026-11-11
+# 지분매입 자동발행 운영 리포트 - 2026-11-12
 
 ## 요약
 - 발행된 블로그 글: 65
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-11-11 | 5 | 21:51~+30분 | 22:07~+45분 |
 | 2026-11-12 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-11-13 | 1 | 10:43~+30분 | 10:57~+45분 |
 | 2026-11-14 | 2 | 13:11~+30분 | 13:23~+45분 |
@@ -34,18 +33,19 @@
 | 2026-11-22 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-11-23 | 4 | 18:09~+30분 | 18:21~+45분 |
 | 2026-11-24 | 5 | 21:51~+30분 | 22:07~+45분 |
+| 2026-11-25 | 0 | 08:17~+30분 | 08:27~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-10T20:44:25Z |
-| Hosted Template Blog Fallback | schedule | in_progress | - | 2026-11-10T20:22:09Z |
-| Continuous Share Blog Publishing | schedule | pending | - | 2026-11-10T20:01:12Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-10T17:05:04Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-10T16:57:48Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-10T15:14:56Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-10T15:11:30Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-10T12:47:13Z |
+| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-11T21:10:50Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-11T20:04:51Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-11T19:52:45Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-11T17:12:39Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-11T17:01:48Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-11T14:43:33Z |
+| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-11T14:40:38Z |
+| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-11T11:57:21Z |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
