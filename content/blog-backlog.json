@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -1032,7 +1032,12 @@
       "category": "지역별 지분매입",
       "priority": 6,
       "slug": "blog/daejeon-share-sale-consultation",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-11-13",
+      "publishedAt": "2026-11-13T09:20:48.231Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/daejeon-share-sale-consultation/",
+      "description": "대전 공유지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "대전 상속지분 매도",

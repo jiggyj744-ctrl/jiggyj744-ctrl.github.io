@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-13T09:20:48.239Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/daejeon-share-sale-consultation"
+      ]
+    },
+    {
       "date": "2026-11-12T13:15:05.382Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/co-owned-land-share-sale-documents"
-      ]
-    },
-    {
-      "date": "2026-07-06T01:26:46.737Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/co-owned-apartment-share-sale-documents"
       ]
     }
   ]
