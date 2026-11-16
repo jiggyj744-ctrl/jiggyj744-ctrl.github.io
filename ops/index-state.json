@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-16T16:54:18.806Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/gyeonggi-auction-case-review"
+      ]
+    },
+    {
       "date": "2026-11-15T16:31:00.494Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/gyeonggi-share-purchase-documents"
-      ]
-    },
-    {
-      "date": "2026-07-11T00:59:48.283Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/commercial-share-tenant-review"
       ]
     }
   ]
