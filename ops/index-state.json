@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-18T16:09:57.464Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/gyeonggi-share-sale-consultation"
+      ]
+    },
+    {
       "date": "2026-11-17T18:49:17.423Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/land-share-acquisition-review"
-      ]
-    },
-    {
-      "date": "2026-07-13T12:49:35.352Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/inherited-apartment-share-sale"
       ]
     }
   ]
