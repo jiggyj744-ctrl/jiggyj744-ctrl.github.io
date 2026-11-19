@@ -1,10 +1,10 @@
-# 지분매입 자동발행 운영 리포트 - 2026-11-19
+# 지분매입 자동발행 운영 리포트 - 2026-11-20
 
 ## 요약
 - 발행된 블로그 글: 73
 - 대기 중인 블로그 글: 27
-- 오늘 KST 발행 여부: Y
-- 오늘 발행 횟수: 1
+- 오늘 KST 발행 여부: N
+- 오늘 발행 횟수: 0
 - 최신 발행 URL: https://jiggyj744-ctrl.github.io/blog/gyeonggi-share-sale-consultation/
 - 색인 관리 URL: 20
 - 색인 critical/warning: 0 / 0
@@ -20,7 +20,6 @@
 ## 향후 14일 발행 슬롯
 | KST 날짜 | 선택 슬롯 | 1차 발행 창 | 보조 발행 창 |
 | --- | --- | --- | --- |
-| 2026-11-19 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-11-20 | 1 | 10:43~+30분 | 10:57~+45분 |
 | 2026-11-21 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-11-22 | 3 | 15:37~+30분 | 15:49~+45분 |
@@ -34,18 +33,12 @@
 | 2026-11-30 | 2 | 13:11~+30분 | 13:23~+45분 |
 | 2026-12-01 | 3 | 15:37~+30분 | 15:49~+45분 |
 | 2026-12-02 | 2 | 13:11~+30분 | 13:23~+45분 |
+| 2026-12-03 | 1 | 10:43~+30분 | 10:57~+45분 |
 
 ## 최근 GitHub Actions 상태
 | Workflow | Event | Status | Conclusion | Created |
 | --- | --- | --- | --- | --- |
-| Daily Share Site Operations Report | schedule | in_progress | - | 2026-11-18T21:45:19Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-18T21:14:48Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-18T20:54:43Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-18T18:07:47Z |
-| Continuous Share Blog Publishing | schedule | completed | success | 2026-11-18T17:56:34Z |
-| pages build and deployment | dynamic | completed | success | 2026-11-18T16:10:00Z |
-| Hosted Template Blog Fallback | schedule | completed | success | 2026-11-18T15:58:49Z |
-| Continuous Share Blog Publishing | schedule | completed | cancelled | 2026-11-18T15:56:10Z |
+| - | - | - | - | GitHub Actions API 확인 불가 |
 
 ## 발행 완료 글
 | 발행시각 | 글 |
