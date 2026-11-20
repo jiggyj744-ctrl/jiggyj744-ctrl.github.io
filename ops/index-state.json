@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-20T09:32:33.826Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/incheon-auction-case-review"
+      ]
+    },
+    {
       "date": "2026-11-18T16:09:57.464Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/one-half-share-sale-review"
-      ]
-    },
-    {
-      "date": "2026-07-14T04:54:58.005Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/land-share-acquisition-review"
       ]
     }
   ]
