@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-22T15:31:16.395Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/incheon-share-sale-consultation"
+      ]
+    },
+    {
       "date": "2026-11-21T13:12:43.053Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/preemption-right-share-auction"
-      ]
-    },
-    {
-      "date": "2026-07-17T00:59:25.369Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/partition-claim-share-sale-guide"
       ]
     }
   ]
