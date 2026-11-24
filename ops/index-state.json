@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-24T00:57:17.508Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/seoul-auction-case-review"
+      ]
+    },
+    {
       "date": "2026-11-22T15:31:16.395Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/register-share-ratio-check"
-      ]
-    },
-    {
-      "date": "2026-07-18T05:19:54.987Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/preemption-right-share-auction"
       ]
     }
   ]
