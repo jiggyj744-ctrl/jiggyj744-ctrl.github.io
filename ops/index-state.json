@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-26T10:56:07.489Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/seoul-share-sale-consultation"
+      ]
+    },
+    {
       "date": "2026-11-25T06:08:39.462Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/siblings-inherited-share-sale"
-      ]
-    },
-    {
-      "date": "2026-07-20T12:37:06.797Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/seoul-share-purchase-documents"
       ]
     }
   ]
