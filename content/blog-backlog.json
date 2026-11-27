@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-11-26",
+  "updated": "2026-11-27",
   "posts": [
     {
       "keyword": "공유지분 매도",
@@ -998,7 +998,12 @@
       "category": "주거 지분",
       "priority": 7,
       "slug": "blog/busan-apartment-share-review",
-      "status": "queued"
+      "status": "published",
+      "lastPublished": "2026-11-27",
+      "publishedAt": "2026-11-27T05:19:17.707Z",
+      "url": "https://jiggyj744-ctrl.github.io/blog/busan-apartment-share-review/",
+      "description": "부산 아파트 공유지분 매도 상황에서 공유지분 매입 가능성을 확인할 때 필요한 등기, 공유자, 점유, 사건번호 기준을 정리했습니다.",
+      "thumbnail": "/assets/blog/thumb-share-sale.webp"
     },
     {
       "keyword": "부산 공유자 갈등 지분",

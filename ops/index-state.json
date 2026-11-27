@@ -1,6 +1,14 @@
 {
   "runs": [
     {
+      "date": "2026-11-27T05:19:17.716Z",
+      "model": "template-cost-safe",
+      "count": 1,
+      "pages": [
+        "blog/busan-apartment-share-review"
+      ]
+    },
+    {
       "date": "2026-11-26T10:56:07.489Z",
       "model": "template-cost-safe",
       "count": 1,
@@ -470,14 +478,6 @@
       "count": 1,
       "pages": [
         "blog/small-share-sale-review"
-      ]
-    },
-    {
-      "date": "2026-07-21T10:02:34.098Z",
-      "model": "template-cost-safe",
-      "count": 1,
-      "pages": [
-        "blog/siblings-inherited-share-sale"
       ]
     }
   ]
